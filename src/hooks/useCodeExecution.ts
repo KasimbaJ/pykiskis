@@ -2,15 +2,17 @@ import { useCallback } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { useEditorStore } from '../stores/useEditorStore'
 import { useProgressStore } from '../stores/useProgressStore'
-import { runPython } from '../services/pythonRunner'
+import { runPython, setInputRequestHandler } from '../services/pythonRunner'
 import { validateOutput, validateTheoryAnswer } from '../services/outputValidator'
 import { syncLevelCompletion } from '../services/progressApi'
 import type { Level } from '../types'
 
 export function useCodeExecution(level: Level) {
   const { getToken } = useAuth()
-  const { code, setOutput, setError, setIsRunning, setFeedbackType, setShowSolution } =
-    useEditorStore()
+  const {
+    code, setOutput, setError, setIsRunning,
+    setFeedbackType, setShowSolution, setPendingInput,
+  } = useEditorStore()
   const { completeLevel, recordAttempt, breakStreak } = useProgressStore()
 
   // Fire-and-forget D1 sync after a successful submission
@@ -45,13 +47,22 @@ export function useCodeExecution(level: Level) {
     setOutput('')
     setError(null)
     setFeedbackType(null)
+    setPendingInput(null)
+
+    // Register input handler so Python's input() shows a prompt in the output panel
+    setInputRequestHandler((prompt, partialOutput) => {
+      setPendingInput({ prompt, partialOutput })
+    })
 
     const result = await runPython(code, level.inputValues ?? [])
+
+    setInputRequestHandler(null)
+    setPendingInput(null)
     setOutput(result.output)
     setIsRunning(false)
 
     if (result.error) setError(result.error)
-  }, [code, level, setOutput, setError, setIsRunning, setFeedbackType])
+  }, [code, level, setOutput, setError, setIsRunning, setFeedbackType, setPendingInput])
 
   const submit = useCallback(async () => {
     setIsRunning(true)
@@ -59,6 +70,7 @@ export function useCodeExecution(level: Level) {
     setError(null)
     setFeedbackType(null)
     setShowSolution(false)
+    setPendingInput(null)
 
     // Theory mode: validate code text directly, no Pyodide
     if (level.levelMode === 'theory') {
@@ -78,7 +90,14 @@ export function useCodeExecution(level: Level) {
     }
 
     // Code mode: execute in Pyodide then validate output
+    setInputRequestHandler((prompt, partialOutput) => {
+      setPendingInput({ prompt, partialOutput })
+    })
+
     const result = await runPython(code, level.inputValues ?? [])
+
+    setInputRequestHandler(null)
+    setPendingInput(null)
     setOutput(result.output)
     setIsRunning(false)
 
@@ -104,17 +123,9 @@ export function useCodeExecution(level: Level) {
       setShowSolution(true)
     }
   }, [
-    code,
-    level,
-    setOutput,
-    setError,
-    setIsRunning,
-    setFeedbackType,
-    setShowSolution,
-    completeLevel,
-    recordAttempt,
-    breakStreak,
-    syncToD1,
+    code, level,
+    setOutput, setError, setIsRunning, setFeedbackType, setShowSolution,
+    setPendingInput, completeLevel, recordAttempt, breakStreak, syncToD1,
   ])
 
   return { execute, submit }

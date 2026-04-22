@@ -8,8 +8,13 @@ import {
   Loader2, Check, Terminal, ChevronRight,
 } from 'lucide-react'
 import Header from '../components/layout/Header'
-import { runPython } from '../services/pythonRunner'
+import { runPython, provideInput, setInputRequestHandler } from '../services/pythonRunner'
 import { usePyodide } from '../hooks/usePyodide'
+
+interface PendingInput {
+  prompt: string
+  partialOutput: string
+}
 
 // ── Example snippets ───────────────────────────────────────────
 interface Example {
@@ -163,8 +168,10 @@ export default function PlaygroundPage() {
   const [outputError, setOutputError] = useState('')
   const [hasRun, setHasRun]         = useState(false)
   const [isRunning, setIsRunning]   = useState(false)
-  const [copied, setCopied]         = useState(false)
+  const [copied, setCopied]           = useState(false)
   const [showExamples, setShowExamples] = useState(false)
+  const [pendingInput, setPendingInput] = useState<PendingInput | null>(null)
+  const playgroundInputRef = useRef<HTMLInputElement>(null)
 
   // Close examples dropdown on outside click
   useEffect(() => {
@@ -177,16 +184,29 @@ export default function PlaygroundPage() {
     return () => document.removeEventListener('mousedown', handleOutside)
   }, [])
 
+  // Auto-focus the inline input field when a prompt arrives
+  useEffect(() => {
+    if (pendingInput) playgroundInputRef.current?.focus()
+  }, [pendingInput])
+
   const handleRun = useCallback(async () => {
     if (isRunning || pyodideLoading) return
     setIsRunning(true)
     setOutput('')
     setOutputError('')
     setHasRun(true)
+    setPendingInput(null)
+
+    // Register input handler — fires when Python calls input()
+    setInputRequestHandler((prompt, partialOutput) => {
+      setPendingInput({ prompt, partialOutput })
+    })
 
     const inputValues = stdin.split('\n').filter((l) => l.trim() !== '')
     const result = await runPython(code, inputValues)
 
+    setInputRequestHandler(null)
+    setPendingInput(null)
     setOutput(result.output)
     setOutputError(result.error ?? '')
     setIsRunning(false)
@@ -385,6 +405,9 @@ export default function PlaygroundPage() {
                 <span className="text-slate-400 text-sm flex items-center gap-2">
                   <Terminal className="w-3.5 h-3.5" />
                   Output
+                  {pendingInput && (
+                    <span className="text-yellow-400 text-xs animate-pulse">waiting for input…</span>
+                  )}
                 </span>
                 {hasRun && (output || outputError) && (
                   <button
@@ -397,27 +420,46 @@ export default function PlaygroundPage() {
               </div>
 
               <div className="flex-1 bg-slate-950 p-4 overflow-auto font-mono text-sm leading-relaxed">
-                {!hasRun && !isRunning && (
+                {/* ── Waiting for input() ── */}
+                {pendingInput ? (
+                  <div>
+                    {pendingInput.partialOutput && (
+                      <pre className="text-green-400 whitespace-pre-wrap">{pendingInput.partialOutput}</pre>
+                    )}
+                    <div className="flex items-baseline mt-0.5">
+                      <span className="text-green-400 whitespace-pre">{pendingInput.prompt}</span>
+                      <input
+                        ref={playgroundInputRef}
+                        type="text"
+                        spellCheck={false}
+                        onKeyDown={(e) => {
+                          if (e.key !== 'Enter') return
+                          provideInput(e.currentTarget.value)
+                          setPendingInput(null)
+                        }}
+                        className="flex-1 min-w-0 bg-transparent text-yellow-300 outline-none caret-yellow-300 ml-0.5"
+                      />
+                    </div>
+                    <p className="text-slate-600 text-xs mt-2">Press Enter to submit</p>
+                  </div>
+                ) : !hasRun && !isRunning ? (
                   <p className="text-slate-600 italic select-none">
                     Click{' '}
                     <span className="text-green-500 not-italic font-medium">Run</span>
                     {' '}to see output here…
                   </p>
-                )}
-                {isRunning && (
+                ) : isRunning ? (
                   <span className="text-slate-500 flex items-center gap-2">
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
                     Executing…
                   </span>
-                )}
-                {!isRunning && hasRun && !output && !outputError && (
+                ) : hasRun && !output && !outputError ? (
                   <p className="text-slate-500 italic">No output produced.</p>
-                )}
-                {output && (
-                  <pre className="text-green-400 whitespace-pre-wrap">{output}</pre>
-                )}
-                {outputError && (
-                  <pre className="text-red-400 whitespace-pre-wrap mt-2">{outputError}</pre>
+                ) : (
+                  <>
+                    {output && <pre className="text-green-400 whitespace-pre-wrap">{output}</pre>}
+                    {outputError && <pre className="text-red-400 whitespace-pre-wrap mt-2">{outputError}</pre>}
+                  </>
                 )}
               </div>
             </div>

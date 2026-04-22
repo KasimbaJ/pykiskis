@@ -1,5 +1,10 @@
 import { create } from 'zustand'
 
+export interface PendingInput {
+  prompt: string
+  partialOutput: string
+}
+
 interface EditorState {
   code: string;
   output: string;
@@ -9,6 +14,7 @@ interface EditorState {
   showSolution: boolean;
   currentHintIndex: number;
   feedbackType: 'success' | 'error' | null;
+  pendingInput: PendingInput | null;
 
   setCode: (code: string) => void;
   setOutput: (output: string) => void;
@@ -18,6 +24,7 @@ interface EditorState {
   showNextHint: () => void;
   setShowSolution: (show: boolean) => void;
   setFeedbackType: (type: 'success' | 'error' | null) => void;
+  setPendingInput: (input: PendingInput | null) => void;
   resetEditor: (starterCode: string) => void;
 }
 
@@ -30,6 +37,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   showSolution: false,
   currentHintIndex: 0,
   feedbackType: null,
+  pendingInput: null,
 
   setCode: (code) => set({ code }),
   setOutput: (output) => set({ output }),
@@ -44,6 +52,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   },
   setShowSolution: (show) => set({ showSolution: show }),
   setFeedbackType: (feedbackType) => set({ feedbackType }),
+  setPendingInput: (pendingInput) => set({ pendingInput }),
   resetEditor: (starterCode) =>
     set({
       code: starterCode,
@@ -54,5 +63,6 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       showSolution: false,
       currentHintIndex: 0,
       feedbackType: null,
+      pendingInput: null,
     }),
 }))
