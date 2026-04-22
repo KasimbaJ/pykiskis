@@ -1,0 +1,69 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "Pykiskis" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img [ref=e8]
+        - generic [ref=e12]: Pykiskis
+      - generic [ref=e16]: 97/100
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - img [ref=e19]
+          - generic [ref=e21]: "10"
+        - generic [ref=e22]:
+          - generic [ref=e23]: Kasimba
+          - button "Sign out" [ref=e24]:
+            - img [ref=e25]
+        - link "Teacher Dashboard" [ref=e28] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e29]
+  - main [ref=e34]:
+    - button "Back to Levels" [ref=e36]:
+      - img [ref=e37]
+      - text: Back to Levels
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - img [ref=e43]
+            - generic [ref=e45]: Level 98
+          - heading "Mini Database" [level=2] [ref=e46]
+          - paragraph [ref=e47]: "A complete database application performs all CRUD operations: Create (INSERT), Read (SELECT), Update (UPDATE), Delete (DELETE). This covers the full lifecycle of data management."
+          - generic [ref=e48]:
+            - heading "Your Task" [level=3] [ref=e49]
+            - paragraph [ref=e50]: "Create a students table, insert Alice with score 90, update her score to 95, then query and print \"Alice: 95\"."
+          - generic [ref=e51]:
+            - heading "Expected Output" [level=3] [ref=e52]
+            - generic [ref=e53]: "Alice: 95"
+        - button "Need a hint?" [ref=e54]:
+          - img [ref=e55]
+          - text: Need a hint?
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - img [ref=e59]
+          - text: Loading Python environment...
+        - generic [ref=e61]:
+          - generic [ref=e67]: main.py
+          - generic [ref=e70]:
+            - generic [ref=e72]:
+              - generic [ref=e73]: "1"
+              - generic [ref=e74]: "2"
+              - generic [ref=e75]: "3"
+            - textbox [ref=e76]:
+              - generic [ref=e77]: "# Full SQLite CRUD"
+              - generic [ref=e78]: import sqlite3
+        - generic [ref=e80]:
+          - button "Run" [disabled] [ref=e81]:
+            - img [ref=e82]
+            - text: Run
+          - button "Submit" [disabled] [ref=e84]:
+            - img [ref=e85]
+            - text: Submit
+          - button "Reset" [ref=e88]:
+            - img [ref=e89]
+            - text: Reset
+        - generic [ref=e92]:
+          - generic [ref=e93]:
+            - img [ref=e94]
+            - generic [ref=e96]: Output
+          - generic [ref=e97]: Click "Run" to execute your code

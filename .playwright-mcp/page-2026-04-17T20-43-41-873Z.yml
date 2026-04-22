@@ -1,0 +1,89 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "Pykiskis" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img [ref=e8]
+        - generic [ref=e12]: Pykiskis
+      - generic [ref=e16]: 79/100
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: Kasimba
+          - button "Sign out" [ref=e20]:
+            - img [ref=e21]
+        - link "Teacher Dashboard" [ref=e24] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e25]
+  - main [ref=e30]:
+    - button "Back to Levels" [ref=e32]:
+      - img [ref=e33]
+      - text: Back to Levels
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - img [ref=e39]
+            - generic [ref=e41]: Level 80
+          - heading "SQLite Basics" [level=2] [ref=e42]
+          - paragraph [ref=e43]: SQLite is a serverless database stored in a single file. Python's sqlite3 module is built in. Use conn = sqlite3.connect() to open, cursor.execute() to run SQL, and conn.commit() to save changes.
+          - generic [ref=e44]:
+            - heading "Your Task" [level=3] [ref=e45]
+            - paragraph [ref=e46]: Create an in-memory SQLite database, create a users table, insert 3 users, and print the count.
+          - generic [ref=e47]:
+            - heading "Expected Output" [level=3] [ref=e48]
+            - generic [ref=e49]: "3"
+        - button "Need a hint?" [ref=e50]:
+          - img [ref=e51]
+          - text: Need a hint?
+      - generic [ref=e53]:
+        - generic [ref=e57]:
+          - generic [ref=e63]: main.py
+          - generic [ref=e66]:
+            - generic [ref=e115]:
+              - generic [ref=e116]: "1"
+              - generic [ref=e117]: "2"
+              - generic [ref=e118]: "3"
+              - generic [ref=e119]: "4"
+              - generic [ref=e120]: "5"
+              - generic [ref=e121]: "6"
+              - generic [ref=e122]: "7"
+              - generic [ref=e123]: "8"
+              - generic [ref=e124]: "9"
+            - textbox [ref=e72]:
+              - generic [ref=e75]: import sqlite3
+              - generic [ref=e108]: conn = sqlite3.connect(":memory:")
+              - generic [ref=e109]: c = conn.cursor()
+              - generic [ref=e110]: c.execute("CREATE TABLE users (id INTEGER, name TEXT)")
+              - generic [ref=e111]: c.executemany("INSERT INTO users VALUES (?, ?)", [(1, "Alice"), (2, "Bob"), (3, "Carol")])
+              - generic [ref=e112]: conn.commit()
+              - generic [ref=e113]: c.execute("SELECT COUNT(*) FROM users")
+              - generic [ref=e114]: print(c.fetchone()[0])
+        - generic [ref=e76]:
+          - button "Run" [ref=e77]:
+            - img [ref=e125]
+            - text: Run
+          - button "Submit" [ref=e80]:
+            - img [ref=e127]
+            - text: Submit
+          - button "Reset" [ref=e84]:
+            - img [ref=e85]
+            - text: Reset
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - img [ref=e90]
+            - generic [ref=e92]: Output
+          - generic [ref=e93]: Click "Run" to execute your code
+  - generic [ref=e131]:
+    - img [ref=e133]
+    - heading "Not Quite Right" [level=2] [ref=e137]
+    - paragraph [ref=e138]: Review the expected solution and try again.
+    - generic [ref=e139]:
+      - heading "Expected Solution" [level=3] [ref=e140]
+      - generic [ref=e141]: import sqlite3 conn = sqlite3.connect(":memory:") c = conn.cursor() c.execute("CREATE TABLE users (id INTEGER, name TEXT)") c.executemany("INSERT INTO users VALUES (?, ?)", [(1, "Alice"), (2, "Bob"), (3, "Carol")]) conn.commit() c.execute("SELECT COUNT(*) FROM users") print(c.fetchone()[0])
+      - heading "Explanation" [level=3] [ref=e142]
+      - paragraph [ref=e143]: "\":memory:\" creates a temporary in-memory database. executemany() inserts multiple rows efficiently. COUNT(*) counts all rows. fetchone()[0] gets the first value from the first result row: 3."
+    - generic [ref=e144]:
+      - button "Keep Trying" [ref=e145]
+      - button "Reset Code" [ref=e146]:
+        - img [ref=e147]
+        - text: Reset Code

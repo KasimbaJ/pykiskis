@@ -1,0 +1,49 @@
+import { StrictMode, Suspense, lazy } from 'react'
+import { createRoot } from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { ClerkProvider } from '@clerk/clerk-react'
+import './index.css'
+import App from './App'
+import { ErrorBoundary } from './components/ErrorBoundary'
+
+const HomePage       = lazy(() => import('./pages/HomePage'))
+const LevelPage      = lazy(() => import('./pages/LevelPage'))
+const DashboardPage  = lazy(() => import('./pages/DashboardPage'))
+const PlaygroundPage = lazy(() => import('./pages/PlaygroundPage'))
+const SignInPage     = lazy(() => import('./pages/SignInPage'))
+const SignUpPage     = lazy(() => import('./pages/SignUpPage'))
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+if (!PUBLISHABLE_KEY) throw new Error('Missing VITE_CLERK_PUBLISHABLE_KEY')
+
+const router = createBrowserRouter([
+  { path: '/sign-in/*', element: <SignInPage /> },
+  { path: '/sign-up/*', element: <SignUpPage /> },
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      { index: true,                   element: <HomePage /> },
+      { path: 'level/:levelId',        element: <LevelPage /> },
+      { path: 'dashboard',             element: <DashboardPage /> },
+      { path: 'playground',            element: <PlaygroundPage /> },
+    ],
+  },
+])
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <ErrorBoundary>
+      <Suspense fallback={<div className="min-h-screen bg-slate-50" />}>
+        <ClerkProvider
+          publishableKey={PUBLISHABLE_KEY}
+          signInUrl="/sign-in"
+          signUpUrl="/sign-up"
+          afterSignOutUrl="/sign-in"
+        >
+          <RouterProvider router={router} />
+        </ClerkProvider>
+      </Suspense>
+    </ErrorBoundary>
+  </StrictMode>,
+)

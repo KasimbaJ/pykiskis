@@ -1,0 +1,8 @@
+- generic [ref=e5]:
+  - img [ref=e7]
+  - heading "Welcome to Pykiskis!" [level=1] [ref=e10]
+  - paragraph [ref=e11]: 100 Days of Python — structured learning path
+  - paragraph [ref=e12]: Enter your name to begin.
+  - generic [ref=e13]:
+    - textbox "Your name" [active] [ref=e14]
+    - button "Start" [disabled] [ref=e15]

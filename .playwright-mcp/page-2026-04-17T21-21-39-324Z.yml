@@ -1,0 +1,61 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "Pykiskis" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img [ref=e8]
+        - generic [ref=e12]: Pykiskis
+      - generic [ref=e15]: 0/100
+      - link "Teacher Dashboard" [ref=e17] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e18]
+  - main [ref=e23]:
+    - button "Back to Levels" [ref=e25]:
+      - img [ref=e26]
+      - text: Back to Levels
+    - generic [ref=e28]:
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - img [ref=e32]
+            - generic [ref=e34]: Level 1
+          - heading "Hello World" [level=2] [ref=e35]
+          - paragraph [ref=e36]: Every programming journey starts with "Hello, World!" The print() function is Python's way of displaying output to the screen. It takes text (called a string) inside quotation marks and shows it.
+          - generic [ref=e37]:
+            - heading "Your Task" [level=3] [ref=e38]
+            - paragraph [ref=e39]: Use the print() function to display "Hello, World!" exactly as shown.
+          - generic [ref=e40]:
+            - heading "Expected Output" [level=3] [ref=e41]
+            - generic [ref=e42]: Hello, World!
+        - button "Need a hint?" [ref=e43]:
+          - img [ref=e44]
+          - text: Need a hint?
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - img [ref=e48]
+          - text: Loading Python environment...
+        - generic [ref=e50]:
+          - generic [ref=e56]: main.py
+          - generic [ref=e59]:
+            - generic [ref=e61]:
+              - generic [ref=e62]: "1"
+              - generic [ref=e63]: "2"
+              - generic [ref=e64]: "3"
+            - textbox [ref=e65]:
+              - generic [ref=e66]: "# Your first Python program!"
+              - generic [ref=e67]: "# Use print() to display a message"
+        - generic [ref=e69]:
+          - button "Run" [disabled] [ref=e70]:
+            - img [ref=e71]
+            - text: Run
+          - button "Submit" [disabled] [ref=e73]:
+            - img [ref=e74]
+            - text: Submit
+          - button "Reset" [ref=e77]:
+            - img [ref=e78]
+            - text: Reset
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - img [ref=e83]
+            - generic [ref=e85]: Output
+          - generic [ref=e86]: Click "Run" to execute your code

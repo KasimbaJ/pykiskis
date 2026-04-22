@@ -1,0 +1,217 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "Pykiskis" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img [ref=e8]
+        - generic [ref=e12]: Pykiskis
+      - generic [ref=e16]: 1/100
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - img [ref=e19]
+          - generic [ref=e21]: "1"
+        - generic [ref=e22]: JKasimba
+        - link "Teacher Dashboard" [ref=e23] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e24]
+        - button "Open user menu" [ref=e30] [cursor=pointer]:
+          - img "JKasimba's logo" [ref=e33]
+  - main [ref=e35]:
+    - generic [ref=e36]:
+      - heading "Python Learning Path" [level=1] [ref=e37]
+      - paragraph [ref=e38]: 100 levels across 5 phases — from Hello World to Professional Portfolio.
+    - generic [ref=e39]:
+      - button "Phase 1 Beginner Python Master the fundamentals 1/24" [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]: Phase 1
+          - generic [ref=e43]:
+            - heading "Beginner Python" [level=2] [ref=e44]
+            - paragraph [ref=e45]: Master the fundamentals
+        - generic [ref=e46]:
+          - generic [ref=e50]: 1/24
+          - img [ref=e51]
+      - generic [ref=e54]:
+        - link "Level 1 Hello World print()" [ref=e55] [cursor=pointer]:
+          - /url: /level/1
+          - generic [ref=e56]:
+            - generic [ref=e57]: Level 1
+            - img [ref=e60]
+          - heading "Hello World" [level=3] [ref=e62]
+          - paragraph [ref=e63]: print()
+        - link "Level 2 Variables Variable assignment" [ref=e64] [cursor=pointer]:
+          - /url: /level/2
+          - generic [ref=e66]: Level 2
+          - heading "Variables" [level=3] [ref=e67]
+          - paragraph [ref=e68]: Variable assignment
+        - generic [ref=e69]:
+          - generic [ref=e70]:
+            - generic [ref=e71]: Level 3
+            - img [ref=e72]
+          - heading "String Manipulation" [level=3] [ref=e75]
+          - paragraph [ref=e76]: "String methods: .upper() .lower() .replace()"
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - generic [ref=e79]: Level 4
+            - img [ref=e80]
+          - heading "Input and Print" [level=3] [ref=e83]
+          - paragraph [ref=e84]: input() function
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - generic [ref=e87]: Level 5
+            - img [ref=e88]
+          - heading "Variable Naming Rules" [level=3] [ref=e91]
+          - paragraph [ref=e92]: snake_case, naming conventions
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - generic [ref=e95]: Level 6
+            - img [ref=e96]
+          - heading "Math Operations" [level=3] [ref=e99]
+          - paragraph [ref=e100]: "Operators: + - * / // % **"
+        - generic [ref=e101]:
+          - generic [ref=e102]:
+            - generic [ref=e103]: Level 7
+            - img [ref=e104]
+          - heading "Data Types" [level=3] [ref=e107]
+          - paragraph [ref=e108]: int, float, str, bool
+        - generic [ref=e109]:
+          - generic [ref=e110]:
+            - generic [ref=e111]: Level 8
+            - img [ref=e112]
+          - heading "Type Conversion" [level=3] [ref=e115]
+          - paragraph [ref=e116]: int(), float(), str()
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e119]: Level 9
+            - img [ref=e120]
+          - heading "Conditionals" [level=3] [ref=e123]
+          - paragraph [ref=e124]: if / elif / else
+        - generic [ref=e125]:
+          - generic [ref=e126]:
+            - generic [ref=e127]: Level 10
+            - img [ref=e128]
+          - heading "Logical Operators" [level=3] [ref=e131]
+          - paragraph [ref=e132]: and / or / not
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - generic [ref=e135]: Level 11
+            - img [ref=e136]
+          - heading "Random Numbers" [level=3] [ref=e139]
+          - paragraph [ref=e140]: random module, seed()
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - generic [ref=e143]: Level 12
+            - img [ref=e144]
+          - heading "Error Handling Basics" [level=3] [ref=e147]
+          - paragraph [ref=e148]: try / except
+        - generic [ref=e149]:
+          - generic [ref=e150]:
+            - generic [ref=e151]: Level 13
+            - img [ref=e152]
+          - heading "Defining Functions" [level=3] [ref=e155]
+          - paragraph [ref=e156]: def, parameters, return
+        - generic [ref=e157]:
+          - generic [ref=e158]:
+            - generic [ref=e159]: Level 14
+            - img [ref=e160]
+          - heading "For Loops" [level=3] [ref=e163]
+          - paragraph [ref=e164]: for, range()
+        - generic [ref=e165]:
+          - generic [ref=e166]:
+            - generic [ref=e167]: Level 15
+            - img [ref=e168]
+          - heading "Code Blocks & Indentation" [level=3] [ref=e171]
+          - paragraph [ref=e172]: Indentation rules, code blocks
+        - generic [ref=e173]:
+          - generic [ref=e174]:
+            - generic [ref=e175]: Level 16
+            - img [ref=e176]
+          - heading "While Loops" [level=3] [ref=e179]
+          - paragraph [ref=e180]: while, counter
+        - generic [ref=e181]:
+          - generic [ref=e182]:
+            - generic [ref=e183]: Level 17
+            - img [ref=e184]
+          - heading "Flowchart to Code" [level=3] [ref=e187]
+          - paragraph [ref=e188]: Translating logic to code
+        - generic [ref=e189]:
+          - generic [ref=e190]:
+            - generic [ref=e191]: Level 18
+            - img [ref=e192]
+          - heading "Positional & Keyword Args" [level=3] [ref=e195]
+          - paragraph [ref=e196]: Default parameters, keyword arguments
+        - generic [ref=e197]:
+          - generic [ref=e198]:
+            - generic [ref=e199]: Level 19
+            - img [ref=e200]
+          - heading "Python Lists" [level=3] [ref=e203]
+          - paragraph [ref=e204]: list, append, len, indexing
+        - generic [ref=e205]:
+          - generic [ref=e206]:
+            - generic [ref=e207]: Level 20
+            - img [ref=e208]
+          - heading "Python Dictionaries" [level=3] [ref=e211]
+          - paragraph [ref=e212]: dict, keys, values
+        - generic [ref=e213]:
+          - generic [ref=e214]:
+            - generic [ref=e215]: Level 21
+            - img [ref=e216]
+          - heading "Nested Collections" [level=3] [ref=e219]
+          - paragraph [ref=e220]: list of dicts, nested access
+        - generic [ref=e221]:
+          - generic [ref=e222]:
+            - generic [ref=e223]: Level 22
+            - img [ref=e224]
+          - heading "Return vs Print" [level=3] [ref=e227]
+          - paragraph [ref=e228]: return value semantics
+        - generic [ref=e229]:
+          - generic [ref=e230]:
+            - generic [ref=e231]: Level 23
+            - img [ref=e232]
+          - heading "Docstrings & Comments" [level=3] [ref=e235]
+          - paragraph [ref=e236]: "Triple-quote docstrings, # comments"
+        - generic [ref=e237]:
+          - generic [ref=e238]:
+            - generic [ref=e239]: Level 24
+            - img [ref=e240]
+          - heading "Scope & Debugging" [level=3] [ref=e243]
+          - paragraph [ref=e244]: Local/global scope, debugging techniques
+    - button "Phase 2 Intermediate Python OOP, files, and data structures 0/21" [ref=e246]:
+      - generic [ref=e247]:
+        - generic [ref=e248]: Phase 2
+        - generic [ref=e249]:
+          - heading "Intermediate Python" [level=2] [ref=e250]
+          - paragraph [ref=e251]: OOP, files, and data structures
+      - generic [ref=e252]:
+        - generic [ref=e255]: 0/21
+        - img [ref=e256]
+        - img [ref=e259]
+    - button "Phase 3 Intermediate+ Advanced patterns and web concepts 0/20" [ref=e262]:
+      - generic [ref=e263]:
+        - generic [ref=e264]: Phase 3
+        - generic [ref=e265]:
+          - heading "Intermediate+" [level=2] [ref=e266]
+          - paragraph [ref=e267]: Advanced patterns and web concepts
+      - generic [ref=e268]:
+        - generic [ref=e271]: 0/20
+        - img [ref=e272]
+        - img [ref=e275]
+    - button "Phase 4 Advanced Python Data science and databases 0/20" [ref=e278]:
+      - generic [ref=e279]:
+        - generic [ref=e280]: Phase 4
+        - generic [ref=e281]:
+          - heading "Advanced Python" [level=2] [ref=e282]
+          - paragraph [ref=e283]: Data science and databases
+      - generic [ref=e284]:
+        - generic [ref=e287]: 0/20
+        - img [ref=e288]
+        - img [ref=e291]
+    - button "Phase 5 Professional Portfolio Build real-world projects 0/15" [ref=e294]:
+      - generic [ref=e295]:
+        - generic [ref=e296]: Phase 5
+        - generic [ref=e297]:
+          - heading "Professional Portfolio" [level=2] [ref=e298]
+          - paragraph [ref=e299]: Build real-world projects
+      - generic [ref=e300]:
+        - generic [ref=e303]: 0/15
+        - img [ref=e304]
+        - img [ref=e307]

@@ -1,0 +1,89 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "Pykiskis" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img [ref=e8]
+        - generic [ref=e12]: Pykiskis
+      - generic [ref=e16]: 80/100
+      - generic [ref=e17]:
+        - generic [ref=e108]:
+          - img [ref=e109]
+          - generic [ref=e111]: "1"
+        - generic [ref=e18]:
+          - generic [ref=e19]: Kasimba
+          - button "Sign out" [ref=e20]:
+            - img [ref=e21]
+        - link "Teacher Dashboard" [ref=e24] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e25]
+  - main [ref=e30]:
+    - generic [ref=e31]:
+      - button "Back to Levels" [ref=e32]:
+        - img [ref=e33]
+        - text: Back to Levels
+      - generic [ref=e112]: Completed
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - img [ref=e39]
+            - generic [ref=e41]: Level 80
+          - heading "SQLite Basics" [level=2] [ref=e42]
+          - paragraph [ref=e43]: SQLite is a serverless database stored in a single file. Python's sqlite3 module is built in. Use conn = sqlite3.connect() to open, cursor.execute() to run SQL, and conn.commit() to save changes.
+          - generic [ref=e44]:
+            - heading "Your Task" [level=3] [ref=e45]
+            - paragraph [ref=e46]: Create an in-memory SQLite database, create a users table, insert 3 users, and print the count.
+          - generic [ref=e47]:
+            - heading "Expected Output" [level=3] [ref=e48]
+            - generic [ref=e49]: "3"
+        - button "Need a hint?" [ref=e50]:
+          - img [ref=e51]
+          - text: Need a hint?
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - generic [ref=e60]: main.py
+          - generic [ref=e63]:
+            - generic [ref=e113]:
+              - generic [ref=e114]: "1"
+              - generic [ref=e115]: "2"
+              - generic [ref=e116]: "3"
+              - generic [ref=e117]: "4"
+              - generic [ref=e118]: "5"
+              - generic [ref=e119]: "6"
+              - generic [ref=e120]: "7"
+              - generic [ref=e121]: "8"
+              - generic [ref=e122]: "9"
+            - textbox [ref=e69]:
+              - generic [ref=e72]: import sqlite3
+              - generic [ref=e101]: conn = sqlite3.connect(":memory:")
+              - generic [ref=e102]: c = conn.cursor()
+              - generic [ref=e103]: c.execute("CREATE TABLE users (id INTEGER, name TEXT)")
+              - generic [ref=e104]: c.executemany("INSERT INTO users VALUES (?, ?)", [(1, "Alice"), (2, "Bob"), (3, "Carol")])
+              - generic [ref=e105]: conn.commit()
+              - generic [ref=e106]: c.execute("SELECT COUNT(*) FROM users")
+              - generic [ref=e107]: print(c.fetchone()[0])
+        - generic [ref=e73]:
+          - button "Run" [ref=e74]:
+            - img [ref=e123]
+            - text: Run
+          - button "Submit" [ref=e77]:
+            - img [ref=e125]
+            - text: Submit
+          - button "Reset" [ref=e81]:
+            - img [ref=e82]
+            - text: Reset
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - img [ref=e87]
+            - generic [ref=e89]: Output
+          - generic [ref=e128]: "3"
+  - generic [ref=e130]:
+    - img [ref=e132]
+    - heading "Correct!" [level=2] [ref=e135]
+    - paragraph [ref=e136]: "Great job! You've completed Level 80: SQLite Basics"
+    - generic [ref=e137]:
+      - button "Back to Levels" [ref=e138]
+      - button "Next Level" [ref=e139]:
+        - text: Next Level
+        - img [ref=e140]

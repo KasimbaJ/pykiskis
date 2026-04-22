@@ -1,0 +1,445 @@
+import type { Level } from '../../types'
+
+export const phase2Levels: Level[] = [
+  {
+    id: 25,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Classes and Objects',
+    concept: 'class, __init__, self',
+    description:
+      'Object-Oriented Programming (OOP) organises code into objects that have data (attributes) and behaviour (methods). A class is a blueprint; an object is an instance of that blueprint.',
+    task: 'Create a Dog class with a name attribute, instantiate it with name="Buddy", and print the name.',
+    starterCode: '# Create a class and instantiate it\n',
+    expectedOutput: 'Buddy',
+    validationMode: 'exact',
+    hints: [
+      'Use __init__(self, name) to initialise the attribute.',
+      'class Dog:\n    def __init__(self, name):\n        self.name = name',
+      'class Dog:\n    def __init__(self, name):\n        self.name = name\ndog = Dog("Buddy")\nprint(dog.name)',
+    ],
+    solution: 'class Dog:\n    def __init__(self, name):\n        self.name = name\n\ndog = Dog("Buddy")\nprint(dog.name)',
+    explanation:
+      '__init__ is the constructor — called when you create an instance. self refers to the instance itself. self.name = name stores the argument as an attribute accessible via dog.name.',
+  },
+  {
+    id: 26,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Class Methods',
+    concept: 'Instance methods, self',
+    description:
+      'Methods are functions defined inside a class. They always take self as the first parameter, which refers to the instance. Methods can access and modify the instance\'s attributes.',
+    task: 'Add a bark() method to Dog that prints "{name} says Woof!". Create dog = Dog("Buddy") and call bark().',
+    starterCode: '# Add a method to a class\nclass Dog:\n    def __init__(self, name):\n        self.name = name\n',
+    expectedOutput: 'Buddy says Woof!',
+    validationMode: 'exact',
+    hints: [
+      'Define bark(self) inside the class indented body.',
+      'def bark(self):\n    print(f"{self.name} says Woof!")',
+      'Add the method, then: dog = Dog("Buddy") and dog.bark()',
+    ],
+    solution: 'class Dog:\n    def __init__(self, name):\n        self.name = name\n\n    def bark(self):\n        print(f"{self.name} says Woof!")\n\ndog = Dog("Buddy")\ndog.bark()',
+    explanation:
+      'bark(self) is an instance method. self.name accesses the name attribute. f-strings embed variables in strings. dog.bark() calls the method on the dog instance.',
+  },
+  {
+    id: 27,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Class Initialisers',
+    concept: '__init__ with multiple parameters',
+    description:
+      'The __init__ constructor can accept any number of parameters to set up initial state. This allows creating objects with different configurations.',
+    task: 'Create a Car class with make and year attributes. Instantiate Car("Toyota", 2020) and print "2020 Toyota".',
+    starterCode: '# Create a class with multiple init params\n',
+    expectedOutput: '2020 Toyota',
+    validationMode: 'exact',
+    hints: [
+      'def __init__(self, make, year) stores both attributes.',
+      'self.make = make and self.year = year',
+      'class Car:\n    def __init__(self, make, year):\n        self.make = make\n        self.year = year\ncar = Car("Toyota", 2020)\nprint(f"{car.year} {car.make}")',
+    ],
+    solution: 'class Car:\n    def __init__(self, make, year):\n        self.make = make\n        self.year = year\n\ncar = Car("Toyota", 2020)\nprint(f"{car.year} {car.make}")',
+    explanation:
+      'The constructor takes make and year and stores them as attributes. When printing, we use an f-string to format year first, then make. Instances created from the same class can have different attribute values.',
+  },
+  {
+    id: 28,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Getters and Setters',
+    concept: '@property decorator',
+    description:
+      'The @property decorator turns a method into an attribute-like getter. @property.setter allows setting the value with validation. This encapsulates data and controls access.',
+    task: 'Create a Temperature class. celsius property returns the value. Add a fahrenheit property that converts it. Print the fahrenheit of Temperature(100).',
+    starterCode: '# Property decorators\n',
+    expectedOutput: '212.0',
+    validationMode: 'exact',
+    hints: [
+      'Store the value in self._celsius. Use @property for celsius.',
+      'fahrenheit = celsius * 9/5 + 32',
+      'class Temperature:\n    def __init__(self, c):\n        self._celsius = c\n    @property\n    def fahrenheit(self):\n        return self._celsius * 9/5 + 32\nt = Temperature(100)\nprint(t.fahrenheit)',
+    ],
+    solution: 'class Temperature:\n    def __init__(self, celsius):\n        self._celsius = celsius\n\n    @property\n    def fahrenheit(self):\n        return self._celsius * 9 / 5 + 32\n\nt = Temperature(100)\nprint(t.fahrenheit)',
+    explanation:
+      '@property makes fahrenheit accessible as t.fahrenheit (no parentheses). The formula celsius * 9/5 + 32 converts to Fahrenheit. 100°C = 212°F.',
+  },
+  {
+    id: 29,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Importing Modules',
+    concept: 'import, from...import',
+    description:
+      "Python's standard library contains hundreds of modules with ready-made functions. import math loads the entire module; from math import sqrt imports a specific function.",
+    task: 'Import the math module and print the square root of 144.',
+    starterCode: '# Import and use a module\n',
+    expectedOutput: '12.0',
+    validationMode: 'exact',
+    hints: [
+      'import math at the top, then use math.sqrt()',
+      'math.sqrt(144) returns a float.',
+      'import math\nprint(math.sqrt(144))',
+    ],
+    solution: 'import math\nprint(math.sqrt(144))',
+    explanation:
+      'math.sqrt(144) returns 12.0 (a float). The math module also has math.pi, math.floor(), math.ceil() and many more. from math import sqrt lets you write just sqrt(144).',
+  },
+  {
+    id: 30,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Module Aliasing',
+    concept: 'import...as, aliases',
+    description:
+      'You can give modules and functions shorter aliases using import...as. This is common with data science libraries: import numpy as np, import pandas as pd.',
+    task: 'Import math as m and print m.pi rounded to 2 decimal places.',
+    starterCode: '# Module aliasing\n',
+    expectedOutput: '3.14',
+    validationMode: 'exact',
+    hints: [
+      'import math as m creates an alias.',
+      'Use round(value, 2) to round to 2 decimal places.',
+      'import math as m\nprint(round(m.pi, 2))',
+    ],
+    solution: 'import math as m\nprint(round(m.pi, 2))',
+    explanation:
+      'import math as m creates an alias m for the math module. m.pi is approximately 3.14159... round(m.pi, 2) rounds to 2 decimal places giving 3.14.',
+  },
+  {
+    id: 31,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Optional & Default Params',
+    concept: 'Default parameter values',
+    description:
+      'Functions can have optional parameters with default values. If the caller provides a value, it overrides the default. This makes functions flexible without requiring all arguments every time.',
+    task: 'Define say_hello(name, greeting="Hello") that prints "{greeting}, {name}!". Call it twice: once with just "World", once with ("Alice", "Hi").',
+    starterCode: '# Default parameter values\n',
+    expectedOutput: 'Hello, World!\nHi, Alice!',
+    validationMode: 'exact',
+    hints: [
+      'The greeting has a default of "Hello".',
+      'def say_hello(name, greeting="Hello"):',
+      'def say_hello(name, greeting="Hello"):\n    print(f"{greeting}, {name}!")\nsay_hello("World")\nsay_hello("Alice", "Hi")',
+    ],
+    solution: 'def say_hello(name, greeting="Hello"):\n    print(f"{greeting}, {name}!")\n\nsay_hello("World")\nsay_hello("Alice", "Hi")',
+    explanation:
+      'First call uses the default greeting "Hello". Second call overrides it with "Hi". Default values are evaluated once at function definition, not at each call.',
+  },
+  {
+    id: 32,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Instances and State',
+    concept: 'Object state, attribute mutation',
+    description:
+      'Objects maintain state — their attributes can change over time. Methods that modify attributes change the object\'s state. Multiple instances are independent of each other.',
+    task: 'Create a Counter class with a count attribute (starts at 0) and an increment() method. Call increment() 3 times and print count.',
+    starterCode: '# Object state\n',
+    expectedOutput: '3',
+    validationMode: 'exact',
+    hints: [
+      'initialise self.count = 0 in __init__.',
+      'def increment(self): self.count += 1',
+      'class Counter:\n    def __init__(self):\n        self.count = 0\n    def increment(self):\n        self.count += 1\nc = Counter()\nc.increment()\nc.increment()\nc.increment()\nprint(c.count)',
+    ],
+    solution: 'class Counter:\n    def __init__(self):\n        self.count = 0\n\n    def increment(self):\n        self.count += 1\n\nc = Counter()\nc.increment()\nc.increment()\nc.increment()\nprint(c.count)',
+    explanation:
+      'self.count = 0 initialises state. Each increment() call adds 1 to self.count. After 3 calls, count is 3. Each Counter instance has its own independent count.',
+  },
+  {
+    id: 33,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Inheritance',
+    concept: 'Class inheritance, super()',
+    description:
+      'Inheritance lets a class (child) inherit attributes and methods from another class (parent). Use super() to call the parent\'s __init__. Override methods to change behaviour.',
+    task: 'Create Animal(name) with speak() printing "...". Create Dog(Animal) overriding speak() to print "Woof!". Instantiate Dog("Rex") and call speak().',
+    starterCode: '# Inheritance\n',
+    expectedOutput: 'Woof!',
+    validationMode: 'exact',
+    hints: [
+      'Dog inherits from Animal: class Dog(Animal):',
+      'super().__init__(name) calls the parent constructor.',
+      'class Animal:\n    def __init__(self, name):\n        self.name = name\n    def speak(self):\n        print("...")\nclass Dog(Animal):\n    def speak(self):\n        print("Woof!")\nDog("Rex").speak()',
+    ],
+    solution: 'class Animal:\n    def __init__(self, name):\n        self.name = name\n    def speak(self):\n        print("...")\n\nclass Dog(Animal):\n    def speak(self):\n        print("Woof!")\n\nDog("Rex").speak()',
+    explanation:
+      'Dog inherits __init__ from Animal so no need to redefine it. speak() is overridden in Dog — this is called method overriding. The child class specialises the parent\'s behaviour.',
+  },
+  {
+    id: 34,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Multiple Inheritance',
+    concept: 'Multiple base classes, MRO',
+    description:
+      'Python supports multiple inheritance — a class can inherit from multiple parents. The Method Resolution Order (MRO) determines which parent\'s method is used when names conflict.',
+    task: 'Create Fish with swim() printing "Swimming" and Bird with fly() printing "Flying". Create FlyingFish(Fish, Bird) and call both methods.',
+    starterCode: '# Multiple inheritance\n',
+    expectedOutput: 'Swimming\nFlying',
+    validationMode: 'exact',
+    hints: [
+      'class FlyingFish(Fish, Bird): inherits from both.',
+      'FlyingFish inherits swim() from Fish and fly() from Bird.',
+      'class Fish:\n    def swim(self):\n        print("Swimming")\nclass Bird:\n    def fly(self):\n        print("Flying")\nclass FlyingFish(Fish, Bird):\n    pass\nff = FlyingFish()\nff.swim()\nff.fly()',
+    ],
+    solution: 'class Fish:\n    def swim(self):\n        print("Swimming")\n\nclass Bird:\n    def fly(self):\n        print("Flying")\n\nclass FlyingFish(Fish, Bird):\n    pass\n\nff = FlyingFish()\nff.swim()\nff.fly()',
+    explanation:
+      'FlyingFish inherits all methods from both Fish and Bird. The pass keyword means no additional code in the class. Python\'s MRO (left to right) determines which method wins in conflicts.',
+  },
+  {
+    id: 35,
+    phase: 2,
+    levelMode: 'code',
+    title: 'The Slice Function',
+    concept: 'Slicing with [start:stop:step]',
+    description:
+      'Slicing extracts a portion of a sequence (list or string) using [start:stop:step]. Start is inclusive, stop is exclusive. Negative indices count from the end. Step controls the increment.',
+    task: 'Given nums = [1,2,3,4,5], print nums[1:4]. Then given s = "Hello", print every other character s[::2].',
+    starterCode: '# Slicing lists and strings\nnums = [1, 2, 3, 4, 5]\ns = "Hello"\n',
+    expectedOutput: '[2, 3, 4]\nHlo',
+    validationMode: 'exact',
+    hints: [
+      '[1:4] takes indices 1, 2, 3 (not 4).',
+      '[::2] means start to end with step 2.',
+      'print(nums[1:4])\nprint(s[::2])',
+    ],
+    solution: 'nums = [1, 2, 3, 4, 5]\ns = "Hello"\nprint(nums[1:4])\nprint(s[::2])',
+    explanation:
+      'nums[1:4] gives elements at indices 1, 2, 3 → [2, 3, 4]. s[::2] takes every 2nd character: H(0), l(2), o(4) → "Hlo".',
+  },
+  {
+    id: 36,
+    phase: 2,
+    levelMode: 'code',
+    title: 'File Writing',
+    concept: 'open(), write mode, context manager',
+    description:
+      'Python can read and write files using the built-in open() function. The "w" mode creates/overwrites a file. Using with open() as f: ensures the file is properly closed after use (context manager).',
+    task: 'Write "Hello File" to a file called "test.txt", then read it back and print its contents.',
+    starterCode: '# Write then read a file\n',
+    expectedOutput: 'Hello File',
+    validationMode: 'exact',
+    hints: [
+      'Use with open("test.txt", "w") as f: to write.',
+      'f.write("Hello File") writes the string.',
+      'with open("test.txt", "w") as f:\n    f.write("Hello File")\nwith open("test.txt", "r") as f:\n    print(f.read())',
+    ],
+    solution: 'with open("test.txt", "w") as f:\n    f.write("Hello File")\n\nwith open("test.txt", "r") as f:\n    print(f.read())',
+    explanation:
+      '"w" mode opens for writing (creates or overwrites). "r" mode opens for reading. The with statement ensures the file is closed automatically. f.read() returns the entire file contents as a string.',
+  },
+  {
+    id: 37,
+    phase: 2,
+    levelMode: 'code',
+    title: 'File Reading',
+    concept: 'readlines(), file iteration',
+    description:
+      'Reading files line by line is memory-efficient for large files. readlines() returns a list of lines. You can also iterate over the file object directly with a for loop.',
+    task: 'Write 3 lines to a file ("Line 1\\nLine 2\\nLine 3"), read them back, and print the number of lines.',
+    starterCode: '# Write multiple lines and count them\n',
+    expectedOutput: '3',
+    validationMode: 'exact',
+    hints: [
+      'Write with newlines between lines.',
+      'readlines() returns a list — use len() to count.',
+      'with open("lines.txt", "w") as f:\n    f.write("Line 1\\nLine 2\\nLine 3")\nwith open("lines.txt", "r") as f:\n    lines = f.readlines()\nprint(len(lines))',
+    ],
+    solution: 'with open("lines.txt", "w") as f:\n    f.write("Line 1\\nLine 2\\nLine 3")\n\nwith open("lines.txt", "r") as f:\n    lines = f.readlines()\n\nprint(len(lines))',
+    explanation:
+      'Writing "Line 1\\nLine 2\\nLine 3" creates 3 lines separated by newline characters. readlines() returns ["Line 1\\n", "Line 2\\n", "Line 3"] — a list of 3 items. len() gives 3.',
+  },
+  {
+    id: 38,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Working with CSV',
+    concept: 'csv module, reader, writer',
+    description:
+      'CSV (Comma-Separated Values) is a common data format. Python\'s csv module handles reading and writing CSV files, properly handling commas within fields and header rows.',
+    task: 'Write a CSV with headers "name,score" and two rows: Alice,95 and Bob,87. Read it back and print the second row\'s name.',
+    starterCode: '# CSV reading and writing\nimport csv\n',
+    expectedOutput: 'Bob',
+    validationMode: 'exact',
+    hints: [
+      'Use csv.writer to write and csv.reader to read.',
+      'writerow(["name", "score"]) then writerow(["Alice", "95"]) etc.',
+      'with open("data.csv","w",newline="") as f:\n    w=csv.writer(f)\n    w.writerow(["name","score"])\n    w.writerow(["Alice","95"])\n    w.writerow(["Bob","87"])\nwith open("data.csv") as f:\n    rows=list(csv.reader(f))\nprint(rows[2][0])',
+    ],
+    solution: 'import csv\n\nwith open("data.csv", "w", newline="") as f:\n    writer = csv.writer(f)\n    writer.writerow(["name", "score"])\n    writer.writerow(["Alice", "95"])\n    writer.writerow(["Bob", "87"])\n\nwith open("data.csv") as f:\n    rows = list(csv.reader(f))\n\nprint(rows[2][0])',
+    explanation:
+      'rows[0] is the header, rows[1] is Alice, rows[2] is Bob. rows[2][0] is the first column of the third row: "Bob". newline="" in write mode prevents extra blank lines on Windows.',
+  },
+  {
+    id: 39,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Intro to Pandas',
+    concept: 'DataFrame creation, shape',
+    description:
+      'Pandas is the most popular Python data analysis library. A DataFrame is a 2D table with labelled rows and columns. Create one from a dictionary where keys become column names.',
+    task: 'Create a DataFrame with columns "name" and "age" for Alice(25), Bob(30), Carol(22). Print its shape.',
+    starterCode: '# Introduction to pandas\nimport pandas as pd\n',
+    expectedOutput: '(3, 2)',
+    validationMode: 'exact',
+    hints: [
+      'Pass a dict to pd.DataFrame()',
+      '{"name": [...], "age": [...]}',
+      'df = pd.DataFrame({"name": ["Alice","Bob","Carol"], "age": [25,30,22]})\nprint(df.shape)',
+    ],
+    solution: 'import pandas as pd\n\ndf = pd.DataFrame({"name": ["Alice", "Bob", "Carol"], "age": [25, 30, 22]})\nprint(df.shape)',
+    explanation:
+      'df.shape returns (rows, columns). With 3 people and 2 columns (name, age), the shape is (3, 2). Pandas DataFrames are the foundation of data analysis in Python.',
+  },
+  {
+    id: 40,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Pandas Selection',
+    concept: 'Column selection, loc, iloc',
+    description:
+      'Select a single column with df["column"]. Select multiple columns with df[["col1","col2"]]. Use df.loc[label] for label-based selection and df.iloc[index] for integer-based position.',
+    task: 'Create the same DataFrame (name, age for Alice/Bob/Carol). Print all values in the "name" column.',
+    starterCode: '# Pandas column selection\nimport pandas as pd\n',
+    expectedOutput: 'Alice\nBob\nCarol',
+    validationMode: 'contains',
+    hints: [
+      'df["name"] selects the name column.',
+      'Iterating or converting prints each name.',
+      'import pandas as pd\ndf = pd.DataFrame({"name": ["Alice","Bob","Carol"],"age":[25,30,22]})\nfor name in df["name"]:\n    print(name)',
+    ],
+    solution: 'import pandas as pd\n\ndf = pd.DataFrame({"name": ["Alice", "Bob", "Carol"], "age": [25, 30, 22]})\nfor name in df["name"]:\n    print(name)',
+    explanation:
+      'df["name"] returns a pandas Series (a column). Iterating over it yields each value. You could also print(df["name"].to_list()) or use df["name"].values.',
+  },
+  {
+    id: 41,
+    phase: 2,
+    levelMode: 'code',
+    title: 'List Comprehensions',
+    concept: '[expr for x in iterable]',
+    description:
+      'List comprehensions provide a concise way to create lists. Instead of a loop with append(), write the expression and iteration in one line. They are faster and more Pythonic.',
+    task: 'Create a list of squares of numbers 1-5 using a list comprehension and print it.',
+    starterCode: '# List comprehension\n',
+    expectedOutput: '[1, 4, 9, 16, 25]',
+    validationMode: 'exact',
+    hints: [
+      '[expression for x in range(1, 6)]',
+      'The expression is x**2 or x*x.',
+      'squares = [x**2 for x in range(1, 6)]\nprint(squares)',
+    ],
+    solution: 'squares = [x**2 for x in range(1, 6)]\nprint(squares)',
+    explanation:
+      '[x**2 for x in range(1, 6)] creates [1, 4, 9, 16, 25] in one line. Equivalent to: result = []; for x in range(1,6): result.append(x**2). Comprehensions are a Pythonic pattern.',
+  },
+  {
+    id: 42,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Conditional Comprehensions',
+    concept: '[x for x in iter if condition]',
+    description:
+      'Add a filter to a list comprehension with an if clause at the end. Only items where the condition is True are included in the result.',
+    task: 'Use a conditional list comprehension to get all even numbers from 1 to 10 and print the result.',
+    starterCode: '# Conditional list comprehension\n',
+    expectedOutput: '[2, 4, 6, 8, 10]',
+    validationMode: 'exact',
+    hints: [
+      '[x for x in range(1,11) if x % 2 == 0]',
+      'x % 2 == 0 is True for even numbers.',
+      'evens = [x for x in range(1, 11) if x % 2 == 0]\nprint(evens)',
+    ],
+    solution: 'evens = [x for x in range(1, 11) if x % 2 == 0]\nprint(evens)',
+    explanation:
+      'range(1, 11) generates 1-10. The if x % 2 == 0 filter keeps only even numbers. The % operator gives the remainder: even numbers have remainder 0 when divided by 2.',
+  },
+  {
+    id: 43,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Dictionary Comprehensions',
+    concept: '{k: v for ... in ...}',
+    description:
+      'Like list comprehensions but for dictionaries. Specify both key and value expressions separated by a colon. Useful for transforming or filtering existing data into a new dictionary.',
+    task: 'Create a dict mapping numbers 1-5 to their squares using a dict comprehension and print it.',
+    starterCode: '# Dictionary comprehension\n',
+    expectedOutput: '{1: 1, 2: 4, 3: 9, 4: 16, 5: 25}',
+    validationMode: 'exact',
+    hints: [
+      '{key_expr: value_expr for x in iterable}',
+      '{x: x**2 for x in range(1, 6)}',
+      'squares = {x: x**2 for x in range(1, 6)}\nprint(squares)',
+    ],
+    solution: 'squares = {x: x**2 for x in range(1, 6)}\nprint(squares)',
+    explanation:
+      '{x: x**2 for x in range(1, 6)} creates a dict where each key is a number and its value is the square. Equivalent to a loop that does d[x] = x**2 for each x.',
+  },
+  {
+    id: 44,
+    phase: 2,
+    levelMode: 'code',
+    title: 'Event Simulation',
+    concept: 'Callbacks, event-driven patterns',
+    description:
+      'Event-driven programming uses callbacks — functions called when an event occurs. This pattern is common in GUIs and web frameworks. A handler is registered, then triggered when the event fires.',
+    task: 'Create a Button class with an on_click method that stores a callback, and a click() method that calls it. Register a handler that prints "Button clicked!" and call click().',
+    starterCode: '# Event-driven programming\n',
+    expectedOutput: 'Button clicked!',
+    validationMode: 'exact',
+    hints: [
+      'Store the callback as self.handler in on_click(self, callback).',
+      'click(self) calls self.handler() if set.',
+      'class Button:\n    def on_click(self, callback):\n        self.handler = callback\n    def click(self):\n        self.handler()\nbtn = Button()\nbtn.on_click(lambda: print("Button clicked!"))\nbtn.click()',
+    ],
+    solution: 'class Button:\n    def on_click(self, callback):\n        self.handler = callback\n\n    def click(self):\n        self.handler()\n\nbtn = Button()\nbtn.on_click(lambda: print("Button clicked!"))\nbtn.click()',
+    explanation:
+      'on_click stores the callback function. click() calls it. lambda: print("Button clicked!") is an anonymous function. This is how GUI frameworks like Tkinter work internally.',
+  },
+  {
+    id: 45,
+    phase: 2,
+    levelMode: 'code',
+    title: 'OOP Game Concepts',
+    concept: 'Game entities with OOP',
+    description:
+      'Games are a natural fit for OOP. Characters, weapons, and levels are all objects. Attributes track state (health, position) and methods model actions (move, attack, take_damage).',
+    task: 'Create a Player class with health=100 and a take_damage(amount) method that reduces health. Take 30 damage and print "Player HP: {health}".',
+    starterCode: '# OOP for game development\n',
+    expectedOutput: 'Player HP: 70',
+    validationMode: 'exact',
+    hints: [
+      'self.health = 100 in __init__.',
+      'def take_damage(self, amount): self.health -= amount',
+      'class Player:\n    def __init__(self):\n        self.health = 100\n    def take_damage(self, amount):\n        self.health -= amount\np = Player()\np.take_damage(30)\nprint(f"Player HP: {p.health}")',
+    ],
+    solution: 'class Player:\n    def __init__(self):\n        self.health = 100\n\n    def take_damage(self, amount):\n        self.health -= amount\n\np = Player()\np.take_damage(30)\nprint(f"Player HP: {p.health}")',
+    explanation:
+      'self.health starts at 100. take_damage(30) subtracts 30, leaving 70. f-string formats the output. This pattern scales to full game engines with many entity types.',
+  },
+]

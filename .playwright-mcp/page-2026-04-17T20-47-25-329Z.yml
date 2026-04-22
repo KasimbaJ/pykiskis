@@ -1,0 +1,78 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "Pykiskis" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img [ref=e8]
+        - generic [ref=e12]: Pykiskis
+      - generic [ref=e16]: 80/100
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - img [ref=e19]
+          - generic [ref=e21]: "1"
+        - generic [ref=e22]:
+          - generic [ref=e23]: Kasimba
+          - button "Sign out" [ref=e24]:
+            - img [ref=e25]
+        - link "Teacher Dashboard" [ref=e28] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e29]
+  - main [ref=e34]:
+    - button "Back to Levels" [ref=e36]:
+      - img [ref=e37]
+      - text: Back to Levels
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - img [ref=e43]
+            - generic [ref=e45]: Level 81
+          - heading "SQLite Queries" [level=2] [ref=e46]
+          - paragraph [ref=e47]: SQL SELECT retrieves data. WHERE filters rows. ORDER BY sorts results. LIMIT restricts the number of rows returned. fetchall() returns all matching rows; fetchone() returns just one.
+          - generic [ref=e48]:
+            - heading "Your Task" [level=3] [ref=e49]
+            - paragraph [ref=e50]: Using the same users table, query for the user with id = 1 and print their name.
+          - generic [ref=e51]:
+            - heading "Expected Output" [level=3] [ref=e52]
+            - generic [ref=e53]: Alice
+        - button "Need a hint?" [ref=e54]:
+          - img [ref=e55]
+          - text: Need a hint?
+      - generic [ref=e57]:
+        - generic [ref=e61]:
+          - generic [ref=e67]: main.py
+          - generic [ref=e70]:
+            - generic [ref=e102]:
+              - generic [ref=e103]: "1"
+              - generic [ref=e104]: "2"
+              - generic [ref=e105]: "3"
+              - generic [ref=e106]: "4"
+              - generic [ref=e107]: "5"
+              - generic [ref=e108]: "6"
+              - generic [ref=e109]: "7"
+              - generic [ref=e110]: "8"
+              - generic [ref=e111]: "9"
+            - textbox [ref=e76]:
+              - generic [ref=e79]: import sqlite3
+              - generic [ref=e112]: conn = sqlite3.connect(":memory:")
+              - generic [ref=e113]: c = conn.cursor()
+              - generic [ref=e114]: c.execute("CREATE TABLE users (id INTEGER, name TEXT)")
+              - generic [ref=e115]: c.executemany("INSERT INTO users VALUES (?, ?)", [(1, "Alice"), (2, "Bob"), (3, "Carol")])
+              - generic [ref=e116]: conn.commit()
+              - generic [ref=e117]: c.execute("SELECT name FROM users WHERE id = 1")
+              - generic [ref=e118]: print(c.fetchone()[0])
+        - generic [ref=e80]:
+          - button "Run" [ref=e81]:
+            - img [ref=e82]
+            - text: Run
+          - button "Submit" [ref=e84]:
+            - img [ref=e85]
+            - text: Submit
+          - button "Reset" [ref=e88]:
+            - img [ref=e89]
+            - text: Reset
+        - generic [ref=e92]:
+          - generic [ref=e93]:
+            - img [ref=e94]
+            - generic [ref=e96]: Output
+          - generic [ref=e97]: Click "Run" to execute your code

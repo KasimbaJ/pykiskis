@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(pip install:*)",
+      "Bash(py --version)",
+      "Bash(py -m pip install pypdf)",
+      "Bash(py -c \":*)",
+      "Bash(del K:PyLingosrcdatalevels.ts)",
+      "Bash(py -m pip install numpy --quiet)",
+      "Bash(py -m pip install scikit-learn scipy pandas --quiet)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_console_messages",
+      "Bash(npx wrangler *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://pykiskis.pages.dev)",
+      "mcp__playwright__browser_take_screenshot",
+      "WebFetch(domain:www.programiz.com)",
+      "Bash(find /k/PyLingo/src -type f \\\\\\( -name \"*.tsx\" -o -name \"*.ts\" \\\\\\) -exec grep -l \"ErrorBoundary\\\\|error.?boundary\" {} \\\\;)",
+      "Bash(wrangler d1 *)",
+      "Bash(wrangler pages *)",
+      "Bash(Remove-Item \"K:\\\\PyLingo\\\\src\\\\components\\\\dashboard\\\\DashboardLogin.tsx\")",
+      "Bash(python3 -c \"print\\(24 + 21 + 20 + 20 + 15\\)\")",
+      "Bash(node -e \"console.log\\(24 + 21 + 20 + 20 + 15\\)\")"
+    ]
+  }
+}

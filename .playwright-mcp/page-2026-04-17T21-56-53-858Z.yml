@@ -1,0 +1,67 @@
+- generic [ref=e309]:
+  - banner [ref=e310]:
+    - generic [ref=e311]:
+      - link "Pykiskis" [ref=e312] [cursor=pointer]:
+        - /url: /
+        - img [ref=e313]
+        - generic [ref=e317]: Pykiskis
+      - generic [ref=e321]: 1/100
+      - generic [ref=e322]:
+        - generic [ref=e323]:
+          - img [ref=e324]
+          - generic [ref=e326]: "1"
+        - generic [ref=e327]: JKasimba
+        - link "Teacher Dashboard" [ref=e328] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e329]
+        - button "Open user menu" [ref=e335] [cursor=pointer]:
+          - img "JKasimba's logo" [ref=e338]
+  - main [ref=e340]:
+    - generic [ref=e341]:
+      - button "Back to Levels" [ref=e342]:
+        - img [ref=e343]
+        - text: Back to Levels
+      - generic [ref=e345]: Completed
+    - generic [ref=e346]:
+      - generic [ref=e347]:
+        - generic [ref=e348]:
+          - generic [ref=e349]:
+            - img [ref=e350]
+            - generic [ref=e352]: Level 1
+          - heading "Hello World" [level=2] [ref=e353]
+          - paragraph [ref=e354]: Every programming journey starts with "Hello, World!" The print() function is Python's way of displaying output to the screen. It takes text (called a string) inside quotation marks and shows it.
+          - generic [ref=e355]:
+            - heading "Your Task" [level=3] [ref=e356]
+            - paragraph [ref=e357]: Use the print() function to display "Hello, World!" exactly as shown.
+          - generic [ref=e358]:
+            - heading "Expected Output" [level=3] [ref=e359]
+            - generic [ref=e360]: Hello, World!
+        - button "Need a hint?" [ref=e361]:
+          - img [ref=e362]
+          - text: Need a hint?
+      - generic [ref=e364]:
+        - generic [ref=e365]:
+          - generic [ref=e371]: main.py
+          - generic [ref=e374]:
+            - generic [ref=e376]:
+              - generic [ref=e377]: "1"
+              - generic [ref=e378]: "2"
+              - generic [ref=e379]: "3"
+            - textbox [ref=e380]:
+              - generic [ref=e381]: "# Your first Python program!"
+              - generic [ref=e382]: "# Use print() to display a message"
+        - generic [ref=e384]:
+          - button "Run" [ref=e385]:
+            - img [ref=e386]
+            - text: Run
+          - button "Submit" [ref=e388]:
+            - img [ref=e389]
+            - text: Submit
+          - button "Reset" [ref=e392]:
+            - img [ref=e393]
+            - text: Reset
+        - generic [ref=e396]:
+          - generic [ref=e397]:
+            - img [ref=e398]
+            - generic [ref=e400]: Output
+          - generic [ref=e401]: Click "Run" to execute your code

@@ -1,0 +1,97 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - heading "Python Online Compiler" [level=1] [ref=e7]:
+      - link "Python Online Compiler" [ref=e8] [cursor=pointer]:
+        - /url: https://www.programiz.com/
+        - img [ref=e9]
+        - generic [ref=e11]: Python Online Compiler
+    - link "Programiz PRO ❯" [ref=e13] [cursor=pointer]:
+      - /url: https://programiz.pro?utm_source=programiz_compiler&utm_medium=referral&utm_audience=ORGANIC-FREEMIUM&utm_campaign=offer-pro&utm_content=interests_pro&utm_term=nav_floating_button
+  - generic [ref=e14]:
+    - link "Online Python Compiler" [ref=e15] [cursor=pointer]:
+      - /url: https://www.programiz.com/python-programming/online-compiler/
+      - img [ref=e16]
+    - link "Online R Compiler" [ref=e18] [cursor=pointer]:
+      - /url: https://www.programiz.com/r/online-compiler/
+      - img [ref=e19]
+    - link "Online SQL Editor" [ref=e23] [cursor=pointer]:
+      - /url: https://www.programiz.com/sql/online-compiler/
+      - img [ref=e24]
+    - link "Online HTML/CSS Editor" [ref=e30] [cursor=pointer]:
+      - /url: https://www.programiz.com/html/online-compiler/
+      - img [ref=e31]
+    - link "Online Java Compiler" [ref=e33] [cursor=pointer]:
+      - /url: https://www.programiz.com/java-programming/online-compiler/
+      - img [ref=e34]
+    - link "Online Kotlin Compiler (Editor)" [ref=e37] [cursor=pointer]:
+      - /url: https://www.programiz.com/kotlin-programming/online-compiler/
+      - img [ref=e38]
+    - link "Online C Compiler" [ref=e40] [cursor=pointer]:
+      - /url: https://www.programiz.com/c-programming/online-compiler/
+      - img [ref=e41]
+    - link "Online C++ Compiler" [ref=e43] [cursor=pointer]:
+      - /url: https://www.programiz.com/cpp-programming/online-compiler/
+      - img [ref=e44]
+    - link "Online C# Compiler" [ref=e46] [cursor=pointer]:
+      - /url: https://www.programiz.com/csharp-programming/online-compiler/
+      - img [ref=e47]
+    - link "Online JavaScript Compiler (Editor)" [ref=e49] [cursor=pointer]:
+      - /url: https://www.programiz.com/javascript/online-compiler/
+      - img [ref=e50]
+    - link "Online Typescript Compiler (Editor)" [ref=e53] [cursor=pointer]:
+      - /url: https://www.programiz.com/typescript/online-compiler/
+      - img [ref=e54]
+    - link "Online Golang Compiler" [ref=e56] [cursor=pointer]:
+      - /url: https://www.programiz.com/golang/online-compiler/
+      - img [ref=e57]
+    - link "Online Rust Compiler" [ref=e61] [cursor=pointer]:
+      - /url: https://www.programiz.com/rust/online-compiler/
+      - img [ref=e62]
+    - link "Online Scala Compiler (Editor)" [ref=e65] [cursor=pointer]:
+      - /url: https://www.programiz.com/scala/online-compiler/
+      - img [ref=e66]
+    - link "Online Dart Compiler (Editor)" [ref=e68] [cursor=pointer]:
+      - /url: https://www.programiz.com/dart/online-compiler/
+      - img [ref=e69]
+    - link "Online Ruby Compiler (Editor)" [ref=e71] [cursor=pointer]:
+      - /url: https://www.programiz.com/ruby/online-compiler/
+      - img [ref=e72]
+    - link "Online PHP Compiler" [ref=e74] [cursor=pointer]:
+      - /url: https://www.programiz.com/php/online-compiler/
+      - img [ref=e75]
+    - link "Online Swift Compiler" [ref=e79] [cursor=pointer]:
+      - /url: https://www.programiz.com/swift/online-compiler/
+      - img [ref=e80]
+  - generic [ref=e82]:
+    - generic [ref=e83]:
+      - generic "main.py" [ref=e84]
+      - generic [ref=e85]:
+        - button "Enter Fullscreen" [ref=e86] [cursor=pointer]:
+          - img [ref=e87]
+        - button "Toggle light mode" [ref=e89] [cursor=pointer]:
+          - img [ref=e90]
+        - button "Share code" [ref=e96] [cursor=pointer]:
+          - img [ref=e97]
+        - button "Run" [ref=e103] [cursor=pointer]:
+          - generic [ref=e104]: Run
+    - generic [ref=e105]:
+      - textbox "Cursor at row 1" [ref=e106]
+      - generic [ref=e108]:
+        - generic [ref=e109]: "1"
+        - generic [ref=e110]: "2"
+        - generic [ref=e111]: "3"
+      - generic [ref=e113]:
+        - generic:
+          - generic:
+            - generic: "# Online Python compiler (interpreter) to run"
+            - generic: Python online.
+          - generic:
+            - generic: "# Write Python 3 code in this online editor and"
+            - generic: run it.
+          - generic:
+            - generic: print("Try programiz.pro")
+  - generic [ref=e114]:
+    - generic [ref=e115]:
+      - generic [ref=e116]: Output
+      - button "Clear" [ref=e118] [cursor=pointer]
+    - textbox "Cursor at row 1" [ref=e120]

@@ -1,0 +1,5 @@
+- generic [ref=e5]:
+  - heading "Level Locked" [level=1] [ref=e6]
+  - paragraph [ref=e7]: Complete Level 97 first to unlock this level.
+  - link "Back to levels" [ref=e8] [cursor=pointer]:
+    - /url: /
