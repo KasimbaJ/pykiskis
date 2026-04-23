@@ -1,12 +1,53 @@
 import type { ExecutionResult } from '../types'
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Worker + readiness state
+// ─────────────────────────────────────────────────────────────────────────────
+
 let worker: Worker | null = null
-let isReady = false
+let isReady  = false
 let onReadyCallbacks:    (() => void)[]                              = []
 let onProgressCallbacks: ((message: string, pct: number) => void)[] = []
 
+// ─────────────────────────────────────────────────────────────────────────────
+// SharedArrayBuffer setup  (requires crossOriginIsolated)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Sync flag: 0 = worker waiting, 1 = input is ready */
+let syncBuffer: SharedArrayBuffer | null = null
+let syncArray:  Int32Array         | null = null
+
+/** Data buffer: bytes 0-3 = length (Int32LE), bytes 4+ = UTF-8 text */
+let dataSAB:   SharedArrayBuffer | null = null
+let dataArray: Uint8Array        | null = null
+
+function initSharedBuffers(): void {
+  if (!crossOriginIsolated) return          // SAB requires cross-origin isolation
+  if (syncBuffer) return                    // already initialised
+  syncBuffer = new SharedArrayBuffer(4)
+  syncArray  = new Int32Array(syncBuffer)
+  dataSAB    = new SharedArrayBuffer(4 + 65_536) // 4-byte length prefix + 64 KB text
+  dataArray  = new Uint8Array(dataSAB)
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Interactive input state
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Called by useCodeExecution to show the input dialog in the UI */
+let _inputRequestHandler: ((prompt: string, partialOutput: string) => void) | null = null
+
+/** Called by runPython to reschedule the execution timeout after user provides input */
+let _rescheduleTimeout: (() => void) | null = null
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Exported API
+// ─────────────────────────────────────────────────────────────────────────────
+
 export function initPythonRunner(): void {
   if (worker) return
+
+  initSharedBuffers()
 
   worker = new Worker('/pyodide-worker.js')
   worker.onmessage = (event) => {
@@ -34,17 +75,40 @@ export function onPythonProgress(
   return () => { onProgressCallbacks = onProgressCallbacks.filter((cb) => cb !== callback) }
 }
 
-// ── Stubs kept so imports in useCodeExecution / PlaygroundPage still compile ──
-
-/** No-op until a future cross-origin-isolated implementation replaces this. */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function provideInput(_value: string): void { /* not yet active */ }
-
-/** No-op — input_request messages are never sent in the current worker. */
+/**
+ * Register a callback that fires whenever Python calls input().
+ * The callback receives the prompt string and the partial stdout so far.
+ * Pass null to unregister (called after runPython resolves).
+ */
 export function setInputRequestHandler(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _cb: ((prompt: string, partialOutput: string) => void) | null,
-): void { /* not yet active */ }
+  cb: ((prompt: string, partialOutput: string) => void) | null,
+): void {
+  _inputRequestHandler = cb
+}
+
+/**
+ * Write the user's typed value into the shared data buffer and wake the worker.
+ * No-op if SharedArrayBuffer is unavailable (crossOriginIsolated is false).
+ */
+export function provideInput(value: string): void {
+  if (!syncArray || !dataArray) return
+
+  const encoded    = new TextEncoder().encode(value + '\n')
+  const lengthView = new Int32Array(dataArray.buffer, 0, 1)
+  lengthView[0]    = encoded.length
+  dataArray.set(encoded, 4)
+
+  // Wake the worker — it is blocked in Atomics.wait(syncArray, 0, 0)
+  Atomics.store(syncArray, 0, 1)
+  Atomics.notify(syncArray, 0)
+
+  // Restart the execution timeout so a slow typist doesn't kill the run
+  _rescheduleTimeout?.()
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// runPython
+// ─────────────────────────────────────────────────────────────────────────────
 
 export function runPython(
   code:        string,
@@ -53,16 +117,18 @@ export function runPython(
 ): Promise<ExecutionResult> {
   return new Promise((resolve) => {
     if (!worker || !isReady) {
-      resolve({ output: '', error: 'Python is still loading...', timedOut: false })
+      resolve({ output: '', error: 'Python is still loading…', timedOut: false })
       return
     }
 
+    // ── Timeout management ────────────────────────────────────────────────
     let timeout: ReturnType<typeof setTimeout>
+
     const scheduleTimeout = () => {
       clearTimeout(timeout)
       timeout = setTimeout(() => {
         worker!.terminate()
-        worker = null
+        worker  = null
         isReady = false
         initPythonRunner()
         resolve({ output: '', error: 'Execution timed out. Check for infinite loops.', timedOut: true })
@@ -70,19 +136,42 @@ export function runPython(
     }
     scheduleTimeout()
 
+    // Expose so provideInput() can restart the clock after user responds
+    _rescheduleTimeout = scheduleTimeout
+
+    // ── Message handler for this run ──────────────────────────────────────
     const handler = (event: MessageEvent) => {
       if (event.data.type === 'result') {
         clearTimeout(timeout)
+        _rescheduleTimeout = null
         worker!.removeEventListener('message', handler)
         resolve({
           output:   event.data.output,
           error:    event.data.error,
           timedOut: false,
         })
+      } else if (event.data.type === 'input_request') {
+        // Worker is blocked in Atomics.wait() — suspend the timeout while
+        // the user is typing so a slow typist doesn't trigger the timeout
+        clearTimeout(timeout)
+        _inputRequestHandler?.(
+          event.data.prompt        ?? '',
+          event.data.partialOutput ?? '',
+        )
       }
     }
 
     worker.addEventListener('message', handler)
-    worker.postMessage({ type: 'run', code, inputValues })
+
+    // ── Dispatch to worker ────────────────────────────────────────────────
+    // Pass SharedArrayBuffers when available (interactive mode),
+    // otherwise null (fallback: pre-supplied inputValues used instead)
+    worker.postMessage({
+      type: 'run',
+      code,
+      inputValues,
+      syncBuffer: syncBuffer ?? null,
+      dataBuffer: dataSAB    ?? null,
+    })
   })
 }

@@ -1,28 +1,45 @@
 /* eslint-disable no-undef */
+
+// CDN base — used for lock file, stdlib, and packages (all via fetch(), safe under COEP:credentialless)
+const CDN = 'https://cdn.jsdelivr.net/pyodide/v0.27.4/full/'
+
 let pyodide = null
 
-async function loadPyodideRuntime() {
-  // Stage 1 — script fetch
-  self.postMessage({ type: 'progress', message: 'Downloading Python runtime…', pct: 5 })
-  importScripts('https://cdn.jsdelivr.net/pyodide/v0.27.4/full/pyodide.js')
+// SharedArrayBuffer refs for interactive stdin (only set when crossOriginIsolated)
+let syncArray = null  // Int32Array(1)  — 0 = worker waiting, 1 = input ready
+let dataArray = null  // Uint8Array(4+65536) — bytes 0-3: length (Int32LE), bytes 4+: UTF-8 text
 
-  // Stage 2 — WASM init + Python boot
+const _dec = new TextDecoder()
+
+// Accumulated stdout text for the current run
+let _out = ''
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Pyodide loading
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function loadPyodideRuntime() {
+  self.postMessage({ type: 'progress', message: 'Downloading Python runtime…', pct: 5 })
+
+  // Load the local copy of pyodide.js (avoids importScripts() to CDN under COEP)
+  importScripts('/pyodide/pyodide.js')
+
   self.postMessage({ type: 'progress', message: 'Starting Python engine…', pct: 35 })
 
   pyodide = await loadPyodide({
-    // Intercept Pyodide's own loading messages (emitted to stderr during init)
-    stderr: (msg) => {
+    indexURL:   '/pyodide/',               // pyodide.asm.wasm served same-origin
+    lockFileURL: `${CDN}pyodide-lock.json`, // fetched via fetch() — fine under COEP:credentialless
+    stdLibURL:   `${CDN}python_stdlib.zip`, // fetched via fetch() — fine under COEP:credentialless
+    stderr(msg) {
       const line = msg.trim()
       if (!line) return
       if (line.startsWith('Loading ')) {
-        // e.g. "Loading pyodide_py.tar.bz2…"
         self.postMessage({ type: 'progress', message: line, pct: 65 })
       }
     },
-    stdout: () => {}, // suppress
+    stdout() {},
   })
 
-  // Stage 3 — finishing touches
   self.postMessage({ type: 'progress', message: 'Finalising Python environment…', pct: 90 })
   self.postMessage({ type: 'ready' })
 }
@@ -31,16 +48,19 @@ loadPyodideRuntime().catch((err) => {
   self.postMessage({ type: 'error', error: `Failed to load Python: ${err.message}` })
 })
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Package auto-loading
+// ─────────────────────────────────────────────────────────────────────────────
+
 async function loadRequiredPackages(code) {
   const toLoad = []
-  if (code.includes('import pandas') || code.includes('from pandas')) toLoad.push('pandas')
-  if (code.includes('import numpy') || code.includes('from numpy')) toLoad.push('numpy')
-  if (code.includes('scikit-learn') || code.includes('from sklearn') || code.includes('import sklearn')) toLoad.push('scikit-learn')
-  if (code.includes('from scipy') || code.includes('import scipy')) toLoad.push('scipy')
-  if (code.includes('import matplotlib') || code.includes('from matplotlib')) toLoad.push('matplotlib')
-  if (code.includes('import sqlite3') || code.includes('from sqlite3')) toLoad.push('sqlite3')
+  if (code.includes('import pandas')    || code.includes('from pandas'))    toLoad.push('pandas')
+  if (code.includes('import numpy')     || code.includes('from numpy'))     toLoad.push('numpy')
+  if (code.includes('scikit-learn')     || code.includes('from sklearn')    || code.includes('import sklearn')) toLoad.push('scikit-learn')
+  if (code.includes('from scipy')       || code.includes('import scipy'))   toLoad.push('scipy')
+  if (code.includes('import matplotlib')|| code.includes('from matplotlib')) toLoad.push('matplotlib')
+  if (code.includes('import sqlite3')   || code.includes('from sqlite3'))   toLoad.push('sqlite3')
   if (toLoad.length > 0) {
-    // Emit progress for each package being loaded
     for (const pkg of toLoad) {
       self.postMessage({ type: 'progress', message: `Loading ${pkg}…`, pct: 75 })
     }
@@ -48,58 +68,98 @@ async function loadRequiredPackages(code) {
   }
 }
 
-self.onmessage = async function (event) {
-  const { type, code, inputValues } = event.data
+// ─────────────────────────────────────────────────────────────────────────────
+// Message handler
+// ─────────────────────────────────────────────────────────────────────────────
 
+self.onmessage = async function (event) {
+  const { type, code, inputValues, syncBuffer, dataBuffer } = event.data
   if (type !== 'run' || !pyodide) return
 
+  // Store shared buffers for this run (null means fallback/mock mode)
+  syncArray = syncBuffer ? new Int32Array(syncBuffer)  : null
+  dataArray = dataBuffer ? new Uint8Array(dataBuffer)  : null
+
+  // ── Redirect stdout/stderr via Pyodide's JS-level hooks ──────────────────
+  _out = ''
+  pyodide.setStdout({ write(buf) { _out += _dec.decode(buf); return buf.length } })
+  pyodide.setStderr({ write(buf) { return buf.length } })   // suppress stderr noise
+
+  // ── Configure stdin ───────────────────────────────────────────────────────
+  if (syncArray) {
+    // INTERACTIVE MODE — block the worker with Atomics.wait() until user types
+    pyodide.setStdin({
+      read(buf) {
+        // Split accumulated output at the last newline so the UI can show
+        // previously-printed lines separately from the current prompt line
+        const lastNL = _out.lastIndexOf('\n')
+        const partialOutput = lastNL >= 0 ? _out.slice(0, lastNL + 1) : ''
+        const prompt       = lastNL >= 0 ? _out.slice(lastNL + 1)    : _out
+
+        // Ask the main thread to show an input box
+        self.postMessage({ type: 'input_request', prompt, partialOutput })
+
+        // Block this worker thread until the main thread writes to the shared buffer.
+        // Poll every 200 ms so Python keyboard interrupts can still be detected.
+        while (true) {
+          const result = Atomics.wait(syncArray, 0, 0, 200)
+          if (result !== 'timed-out') break
+          try { pyodide.checkInterrupt() } catch (e) { throw e }
+        }
+
+        // Copy the typed text into Pyodide's read buffer
+        const length      = new Int32Array(dataArray.buffer, 0, 1)[0]
+        const typed       = dataArray.subarray(4, 4 + length)
+        const bytesToCopy = Math.min(length, buf.length)
+        buf.set(typed.subarray(0, bytesToCopy))
+
+        // Echo the typed text into captured output so the final result looks
+        // like a real terminal session (e.g. "What is your name? John\n")
+        _out += _dec.decode(typed.subarray(0, length))
+
+        // Reset sync flag so the next input() call blocks correctly
+        Atomics.store(syncArray, 0, 0)
+
+        return bytesToCopy
+      }
+    })
+  }
+
+  // ── Run user code ─────────────────────────────────────────────────────────
   try {
     await loadRequiredPackages(code)
 
-    // Redirect stdout/stderr
-    pyodide.runPython(`
-import sys, io, builtins
-sys.stdout = io.StringIO()
-sys.stderr = io.StringIO()
+    if (syncArray) {
+      // Interactive mode: standard Python input() works via setStdin above
+      pyodide.runPython(`
+import builtins as _bi
+exec(${JSON.stringify(code)}, {'__builtins__': _bi})
 `)
+    } else {
+      // Fallback mode: mock input() with pre-supplied values
+      const inputs = JSON.stringify(inputValues && inputValues.length > 0 ? inputValues : [])
+      pyodide.runPython(`
+import builtins as _bi, sys
 
-    // Mock input() via the builtins module so it works in any exec namespace
-    const inputs = JSON.stringify(inputValues && inputValues.length > 0 ? inputValues : [])
-    pyodide.runPython(`
-_input_values = ${inputs}
-_input_index = 0
-def _mock_input(prompt=""):
-    global _input_index
-    if _input_index < len(_input_values):
-        val = _input_values[_input_index]
-        _input_index += 1
-        return val
-    return ""
-builtins.input = _mock_input
+_iv = ${inputs}
+_ii = 0
+
+def _mock_input(prompt=''):
+    global _ii
+    if prompt:
+        sys.stdout.write(str(prompt))
+    if _ii < len(_iv):
+        v = _iv[_ii]; _ii += 1
+        return v
+    return ''
+
+exec(${JSON.stringify(code)}, {'__builtins__': _bi, 'input': _mock_input})
 `)
+    }
 
-    // Run user code in an isolated namespace so globals don't bleed between runs
-    pyodide.runPython(`
-exec(${JSON.stringify(code)}, {'__builtins__': builtins})
-`)
-
-    const stdout = pyodide.runPython('sys.stdout.getvalue()')
-
-    self.postMessage({
-      type: 'result',
-      output: stdout,
-      error: null, // stderr warnings must not block validation
-    })
+    self.postMessage({ type: 'result', output: _out, error: null })
   } catch (err) {
-    // Actual Python exception — capture any partial stdout printed before the crash
-    let partialOutput = ''
-    try { partialOutput = pyodide.runPython('sys.stdout.getvalue()') } catch (_) {}
-    // Use err.type for PythonError objects (Pyodide wraps Python exceptions this way)
     const errorMsg = err?.message || err?.type || String(err)
-    self.postMessage({
-      type: 'result',
-      output: partialOutput,
-      error: errorMsg,
-    })
+    self.postMessage({ type: 'result', output: _out, error: errorMsg })
   }
 }
