@@ -1,36 +1,19 @@
 /**
- * Cross-Origin Isolation Service Worker
+ * This service worker previously added COOP/COEP headers for cross-origin
+ * isolation, but it caused Pyodide (the Python runtime) to hang at 0% because
+ * the inherited COEP policy blocked importScripts() from the CDN.
  *
- * Intercepts navigation requests and injects the two headers required for
- * SharedArrayBuffer + Atomics (needed for blocking Python input()):
- *   Cross-Origin-Opener-Policy:   same-origin
- *   Cross-Origin-Embedder-Policy: credentialless
- *
- * This is a reliable fallback for when server-side _headers rules don't
- * apply (e.g. Cloudflare Pages SPA rewrites).
+ * This version unregisters itself so browsers that already installed it are
+ * cleaned up automatically on the next page load.
  */
-
 self.addEventListener('install', () => self.skipWaiting())
-self.addEventListener('activate', (event) => event.waitUntil(self.clients.claim()))
 
-self.addEventListener('fetch', (event) => {
-  // Only intercept same-origin navigation requests (page loads / route changes).
-  // All other requests (API calls, Clerk, CDN assets, etc.) pass through untouched.
-  if (event.request.mode !== 'navigate') return
-  if (!event.request.url.startsWith(self.location.origin + '/')) return
-
-  event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        const headers = new Headers(response.headers)
-        headers.set('Cross-Origin-Opener-Policy', 'same-origin')
-        headers.set('Cross-Origin-Embedder-Policy', 'credentialless')
-        return new Response(response.body, {
-          status:     response.status,
-          statusText: response.statusText,
-          headers,
-        })
-      })
-      .catch(() => fetch(event.request)), // network error → pass through
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    self.registration.unregister().then(() =>
+      self.clients.matchAll({ type: 'window' }).then((clients) => {
+        clients.forEach((client) => client.navigate(client.url))
+      }),
+    ),
   )
 })

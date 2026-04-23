@@ -2,21 +2,27 @@
 let pyodide = null
 
 async function loadPyodideRuntime() {
+  // Stage 1 — script fetch
   self.postMessage({ type: 'progress', message: 'Downloading Python runtime…', pct: 5 })
   importScripts('https://cdn.jsdelivr.net/pyodide/v0.27.4/full/pyodide.js')
 
+  // Stage 2 — WASM init + Python boot
   self.postMessage({ type: 'progress', message: 'Starting Python engine…', pct: 35 })
+
   pyodide = await loadPyodide({
+    // Intercept Pyodide's own loading messages (emitted to stderr during init)
     stderr: (msg) => {
       const line = msg.trim()
       if (!line) return
       if (line.startsWith('Loading ')) {
+        // e.g. "Loading pyodide_py.tar.bz2…"
         self.postMessage({ type: 'progress', message: line, pct: 65 })
       }
     },
-    stdout: () => {},
+    stdout: () => {}, // suppress
   })
 
+  // Stage 3 — finishing touches
   self.postMessage({ type: 'progress', message: 'Finalising Python environment…', pct: 90 })
   self.postMessage({ type: 'ready' })
 }
@@ -27,13 +33,14 @@ loadPyodideRuntime().catch((err) => {
 
 async function loadRequiredPackages(code) {
   const toLoad = []
-  if (code.includes('import pandas')    || code.includes('from pandas'))    toLoad.push('pandas')
-  if (code.includes('import numpy')     || code.includes('from numpy'))     toLoad.push('numpy')
-  if (code.includes('scikit-learn')     || code.includes('from sklearn')    || code.includes('import sklearn')) toLoad.push('scikit-learn')
-  if (code.includes('from scipy')       || code.includes('import scipy'))   toLoad.push('scipy')
-  if (code.includes('import matplotlib')|| code.includes('from matplotlib')) toLoad.push('matplotlib')
-  if (code.includes('import sqlite3')   || code.includes('from sqlite3'))   toLoad.push('sqlite3')
+  if (code.includes('import pandas') || code.includes('from pandas')) toLoad.push('pandas')
+  if (code.includes('import numpy') || code.includes('from numpy')) toLoad.push('numpy')
+  if (code.includes('scikit-learn') || code.includes('from sklearn') || code.includes('import sklearn')) toLoad.push('scikit-learn')
+  if (code.includes('from scipy') || code.includes('import scipy')) toLoad.push('scipy')
+  if (code.includes('import matplotlib') || code.includes('from matplotlib')) toLoad.push('matplotlib')
+  if (code.includes('import sqlite3') || code.includes('from sqlite3')) toLoad.push('sqlite3')
   if (toLoad.length > 0) {
+    // Emit progress for each package being loaded
     for (const pkg of toLoad) {
       self.postMessage({ type: 'progress', message: `Loading ${pkg}…`, pct: 75 })
     }
@@ -42,89 +49,56 @@ async function loadRequiredPackages(code) {
 }
 
 self.onmessage = async function (event) {
-  const { type, code, inputValues, sharedBuffer } = event.data
+  const { type, code, inputValues } = event.data
+
   if (type !== 'run' || !pyodide) return
-
-  // ── Accumulate stdout lines so we can send partial output with each input request ──
-  const outputChunks = []
-
-  // ── Wire up _pyk_write (called from Python stdout) ────────────────────────────────
-  self._pyk_write = function (s) {
-    outputChunks.push(String(s))
-  }
-
-  // ── Wire up _pyk_input (called from Python input()) ───────────────────────────────
-  if (sharedBuffer) {
-    // ✅ CrossOriginIsolated: real blocking input via Atomics
-    const controlArr = new Int32Array(sharedBuffer, 0, 1)  // [0] = 0 waiting / 1 ready
-    const dataLenArr = new Int32Array(sharedBuffer, 4, 1)  // [0] = byte length
-    const dataArr    = new Uint8Array(sharedBuffer, 8)     // UTF-8 payload
-
-    self._pyk_input = function (prompt) {
-      const promptStr  = String(prompt || '')
-      const partialOut = outputChunks.join('')
-      // Reset flag then notify main thread
-      Atomics.store(controlArr, 0, 0)
-      self.postMessage({ type: 'input_request', prompt: promptStr, partialOutput: partialOut })
-      // Block this Web Worker thread until the main thread writes input
-      Atomics.wait(controlArr, 0, 0)
-      // Read the response
-      const len   = Atomics.load(dataLenArr, 0)
-      const bytes = dataArr.slice(0, len)
-      return new TextDecoder().decode(bytes)
-    }
-  } else {
-    // ⚠️ Fallback: pre-supplied input values (no COEP / old browser)
-    let idx = 0
-    const vals = Array.isArray(inputValues) ? inputValues : []
-    self._pyk_input = function () {
-      return idx < vals.length ? vals[idx++] : ''
-    }
-  }
 
   try {
     await loadRequiredPackages(code)
 
-    // Redirect stdout to our streaming writer; suppress stderr warnings
+    // Redirect stdout/stderr
     pyodide.runPython(`
-import sys, builtins, js
-
-class _JsWriter:
-    def write(self, s):
-        js._pyk_write(str(s))
-        return len(s) if s else 0
-    def flush(self):
-        pass
-
-class _NoopWriter:
-    def write(self, s): return len(s) if s else 0
-    def flush(self): pass
-
-sys.stdout = _JsWriter()
-sys.stderr = _NoopWriter()
-
-def _input(prompt=""):
-    val = str(js._pyk_input(str(prompt)))
-    # Echo prompt + typed value to stdout so it appears in the final transcript
-    js._pyk_write(str(prompt) + val + "\\n")
-    return val
-
-builtins.input = _input
+import sys, io, builtins
+sys.stdout = io.StringIO()
+sys.stderr = io.StringIO()
 `)
 
-    // Run user code in an isolated namespace
-    pyodide.runPython(`exec(${JSON.stringify(code)}, {'__builtins__': __import__('builtins')})`)
+    // Mock input() via the builtins module so it works in any exec namespace
+    const inputs = JSON.stringify(inputValues && inputValues.length > 0 ? inputValues : [])
+    pyodide.runPython(`
+_input_values = ${inputs}
+_input_index = 0
+def _mock_input(prompt=""):
+    global _input_index
+    if _input_index < len(_input_values):
+        val = _input_values[_input_index]
+        _input_index += 1
+        return val
+    return ""
+builtins.input = _mock_input
+`)
+
+    // Run user code in an isolated namespace so globals don't bleed between runs
+    pyodide.runPython(`
+exec(${JSON.stringify(code)}, {'__builtins__': builtins})
+`)
+
+    const stdout = pyodide.runPython('sys.stdout.getvalue()')
 
     self.postMessage({
       type: 'result',
-      output: outputChunks.join(''),
-      error: null,
+      output: stdout,
+      error: null, // stderr warnings must not block validation
     })
   } catch (err) {
+    // Actual Python exception — capture any partial stdout printed before the crash
+    let partialOutput = ''
+    try { partialOutput = pyodide.runPython('sys.stdout.getvalue()') } catch (_) {}
+    // Use err.type for PythonError objects (Pyodide wraps Python exceptions this way)
     const errorMsg = err?.message || err?.type || String(err)
     self.postMessage({
       type: 'result',
-      output: outputChunks.join(''),
+      output: partialOutput,
       error: errorMsg,
     })
   }

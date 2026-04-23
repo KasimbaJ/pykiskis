@@ -17,23 +17,5 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!--
-      Register the Cross-Origin Isolation service worker so SharedArrayBuffer
-      is available for blocking Python input() calls via Atomics.
-      If the page is already cross-origin isolated (e.g. via _headers), this
-      script does nothing. Otherwise it registers the SW and reloads once.
-    -->
-    <script>
-      if (!crossOriginIsolated && 'serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/coi-serviceworker.js').then(function (reg) {
-          var sw = reg.installing || reg.waiting
-          if (sw) {
-            sw.addEventListener('statechange', function () {
-              if (this.state === 'activated') location.reload()
-            })
-          }
-        })
-      }
-    </script>
   </body>
 </html>
