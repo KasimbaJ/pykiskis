@@ -87,40 +87,40 @@ self.onmessage = async function (event) {
 
   // ── Configure stdin ───────────────────────────────────────────────────────
   if (syncArray) {
-    // INTERACTIVE MODE — block the worker with Atomics.wait() until user types
+    // INTERACTIVE MODE — use the high-level stdin() hook so Pyodide calls us
+    // once per readline (not once per byte, which is what read(buf) does).
     pyodide.setStdin({
-      read(buf) {
-        // Split accumulated output at the last newline so the UI can show
-        // previously-printed lines separately from the current prompt line
+      isatty: true,
+      stdin() {
+        // Split accumulated output at the last newline so the UI shows
+        // previously-printed lines separately from the current prompt line.
         const lastNL = _out.lastIndexOf('\n')
         const partialOutput = lastNL >= 0 ? _out.slice(0, lastNL + 1) : ''
         const prompt       = lastNL >= 0 ? _out.slice(lastNL + 1)    : _out
 
-        // Ask the main thread to show an input box
+        // Ask the main thread to show the input box.
         self.postMessage({ type: 'input_request', prompt, partialOutput })
 
-        // Block this worker thread until the main thread writes to the shared buffer.
-        // Poll every 200 ms so Python keyboard interrupts can still be detected.
+        // Block this worker thread until the main thread writes to the shared
+        // buffer.  Poll every 200 ms so keyboard interrupts can be detected.
         while (true) {
           const result = Atomics.wait(syncArray, 0, 0, 200)
           if (result !== 'timed-out') break
           try { pyodide.checkInterrupt() } catch (e) { throw e }
         }
 
-        // Copy the typed text into Pyodide's read buffer
-        const length      = new Int32Array(dataArray.buffer, 0, 1)[0]
-        const typed       = dataArray.subarray(4, 4 + length)
-        const bytesToCopy = Math.min(length, buf.length)
-        buf.set(typed.subarray(0, bytesToCopy))
+        // Read what the user typed from the shared data buffer.
+        const length = new Int32Array(dataArray.buffer, 0, 1)[0]
+        const text   = _dec.decode(dataArray.subarray(4, 4 + length)) // e.g. "John\n"
 
-        // Echo the typed text into captured output so the final result looks
-        // like a real terminal session (e.g. "What is your name? John\n")
-        _out += _dec.decode(typed.subarray(0, length))
+        // Echo the typed text so the final output looks like a real terminal.
+        _out += text
 
-        // Reset sync flag so the next input() call blocks correctly
+        // Reset sync flag so the next input() call blocks correctly.
         Atomics.store(syncArray, 0, 0)
 
-        return bytesToCopy
+        // Return the full line — Pyodide strips the trailing '\n' for input().
+        return text
       }
     })
   }
