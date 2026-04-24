@@ -110,8 +110,12 @@ self.onmessage = async function (event) {
       }
 
       // Read what the user typed from the shared data buffer.
+      // TextDecoder.decode() rejects views backed by SharedArrayBuffer,
+      // so copy the bytes into a fresh (non-shared) Uint8Array first —
+      // `new Uint8Array(typedArray)` always allocates a regular ArrayBuffer.
       const length = new Int32Array(dataArray.buffer, 0, 1)[0]
-      const text   = _dec.decode(dataArray.subarray(4, 4 + length)) // e.g. "John\n"
+      const bytes  = new Uint8Array(dataArray.subarray(4, 4 + length))
+      const text   = _dec.decode(bytes) // e.g. "John\n"
 
       // Echo the typed text so the final output looks like a real terminal.
       _out += text
