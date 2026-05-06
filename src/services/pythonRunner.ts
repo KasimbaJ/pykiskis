@@ -40,6 +40,12 @@ let _inputRequestHandler: ((prompt: string, partialOutput: string) => void) | nu
 /** Called by runPython to reschedule the execution timeout after user provides input */
 let _rescheduleTimeout: (() => void) | null = null
 
+/**
+ * Resolves the currently-in-flight runPython promise early.
+ * Set at the start of each runPython call; cleared on result, timeout, or stop.
+ */
+let _resolveCurrentRun: ((result: ExecutionResult) => void) | null = null
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Exported API
 // ─────────────────────────────────────────────────────────────────────────────
@@ -106,20 +112,63 @@ export function provideInput(value: string): void {
   _rescheduleTimeout?.()
 }
 
+/**
+ * Immediately terminate the running Python worker.
+ * Resolves the in-flight runPython promise with stopped: true so callers
+ * can skip scoring / error display.  A fresh worker is spawned right away so
+ * the user can run code again with minimal delay (Pyodide reloads from cache).
+ */
+export function stopPython(): void {
+  if (!worker) return
+
+  clearTimeout(undefined)               // clearTimeout(undefined) is a no-op; real timer is below
+  _rescheduleTimeout = null
+
+  const resolve = _resolveCurrentRun
+  _resolveCurrentRun = null
+  _inputRequestHandler = null
+
+  worker.terminate()
+  worker  = null
+  isReady = false
+
+  resolve?.({ output: '', error: null, timedOut: false, stopped: true })
+
+  // Spawn replacement immediately — assets are cached so this is fast
+  initPythonRunner()
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // runPython
 // ─────────────────────────────────────────────────────────────────────────────
 
+interface RunOptions {
+  /**
+   * When true (default) and crossOriginIsolated, use the interactive
+   * SharedArrayBuffer path so real Python input() prompts work.
+   * Pass false for Submit runs where we need deterministic, pre-supplied
+   * inputValues for consistent output validation.
+   */
+  interactive?: boolean
+  /** Milliseconds before the run is force-killed (default 30 000). */
+  timeoutMs?: number
+}
+
 export function runPython(
   code:        string,
   inputValues: string[] = [],
-  timeoutMs  = 30_000,
+  opts:        RunOptions = {},
 ): Promise<ExecutionResult> {
+  const { interactive = true, timeoutMs = 30_000 } = opts
+
   return new Promise((resolve) => {
     if (!worker || !isReady) {
       resolve({ output: '', error: 'Python is still loading…', timedOut: false })
       return
     }
+
+    // Store so stopPython() can resolve early
+    _resolveCurrentRun = resolve
 
     // ── Timeout management ────────────────────────────────────────────────
     let timeout: ReturnType<typeof setTimeout>
@@ -127,6 +176,8 @@ export function runPython(
     const scheduleTimeout = () => {
       clearTimeout(timeout)
       timeout = setTimeout(() => {
+        _resolveCurrentRun = null
+        _rescheduleTimeout = null
         worker!.terminate()
         worker  = null
         isReady = false
@@ -142,8 +193,9 @@ export function runPython(
     // ── Message handler for this run ──────────────────────────────────────
     const handler = (event: MessageEvent) => {
       if (event.data.type === 'result') {
-        clearTimeout(timeout)
+        _resolveCurrentRun = null
         _rescheduleTimeout = null
+        clearTimeout(timeout)
         worker!.removeEventListener('message', handler)
         resolve({
           output:   event.data.output,
@@ -164,14 +216,15 @@ export function runPython(
     worker.addEventListener('message', handler)
 
     // ── Dispatch to worker ────────────────────────────────────────────────
-    // Pass SharedArrayBuffers when available (interactive mode),
-    // otherwise null (fallback: pre-supplied inputValues used instead)
+    // Interactive mode: pass SABs so the worker can block on input().
+    // Non-interactive (Submit): pass null — worker uses mock input instead.
+    const useInteractive = interactive && !!syncBuffer
     worker.postMessage({
       type: 'run',
       code,
       inputValues,
-      syncBuffer: syncBuffer ?? null,
-      dataBuffer: dataSAB    ?? null,
+      syncBuffer: useInteractive ? syncBuffer : null,
+      dataBuffer: useInteractive ? dataSAB    : null,
     })
   })
 }

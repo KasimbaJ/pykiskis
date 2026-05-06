@@ -4,11 +4,11 @@ import CodeMirror from '@uiw/react-codemirror'
 import { python } from '@codemirror/lang-python'
 import { oneDark } from '@codemirror/theme-one-dark'
 import {
-  Play, Share2, RotateCcw, ChevronDown,
+  Play, Square, Share2, RotateCcw, ChevronDown,
   Loader2, Check, Terminal, ChevronRight,
 } from 'lucide-react'
 import Header from '../components/layout/Header'
-import { runPython, provideInput, setInputRequestHandler } from '../services/pythonRunner'
+import { runPython, stopPython, provideInput, setInputRequestHandler } from '../services/pythonRunner'
 import { usePyodide } from '../hooks/usePyodide'
 
 interface PendingInput {
@@ -284,17 +284,25 @@ export default function PlaygroundPage() {
 
           <div className="flex-1" />
 
-          {/* Run */}
-          <button
-            onClick={handleRun}
-            disabled={isRunning || pyodideLoading}
-            className="flex items-center gap-2 px-4 py-1.5 bg-green-500 text-white rounded-lg text-sm font-semibold hover:bg-green-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          >
-            {isRunning
-              ? <Loader2 className="w-4 h-4 animate-spin" />
-              : <Play className="w-4 h-4" />}
-            Run
-          </button>
+          {/* Run / Stop toggle */}
+          {isRunning ? (
+            <button
+              onClick={stopPython}
+              className="flex items-center gap-2 px-4 py-1.5 bg-red-500 text-white rounded-lg text-sm font-semibold hover:bg-red-600 transition-colors"
+            >
+              <Square className="w-4 h-4 fill-current" />
+              Stop
+            </button>
+          ) : (
+            <button
+              onClick={handleRun}
+              disabled={pyodideLoading}
+              className="flex items-center gap-2 px-4 py-1.5 bg-green-500 text-white rounded-lg text-sm font-semibold hover:bg-green-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              <Play className="w-4 h-4" />
+              Run
+            </button>
+          )}
 
           {/* Share */}
           <button

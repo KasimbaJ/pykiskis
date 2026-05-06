@@ -42,4 +42,5 @@ export interface ExecutionResult {
   output: string;
   error: string | null;
   timedOut: boolean;
+  stopped?: boolean;  // true when the user pressed Stop — skip scoring
 }

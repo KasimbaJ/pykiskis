@@ -61,6 +61,7 @@ export function useCodeExecution(level: Level) {
     setOutput(result.output)
     setIsRunning(false)
 
+    if (result.stopped) return  // user pressed Stop — nothing to display
     if (result.error) setError(result.error)
   }, [code, level, setOutput, setError, setIsRunning, setFeedbackType, setPendingInput])
 
@@ -94,12 +95,17 @@ export function useCodeExecution(level: Level) {
       setPendingInput({ prompt, partialOutput })
     })
 
-    const result = await runPython(code, level.inputValues ?? [])
+    // Submit uses non-interactive mode so pre-supplied inputValues are used
+    // deterministically — the graded output is always consistent regardless
+    // of what the student might have typed interactively.
+    const result = await runPython(code, level.inputValues ?? [], { interactive: false })
 
     setInputRequestHandler(null)
     setPendingInput(null)
     setOutput(result.output)
     setIsRunning(false)
+
+    if (result.stopped) return  // user pressed Stop — skip scoring entirely
 
     if (result.error) {
       setError(result.error)

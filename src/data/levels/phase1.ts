@@ -71,8 +71,8 @@ export const phase1Levels: Level[] = [
     title: 'Input and Print',
     concept: 'input() function',
     description:
-      "The input() function pauses your program and waits for the user to type something. It always returns a string. In this exercise, input is simulated — it will automatically return \"Alice\".",
-    task: 'Ask for a name using input() and print "Hello, Alice!" The simulated input will provide "Alice".',
+      'The input() function pauses your program and waits for the user to type something. It always returns a string. When you click Run, the program will pause and show you an input box — type "Alice" and press Enter to see the result.',
+    task: 'Ask for a name using input() and print "Hello, Alice!" — when prompted, type "Alice" and press Enter.',
     starterCode: '# input() is simulated — it will return "Alice"\n# Ask for a name and greet them\n',
     expectedOutput: 'Hello, Alice!',
     validationMode: 'exact',

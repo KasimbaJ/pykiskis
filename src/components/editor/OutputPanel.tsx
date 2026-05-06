@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
-import { Terminal } from 'lucide-react'
+import { Terminal, Square } from 'lucide-react'
 import { useEditorStore } from '../../stores/useEditorStore'
-import { provideInput } from '../../services/pythonRunner'
+import { provideInput, stopPython } from '../../services/pythonRunner'
 
 export default function OutputPanel() {
   const { output, error, isRunning, pendingInput, setPendingInput } = useEditorStore()
@@ -25,9 +25,19 @@ export default function OutputPanel() {
         <Terminal className="w-4 h-4 text-slate-400" />
         <span className="text-slate-400 text-sm">Output</span>
         {pendingInput && (
-          <span className="ml-auto text-xs text-yellow-400 animate-pulse">
+          <span className="text-xs text-yellow-400 animate-pulse">
             waiting for input…
           </span>
+        )}
+        {isRunning && !pendingInput && (
+          <button
+            onClick={stopPython}
+            className="ml-auto flex items-center gap-1 text-xs text-red-400 hover:text-red-300 transition-colors"
+            title="Stop execution"
+          >
+            <Square className="w-3 h-3 fill-current" />
+            Stop
+          </button>
         )}
       </div>
 
