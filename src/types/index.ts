@@ -44,3 +44,21 @@ export interface ExecutionResult {
   timedOut: boolean;
   stopped?: boolean;  // true when the user pressed Stop — skip scoring
 }
+
+/** Shape returned by GET /api/progress */
+export interface ServerProgress {
+  student: {
+    name: string
+    currentStreak: number
+    bestStreak: number
+    lastActiveAt: string | null
+    lastStreakDate: string | null
+  } | null
+  levels: Array<{
+    levelId: number
+    completed: boolean
+    attempts: number
+    completedAt: string | null
+    bestCode: string | null
+  }>
+}

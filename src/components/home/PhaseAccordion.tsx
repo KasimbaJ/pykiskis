@@ -79,7 +79,6 @@ export default function PhaseAccordion({ phase, levels, isUnlocked, defaultOpen 
                 level={level}
                 isUnlocked={isUnlocked && isLevelUnlocked(level.id)}
                 isCompleted={progress[level.id]?.completed === true}
-                phaseColor={colors.badge}
               />
             ))}
           </div>

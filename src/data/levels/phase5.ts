@@ -92,7 +92,7 @@ export const phase5Levels: Level[] = [
     title: 'Password Generator',
     concept: 'random, string module, character sets',
     description:
-      'Strong passwords mix uppercase, lowercase, digits, and symbols. Python\'s string module provides character sets. random.choices() picks random characters. random.seed() makes results reproducible for testing.',
+      'Strong passwords mix uppercase letters, lowercase letters, and digits. Python\'s string module provides these character sets. random.choices() picks random characters. random.seed() makes results reproducible for testing.',
     task: 'Generate a 12-character password using seed(99). Print its length and whether it contains at least one digit.',
     starterCode: '# Password generator\nimport random\nimport string\n',
     expectedOutput: '12\nTrue',

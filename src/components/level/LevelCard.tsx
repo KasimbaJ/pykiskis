@@ -6,7 +6,6 @@ interface LevelCardProps {
   level: Level
   isUnlocked: boolean
   isCompleted: boolean
-  phaseColor?: string
 }
 
 export default function LevelCard({ level, isUnlocked, isCompleted }: LevelCardProps) {

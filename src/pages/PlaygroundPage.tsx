@@ -203,7 +203,12 @@ export default function PlaygroundPage() {
     })
 
     const inputValues = stdin.split('\n').filter((l) => l.trim() !== '')
-    const result = await runPython(code, inputValues)
+    // Use non-interactive (mock) mode when the user pre-filled stdin so the
+    // queued values are consumed automatically instead of being ignored.
+    // Fall through to interactive SAB mode only when stdin is empty.
+    const result = await runPython(code, inputValues, {
+      interactive: inputValues.length === 0,
+    })
 
     setInputRequestHandler(null)
     setPendingInput(null)

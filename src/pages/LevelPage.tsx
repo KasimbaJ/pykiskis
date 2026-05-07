@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, Play, Send, RotateCcw, Loader2, BookOpen } from 'lucide-react'
+import { ArrowLeft, Play, Square, Send, RotateCcw, Loader2, BookOpen } from 'lucide-react'
 import Header from '../components/layout/Header'
 import CodeEditor from '../components/editor/CodeEditor'
 import OutputPanel from '../components/editor/OutputPanel'
@@ -13,6 +13,7 @@ import { useEditorStore } from '../stores/useEditorStore'
 import { useProgressStore } from '../stores/useProgressStore'
 import { useCodeExecution } from '../hooks/useCodeExecution'
 import { usePyodide } from '../hooks/usePyodide'
+import { stopPython } from '../services/pythonRunner'
 
 export default function LevelPage() {
   const { levelId } = useParams()
@@ -153,18 +154,24 @@ function EditorActions({
   return (
     <div className="flex gap-2 flex-wrap">
       {!isTheory && (
-        <button
-          onClick={execute}
-          disabled={disabled}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg font-medium hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {isRunning ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
+        isRunning ? (
+          <button
+            onClick={stopPython}
+            className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
+          >
+            <Square className="w-4 h-4 fill-current" />
+            Stop
+          </button>
+        ) : (
+          <button
+            onClick={execute}
+            disabled={disabled}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg font-medium hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
             <Play className="w-4 h-4" />
-          )}
-          Run
-        </button>
+            Run
+          </button>
+        )
       )}
       <button
         onClick={submit}

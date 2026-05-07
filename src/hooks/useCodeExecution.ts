@@ -7,13 +7,62 @@ import { validateOutput, validateTheoryAnswer } from '../services/outputValidato
 import { syncLevelCompletion } from '../services/progressApi'
 import type { Level } from '../types'
 
+// ── Error cleaning ────────────────────────────────────────────────────────────
+/**
+ * Strip Pyodide/CPython internal frames from a Python traceback so students
+ * only see lines that reference their own code.
+ */
+function cleanPythonError(raw: string): string {
+  if (!raw) return raw
+  const lines = raw.split('\n')
+  const output: string[] = []
+  let i = 0
+
+  while (i < lines.length) {
+    const line = lines[i]
+
+    // Keep "Traceback…" header as-is
+    if (line.startsWith('Traceback (most recent call last):')) {
+      output.push(line)
+      i++
+      continue
+    }
+
+    // Frame entry — skip Pyodide / CPython internal files
+    if (line.startsWith('  File ')) {
+      const isInternal =
+        /\/lib\/python/.test(line) ||
+        /site-packages\/pyodide/.test(line) ||
+        /_bootstrap/.test(line) ||
+        /importlib/.test(line) ||
+        /\/pyodide\//.test(line)
+
+      if (isInternal) {
+        // Skip frame header + any indented source-snippet lines below it
+        i++
+        while (i < lines.length && lines[i].startsWith('    ')) i++
+        continue
+      }
+    }
+
+    output.push(line)
+    i++
+  }
+
+  // Remove trailing blank lines
+  while (output.length && output[output.length - 1].trim() === '') output.pop()
+
+  return output.join('\n')
+}
+
+// ── Hook ──────────────────────────────────────────────────────────────────────
 export function useCodeExecution(level: Level) {
   const { getToken } = useAuth()
   const {
     code, setOutput, setError, setIsRunning,
     setFeedbackType, setShowSolution, setPendingInput,
   } = useEditorStore()
-  const { completeLevel, recordAttempt, breakStreak } = useProgressStore()
+  const { completeLevel, recordAttempt } = useProgressStore()
 
   // Fire-and-forget D1 sync after a successful submission
   const syncToD1 = useCallback(
@@ -62,7 +111,7 @@ export function useCodeExecution(level: Level) {
     setIsRunning(false)
 
     if (result.stopped) return  // user pressed Stop — nothing to display
-    if (result.error) setError(result.error)
+    if (result.error) setError(cleanPythonError(result.error))
   }, [code, level, setOutput, setError, setIsRunning, setFeedbackType, setPendingInput])
 
   const submit = useCallback(async () => {
@@ -83,21 +132,21 @@ export function useCodeExecution(level: Level) {
         syncToD1(level.id, code)
       } else {
         recordAttempt(level.id)
-        breakStreak()
         setFeedbackType('error')
-        setShowSolution(true)
+        // Reveal solution only after 3 failed attempts
+        const attempts = useProgressStore.getState().levels[level.id]?.attempts ?? 1
+        if (attempts >= 3) setShowSolution(true)
       }
       return
     }
 
-    // Code mode: execute in Pyodide then validate output
+    // Code mode: execute in Pyodide then validate output.
+    // Submit uses non-interactive mode so pre-supplied inputValues are used
+    // deterministically — the graded output is always consistent.
     setInputRequestHandler((prompt, partialOutput) => {
       setPendingInput({ prompt, partialOutput })
     })
 
-    // Submit uses non-interactive mode so pre-supplied inputValues are used
-    // deterministically — the graded output is always consistent regardless
-    // of what the student might have typed interactively.
     const result = await runPython(code, level.inputValues ?? [], { interactive: false })
 
     setInputRequestHandler(null)
@@ -108,11 +157,11 @@ export function useCodeExecution(level: Level) {
     if (result.stopped) return  // user pressed Stop — skip scoring entirely
 
     if (result.error) {
-      setError(result.error)
+      setError(cleanPythonError(result.error))
       recordAttempt(level.id)
-      breakStreak()
       setFeedbackType('error')
-      setShowSolution(true)
+      const attempts = useProgressStore.getState().levels[level.id]?.attempts ?? 1
+      if (attempts >= 3) setShowSolution(true)
       return
     }
 
@@ -124,14 +173,14 @@ export function useCodeExecution(level: Level) {
       syncToD1(level.id, code)
     } else {
       recordAttempt(level.id)
-      breakStreak()
       setFeedbackType('error')
-      setShowSolution(true)
+      const attempts = useProgressStore.getState().levels[level.id]?.attempts ?? 1
+      if (attempts >= 3) setShowSolution(true)
     }
   }, [
     code, level,
     setOutput, setError, setIsRunning, setFeedbackType, setShowSolution,
-    setPendingInput, completeLevel, recordAttempt, breakStreak, syncToD1,
+    setPendingInput, completeLevel, recordAttempt, syncToD1,
   ])
 
   return { execute, submit }

@@ -92,9 +92,55 @@ function validateBody(raw: unknown): ProgressBody | null {
   }
 }
 
-// ── Handler ────────────────────────────────────────────────────
+// ── GET /api/progress — load student's own progress ────────────
+export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
+  const token = request.headers.get('Authorization')?.slice(7)
+  if (!token) return json({ error: 'Unauthorized' }, 401)
 
-// POST /api/progress  —  save one completed level + student meta
+  const payload = await verifyClerkToken(token)
+  if (!payload) return json({ error: 'Unauthorized' }, 401)
+
+  const userId = payload.sub
+
+  try {
+    const [studentRow, levelRows] = await Promise.all([
+      env.DB.prepare('SELECT * FROM students WHERE user_id = ?')
+        .bind(userId)
+        .first<Record<string, unknown>>(),
+      env.DB.prepare('SELECT * FROM level_progress WHERE user_id = ?')
+        .bind(userId)
+        .all<Record<string, unknown>>(),
+    ])
+
+    if (!studentRow) {
+      return json({ student: null, levels: [] })
+    }
+
+    const levels = (levelRows.results ?? []).map((r) => ({
+      levelId:     r.level_id,
+      completed:   Boolean(r.completed),
+      attempts:    r.attempts ?? 0,
+      completedAt: r.completed_at ?? null,
+      bestCode:    r.best_code   ?? null,
+    }))
+
+    return json({
+      student: {
+        name:           studentRow.name          ?? '',
+        currentStreak:  studentRow.current_streak  ?? 0,
+        bestStreak:     studentRow.best_streak     ?? 0,
+        lastActiveAt:   studentRow.last_active_at  ?? null,
+        lastStreakDate: studentRow.last_streak_date ?? null,
+      },
+      levels,
+    })
+  } catch (err) {
+    console.error('[progress GET] DB error:', err)
+    return json({ error: 'Internal error' }, 500)
+  }
+}
+
+// ── POST /api/progress — save one completed level + student meta
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const token = request.headers.get('Authorization')?.slice(7)
   if (!token) return json({ error: 'Unauthorized' }, 401)

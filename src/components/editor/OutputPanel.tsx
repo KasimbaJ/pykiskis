@@ -41,7 +41,7 @@ export default function OutputPanel() {
         )}
       </div>
 
-      <div className="p-4 font-mono text-sm min-h-[100px] max-h-[200px] overflow-auto">
+      <div className="p-4 font-mono text-sm min-h-[100px] max-h-[320px] overflow-auto">
 
         {/* ── Waiting for input ─────────────────────────────────── */}
         {pendingInput ? (

@@ -1,16 +1,18 @@
 import { Link } from 'react-router-dom'
 import { Code2, Flame, LayoutDashboard, Terminal, Moon, Sun } from 'lucide-react'
-import { UserButton } from '@clerk/clerk-react'
+import { UserButton, useUser } from '@clerk/clerk-react'
 import { useProgressStore } from '../../stores/useProgressStore'
 import { useThemeStore } from '../../stores/useThemeStore'
 import { levels } from '../../data/levels/index'
 
 export default function Header() {
+  const { user } = useUser()
   const { studentName, currentStreak, getCompletedCount } = useProgressStore()
   const { isDark, toggle } = useThemeStore()
   const completed = getCompletedCount()
   const total = levels.length
   const progress = (completed / total) * 100
+  const isTeacher = user?.publicMetadata?.role === 'teacher'
 
   return (
     <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
@@ -20,6 +22,7 @@ export default function Header() {
           <span className="text-xl font-bold text-slate-800 dark:text-white">Pykiškis</span>
         </Link>
 
+        {/* Full progress bar — desktop only */}
         <div className="hidden sm:flex items-center gap-4 flex-1 mx-8">
           <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 overflow-hidden">
             <div
@@ -39,6 +42,11 @@ export default function Header() {
               <span className="font-semibold text-sm">{currentStreak}</span>
             </div>
           )}
+
+          {/* Compact progress count — mobile only */}
+          <span className="sm:hidden text-xs font-medium text-slate-500 dark:text-slate-400">
+            {completed}/{total}
+          </span>
 
           {studentName && (
             <span className="hidden sm:block text-sm text-slate-600 dark:text-slate-300">
@@ -62,13 +70,15 @@ export default function Header() {
             <Terminal className="w-5 h-5" />
           </Link>
 
-          <Link
-            to="/dashboard"
-            className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            title="Teacher Dashboard"
-          >
-            <LayoutDashboard className="w-5 h-5" />
-          </Link>
+          {isTeacher && (
+            <Link
+              to="/dashboard"
+              className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              title="Teacher Dashboard"
+            >
+              <LayoutDashboard className="w-5 h-5" />
+            </Link>
+          )}
 
           <UserButton afterSignOutUrl="/sign-in" />
         </div>

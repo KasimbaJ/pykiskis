@@ -41,7 +41,9 @@ export default function FeedbackModal({ level, onReset }: Props) {
         <p className="text-slate-600 dark:text-slate-300 text-center mb-4">
           {isSuccess
             ? `Great job! You've completed Level ${level.id}: ${level.title}`
-            : 'Review the expected solution and try again.'}
+            : showSolution
+              ? 'Review the expected solution below and try again.'
+              : 'Not quite! Check the hints for guidance.'}
         </p>
 
         {!isSuccess && showSolution && (

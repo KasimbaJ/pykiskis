@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { LevelProgress } from '../types'
+import type { LevelProgress, ServerProgress } from '../types'
 import { getLevelById, getLevelsByPhase } from '../data/levels/index'
 
 interface ProgressState {
@@ -20,6 +20,8 @@ interface ProgressState {
   getCompletedCount: () => number;
   getPhaseProgress: (phase: number) => { completed: number; total: number };
   breakStreak: () => void;
+  /** Merge server-side progress into local state (called once on sign-in). */
+  hydrateFromServer: (data: ServerProgress) => void;
 }
 
 /** Returns YYYY-MM-DD in the user's local timezone (not UTC). */
@@ -104,6 +106,56 @@ export const useProgressStore = create<ProgressState>()(
       },
 
       breakStreak: () => set({ currentStreak: 0, lastStreakDate: '' }),
+
+      hydrateFromServer: (data) => {
+        const state = get()
+
+        // Build a levels map from the server response
+        const serverLevels: Record<number, LevelProgress> = {}
+        for (const lp of data.levels) {
+          serverLevels[lp.levelId] = {
+            completed:   lp.completed,
+            attempts:    lp.attempts,
+            completedAt: lp.completedAt  ?? undefined,
+            bestCode:    lp.bestCode     ?? undefined,
+          }
+        }
+
+        // Merge: favour the "more complete" record so neither device regresses.
+        // Server wins for levels it knows are complete; local wins otherwise.
+        const merged = { ...state.levels }
+        for (const [id, serverLp] of Object.entries(serverLevels)) {
+          const levelId = Number(id)
+          const localLp = state.levels[levelId]
+          if (!localLp) {
+            merged[levelId] = serverLp
+          } else if (serverLp.completed && !localLp.completed) {
+            merged[levelId] = {
+              completed:   true,
+              attempts:    Math.max(serverLp.attempts, localLp.attempts),
+              completedAt: serverLp.completedAt,
+              bestCode:    serverLp.bestCode ?? localLp.bestCode,
+            }
+          }
+          // Local already complete — keep local (may be ahead of server)
+        }
+
+        const update: Partial<ProgressState> = { levels: merged }
+
+        if (data.student) {
+          const { name, currentStreak, bestStreak, lastActiveAt, lastStreakDate } = data.student
+          // Only fill name if not already set locally (Clerk sync handles this,
+          // but may not have fired yet on first load)
+          if (name && !state.studentName) update.studentName = name
+          // Take the higher streak so a device that hasn't synced doesn't regress
+          if (currentStreak > state.currentStreak) update.currentStreak = currentStreak
+          if (bestStreak    > state.bestStreak)    update.bestStreak    = bestStreak
+          if (lastActiveAt)   update.lastActiveAt  = lastActiveAt
+          if (lastStreakDate && !state.lastStreakDate) update.lastStreakDate = lastStreakDate
+        }
+
+        set(update)
+      },
 
       resetLevel: (levelId) => {
         const state = get()
