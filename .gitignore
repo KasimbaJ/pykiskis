@@ -29,3 +29,4 @@ dist-ssr
 # Local-only source material (PDFs, extracted images, design refs)
 docs/
 .claude/worktrees/
+.playwright-mcp/

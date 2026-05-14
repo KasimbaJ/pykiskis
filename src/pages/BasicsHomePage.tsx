@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
-import { BookOpen, Sparkles, ChevronRight } from 'lucide-react'
+import { BookOpen, Sparkles, ChevronRight, CircleCheck } from 'lucide-react'
 import Header from '../components/layout/Header'
-import { chapters, countChapterLessons } from '../data/basics/index'
+import { chapters, chapterLessonKeys, countChapterLessons } from '../data/basics/index'
+import { useBasicsStore } from '../stores/useBasicsStore'
 
 // Tailwind colour map for the chapter cards.  Mirrors the phase palette so the
 // two tracks feel visually consistent.
@@ -15,6 +16,8 @@ const colorMap: Record<string, { ring: string; bg: string; badge: string; title:
 }
 
 export default function BasicsHomePage() {
+  const lessons = useBasicsStore((s) => s.lessons)
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <Header />
@@ -36,6 +39,11 @@ export default function BasicsHomePage() {
           {chapters.map((chapter) => {
             const colors = colorMap[chapter.color] ?? colorMap.indigo
             const lessonCount = countChapterLessons(chapter)
+            const keys = chapterLessonKeys(chapter)
+            const completed = keys.filter((k) => lessons[k]?.completed).length
+            const allDone = lessonCount > 0 && completed === lessonCount
+            const pct = lessonCount > 0 ? Math.round((completed / lessonCount) * 100) : 0
+
             return (
               <Link
                 key={chapter.id}
@@ -46,19 +54,40 @@ export default function BasicsHomePage() {
                   <span className={`text-xs font-bold text-white px-2 py-1 rounded ${colors.badge}`}>
                     Ch {chapter.id}
                   </span>
-                  {chapter.featured && (
-                    <span className="flex items-center gap-1 text-xs font-semibold text-amber-700 dark:text-amber-400">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      FEATURED
-                    </span>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {allDone && (
+                      <CircleCheck className="w-4 h-4 text-emerald-500" />
+                    )}
+                    {chapter.featured && (
+                      <span className="flex items-center gap-1 text-xs font-semibold text-amber-700 dark:text-amber-400">
+                        <Sparkles className="w-3.5 h-3.5" />
+                        FEATURED
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <h2 className={`text-lg font-bold ${colors.title}`}>{chapter.title}</h2>
                 <p className="text-sm text-slate-600 dark:text-slate-300">{chapter.subtitle}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  {lessonCount === 0 ? 'Coming soon' : `${lessonCount} lesson${lessonCount === 1 ? '' : 's'}`}
-                </p>
+
+                {lessonCount === 0 ? (
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Coming soon</p>
+                ) : (
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                      <span>
+                        {completed}/{lessonCount} lesson{lessonCount === 1 ? '' : 's'}
+                      </span>
+                      <span className="tabular-nums">{pct}%</span>
+                    </div>
+                    <div className="h-1.5 rounded-full bg-white/70 dark:bg-slate-700 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full ${colors.badge} transition-all`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
 
                 <div className="mt-auto pt-2 flex items-center justify-end text-sm font-medium text-slate-500 dark:text-slate-300">
                   Open chapter

@@ -1,16 +1,18 @@
 import { Link, useParams, Navigate } from 'react-router-dom'
-import { ArrowLeft, BookOpen, CircleCheck, CircleDashed, ChevronRight } from 'lucide-react'
+import { ArrowLeft, BookOpen, CircleCheck, CircleDashed, ChevronRight, Lock } from 'lucide-react'
 import Header from '../components/layout/Header'
-import { getChapterBySlug } from '../data/basics/index'
+import { getChapterBySlug, moduleLessonKeys } from '../data/basics/index'
+import { useBasicsStore } from '../stores/useBasicsStore'
 
 export default function ChapterPage() {
   const { chapterSlug } = useParams<{ chapterSlug: string }>()
   const chapter = chapterSlug ? getChapterBySlug(chapterSlug) : undefined
 
+  const lessons = useBasicsStore((s) => s.lessons)
+
   if (!chapter) return <Navigate to="/basics" replace />
 
   const moduleCount = chapter.modules.length
-  const populatedModules = chapter.modules.filter((m) => m.lessons.length > 0)
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -52,19 +54,37 @@ export default function ChapterPage() {
         ) : (
           <ul className="space-y-2">
             {chapter.modules.map((mod, i) => {
-              const ready = mod.lessons.length > 0
-              const firstLesson = mod.lessons[0]
-              const linkTarget = ready && firstLesson
+              const lessonCount = mod.lessons.length
+              const ready = lessonCount > 0
+
+              // Within-chapter unlock: this module is open if every lesson of
+              // the previous (populated) module is complete, OR it's the first
+              // populated module.
+              const prevPopulated = chapter.modules.slice(0, i).filter((m) => m.lessons.length > 0)
+              const previousModule = prevPopulated[prevPopulated.length - 1]
+              const previousKeys   = previousModule ? moduleLessonKeys(chapter.slug, previousModule) : []
+              const previousDone   = previousKeys.length === 0 || previousKeys.every((k) => lessons[k]?.completed)
+              const unlocked       = ready && previousDone
+
+              const keys = ready ? moduleLessonKeys(chapter.slug, mod) : []
+              const completedCount = keys.filter((k) => lessons[k]?.completed).length
+              const moduleComplete = ready && completedCount === lessonCount
+              const firstLesson    = mod.lessons[0]
+              const linkTarget     = unlocked && firstLesson
                 ? `/basics/${chapter.slug}/${mod.slug}/${firstLesson.slug}`
                 : null
 
               const Inner = (
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-3">
-                    {ready ? (
-                      <CircleDashed className="w-5 h-5 text-slate-400" />
+                    {!ready ? (
+                      <CircleDashed className="w-5 h-5 text-slate-300 dark:text-slate-600" />
+                    ) : moduleComplete ? (
+                      <CircleCheck className="w-5 h-5 text-emerald-500" />
+                    ) : !unlocked ? (
+                      <Lock className="w-5 h-5 text-slate-400" />
                     ) : (
-                      <CircleCheck className="w-5 h-5 text-slate-300 dark:text-slate-600" />
+                      <CircleDashed className="w-5 h-5 text-slate-400" />
                     )}
                     <div className="text-left">
                       <p className="font-medium text-slate-800 dark:text-slate-100">
@@ -75,11 +95,13 @@ export default function ChapterPage() {
                       )}
                     </div>
                   </div>
-                  <span className="text-xs text-slate-400 dark:text-slate-500">
-                    {ready
-                      ? `${mod.lessons.length} lesson${mod.lessons.length === 1 ? '' : 's'}`
-                      : 'Coming soon'}
-                    {ready && <ChevronRight className="inline w-4 h-4 ml-1" />}
+                  <span className="text-xs text-slate-400 dark:text-slate-500 flex items-center">
+                    {!ready
+                      ? 'Coming soon'
+                      : !unlocked
+                        ? 'Locked'
+                        : `${completedCount}/${lessonCount} lessons`}
+                    {linkTarget && <ChevronRight className="inline w-4 h-4 ml-1" />}
                   </span>
                 </div>
               )
@@ -103,12 +125,6 @@ export default function ChapterPage() {
               )
             })}
           </ul>
-        )}
-
-        {populatedModules.length > 0 && populatedModules.length < moduleCount && (
-          <p className="mt-6 text-xs text-slate-400 dark:text-slate-500 text-center">
-            More modules will be added soon.
-          </p>
         )}
       </main>
     </div>

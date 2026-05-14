@@ -109,3 +109,43 @@ export function adjacentLessons(
     next:    i < flat.length - 1  ? flat[i + 1] : undefined,
   }
 }
+
+// ─── Unlock gating ───────────────────────────────────────────────────────────
+
+/**
+ * Is this lesson unlocked?  Rules:
+ *   1. The very first lesson of every chapter is always unlocked (so a learner
+ *      can start any chapter at will once the chapter itself is open).
+ *   2. Otherwise the previous lesson in the same chapter must be completed.
+ *
+ * Chapter-level gating (e.g. "complete 80% of chapter N to start N+1") is
+ * applied at the ChapterPage / BasicsHomePage level, not here.
+ */
+export function isLessonUnlocked(
+  chapterSlug: string,
+  moduleSlug: string,
+  lessonSlug: string,
+  isLessonComplete: (key: string) => boolean,
+): boolean {
+  const chapter = getChapterBySlug(chapterSlug)
+  if (!chapter) return false
+  const flat = flattenChapter(chapter)
+  const i = flat.findIndex(
+    (loc) => loc.module.slug === moduleSlug && loc.lesson.slug === lessonSlug,
+  )
+  if (i <= 0) return true  // not found is permissive; first lesson always unlocked
+  const prev = flat[i - 1]
+  return isLessonComplete(lessonKey(chapter.slug, prev.module.slug, prev.lesson.slug))
+}
+
+/** Return all lesson keys in a chapter in display order. */
+export function chapterLessonKeys(chapter: Chapter): string[] {
+  return flattenChapter(chapter).map((loc) =>
+    lessonKey(chapter.slug, loc.module.slug, loc.lesson.slug),
+  )
+}
+
+/** Return all lesson keys in a single module. */
+export function moduleLessonKeys(chapterSlug: string, module: Module): string[] {
+  return module.lessons.map((l) => lessonKey(chapterSlug, module.slug, l.slug))
+}
