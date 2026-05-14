@@ -25,3 +25,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local-only source material (PDFs, extracted images, design refs)
+docs/
+.claude/worktrees/

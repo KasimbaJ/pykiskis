@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Search, X } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { BookOpen, ChevronRight, Search, Sparkles, X } from 'lucide-react'
 import Header from '../components/layout/Header'
 import PhaseAccordion from '../components/home/PhaseAccordion'
 import LevelCard from '../components/level/LevelCard'
@@ -48,6 +49,36 @@ export default function HomePage() {
             100 levels across 5 phases — from Hello World to Professional Portfolio.
           </p>
         </div>
+
+        {/* Python Basics — chapter-based parallel track */}
+        <Link
+          to="/basics"
+          className="group block mb-6 rounded-xl border-2 border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/30 dark:to-violet-900/30 p-5 hover:shadow-lg transition-all"
+        >
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="rounded-lg bg-indigo-600 p-2 text-white shrink-0">
+                <BookOpen className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                    <Sparkles className="w-3 h-3" />
+                    New
+                  </span>
+                  <h2 className="font-bold text-slate-800 dark:text-white">
+                    Python Basics Learning Path
+                  </h2>
+                </div>
+                <p className="text-sm text-slate-600 dark:text-slate-300">
+                  A friendly, chapter-based course. Read short lessons, run examples,
+                  and build small projects. 7 chapters from Introduction to Projects.
+                </p>
+              </div>
+            </div>
+            <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-colors shrink-0" />
+          </div>
+        </Link>
 
         {/* Search */}
         <div className="relative mb-6">

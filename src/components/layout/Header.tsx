@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Code2, Flame, LayoutDashboard, Terminal, Moon, Sun } from 'lucide-react'
+import { BookOpen, Code2, Flame, LayoutDashboard, Terminal, Moon, Sun } from 'lucide-react'
 import { UserButton, useUser } from '@clerk/clerk-react'
 import { useProgressStore } from '../../stores/useProgressStore'
 import { useThemeStore } from '../../stores/useThemeStore'
@@ -61,6 +61,14 @@ export default function Header() {
           >
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
+
+          <Link
+            to="/basics"
+            className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            title="Python Basics — chapter-based course"
+          >
+            <BookOpen className="w-5 h-5" />
+          </Link>
 
           <Link
             to="/playground"

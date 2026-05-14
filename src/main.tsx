@@ -6,12 +6,15 @@ import './index.css'
 import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
 
-const HomePage       = lazy(() => import('./pages/HomePage'))
-const LevelPage      = lazy(() => import('./pages/LevelPage'))
-const DashboardPage  = lazy(() => import('./pages/DashboardPage'))
-const PlaygroundPage = lazy(() => import('./pages/PlaygroundPage'))
-const SignInPage     = lazy(() => import('./pages/SignInPage'))
-const SignUpPage     = lazy(() => import('./pages/SignUpPage'))
+const HomePage         = lazy(() => import('./pages/HomePage'))
+const LevelPage        = lazy(() => import('./pages/LevelPage'))
+const DashboardPage    = lazy(() => import('./pages/DashboardPage'))
+const PlaygroundPage   = lazy(() => import('./pages/PlaygroundPage'))
+const SignInPage       = lazy(() => import('./pages/SignInPage'))
+const SignUpPage       = lazy(() => import('./pages/SignUpPage'))
+const BasicsHomePage   = lazy(() => import('./pages/BasicsHomePage'))
+const ChapterPage      = lazy(() => import('./pages/ChapterPage'))
+const LessonPage       = lazy(() => import('./pages/LessonPage'))
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 if (!PUBLISHABLE_KEY) throw new Error('Missing VITE_CLERK_PUBLISHABLE_KEY')
@@ -27,6 +30,11 @@ const router = createBrowserRouter([
       { path: 'level/:levelId',        element: <LevelPage /> },
       { path: 'dashboard',             element: <DashboardPage /> },
       { path: 'playground',            element: <PlaygroundPage /> },
+
+      // Python Basics Learning Path — chapter-based parallel track.
+      { path: 'basics',                                                  element: <BasicsHomePage /> },
+      { path: 'basics/:chapterSlug',                                     element: <ChapterPage /> },
+      { path: 'basics/:chapterSlug/:moduleSlug/:lessonSlug',             element: <LessonPage /> },
     ],
   },
 ])
