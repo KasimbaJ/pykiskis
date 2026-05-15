@@ -39,7 +39,12 @@ export interface Module {
 
 // ─── Lesson variants ─────────────────────────────────────────────────────────
 
-export type Lesson = TheoryLesson | QuizLesson | ExerciseLesson | RecapLesson
+export type Lesson =
+  | TheoryLesson
+  | QuizLesson
+  | ExerciseLesson
+  | RecapLesson
+  | ProgressTestLesson
 
 interface LessonBase {
   /** URL-safe slug, unique within the module. */
@@ -89,6 +94,58 @@ export interface RecapLesson extends LessonBase {
   summary: string
   /** Optional title of the next module to point the learner forward. */
   nextModuleTitle?: string
+}
+
+// ─── Progress Test ───────────────────────────────────────────────────────────
+//
+// A multi-question checkpoint scored out of 10.  Learners can retake it
+// unlimited times to improve their score; the best score is what's kept.
+// Submitting any answer set marks the lesson complete (you can't skip past it
+// without engaging), but the score itself does NOT gate progression.
+
+export interface ProgressTestLesson extends LessonBase {
+  type: 'progress-test'
+  /** Short intro shown above the questions. */
+  intro: string
+  /** Suggested passing score (typically 7).  Shown to the learner but not enforced. */
+  passingScore: number
+  questions: ProgressTestQuestion[]
+}
+
+export type ProgressTestQuestion =
+  | MCQQuestion
+  | PredictOutputQuestion
+  | FillInBlankQuestion
+
+interface QuestionBase {
+  /** Short id, unique within the test (e.g. "q1", "q2"). */
+  id: string
+  /** Question prompt (markdown-lite). */
+  prompt: string
+  /** Optional explanation shown after grading. */
+  explanation?: string
+}
+
+export interface MCQQuestion extends QuestionBase {
+  qType: 'mcq'
+  options: QuizOption[]
+  correctOptionId: string
+}
+
+export interface PredictOutputQuestion extends QuestionBase {
+  qType: 'predict-output'
+  /** Code snippet shown read-only. */
+  code: string
+  /** Single expected output string (compared after trimEnd / CRLF-normalise). */
+  expectedOutput: string
+}
+
+export interface FillInBlankQuestion extends QuestionBase {
+  qType: 'fill-in-blank'
+  /** Accepted answers — match is case-insensitive and trimmed. */
+  acceptedAnswers: string[]
+  /** Optional helper text shown next to the input (e.g. "use Python syntax"). */
+  hint?: string
 }
 
 // ─── Content blocks (used by TheoryLesson) ───────────────────────────────────
@@ -157,6 +214,8 @@ export interface LessonProgress {
   bestCode?: string
   /** Last option chosen for quiz lessons. */
   selectedOption?: string
+  /** Best score (out of 10) for progress-test lessons. */
+  bestScore?: number
 }
 
 /** Shape returned by GET /api/basics-progress. */
@@ -168,5 +227,6 @@ export interface ServerBasicsProgress {
     visitedAt: string | null
     bestCode: string | null
     selectedOption: string | null
+    bestScore: number | null
   }>
 }

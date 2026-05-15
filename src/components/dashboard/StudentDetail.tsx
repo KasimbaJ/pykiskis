@@ -1,7 +1,8 @@
-import { ArrowLeft, Check, X, Clock } from 'lucide-react'
+import { ArrowLeft, Check, X, Clock, BookOpen, Trophy } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import type { StudentProgress } from '../../types'
 import { levels } from '../../data/levels/index'
+import { chapters, countAllBasicsLessons } from '../../data/basics/index'
 
 interface Props {
   student: StudentProgress;
@@ -24,12 +25,18 @@ export default function StudentDetail({ student, onBack }: Props) {
         <h2 className="text-xl font-bold text-slate-800 mb-1">
           {student.studentName}
         </h2>
-        <div className="flex gap-6 text-sm text-slate-500 mt-2">
+        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-500 mt-2">
           <span>
-            Completed:{' '}
+            Phase levels:{' '}
             <strong className="text-slate-800">
               {Object.values(student.levels).filter((l) => l.completed).length}
               /{levels.length}
+            </strong>
+          </span>
+          <span>
+            Basics lessons:{' '}
+            <strong className="text-indigo-700">
+              {student.basics?.completedLessons ?? 0}/{countAllBasicsLessons()}
             </strong>
           </span>
           <span>
@@ -42,6 +49,68 @@ export default function StudentDetail({ student, onBack }: Props) {
           </span>
         </div>
       </div>
+
+      {/* Progress-test scores */}
+      {student.basics && Object.keys(student.basics.testScores).length > 0 && (
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6">
+          <h3 className="text-base font-semibold text-slate-800 mb-3 flex items-center gap-2">
+            <Trophy className="w-4 h-4 text-indigo-600" />
+            Progress Test Scores
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {[1, 2, 3, 4].map((n) => {
+              const key = `introduction.progress-test-${n}.test`
+              const score = student.basics?.testScores[key]
+              return (
+                <li
+                  key={n}
+                  className="rounded-lg border border-slate-200 p-3 text-center"
+                >
+                  <p className="text-xs text-slate-500 mb-1">Test {n}</p>
+                  {score != null ? (
+                    <p className="text-lg font-bold text-indigo-700">
+                      {score}/10
+                    </p>
+                  ) : (
+                    <p className="text-sm text-slate-400">Not taken</p>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
+
+      {/* Basics chapter progress */}
+      {student.basics && (
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6">
+          <h3 className="text-base font-semibold text-slate-800 mb-3 flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-indigo-600" />
+            Python Basics
+          </h3>
+          <ul className="space-y-2">
+            {chapters.map((ch) => {
+              const total = ch.modules.reduce((s, m) => s + m.lessons.length, 0)
+              if (total === 0) return null
+              // We don't have per-chapter detail in the StudentProgress payload yet,
+              // so display total only and overall counter at top.
+              return (
+                <li
+                  key={ch.id}
+                  className="flex items-center justify-between text-sm border-b border-slate-100 last:border-0 pb-1"
+                >
+                  <span className="text-slate-700">
+                    Ch {ch.id} · {ch.title}
+                  </span>
+                  <span className="text-slate-500 tabular-nums">{total} lessons</span>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
+
+      <h3 className="text-base font-semibold text-slate-800 mb-3">Phase Levels</h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {levels.map((level) => {

@@ -116,16 +116,16 @@ export const getStartedModule: Module = {
       title: 'Valid Way to Display Text',
       type: 'quiz',
       question:
-        'Which of the following is the valid way to display `Welcome to Programiz` on the screen?',
+        'Which of the following is the valid way to display `Welcome to Pykiskis` on the screen?',
       options: [
-        { id: 'a', text: '`print(Welcome to Programiz)`' },
-        { id: 'b', text: '`print"Welcome to Programiz"`' },
-        { id: 'c', text: '`print("Welcome to Programiz")`' },
-        { id: 'd', text: '`Print("Welcome to Programiz")`' },
+        { id: 'a', text: '`print(Welcome to Pykiskis)`' },
+        { id: 'b', text: '`print"Welcome to Pykiskis"`' },
+        { id: 'c', text: '`print("Welcome to Pykiskis")`' },
+        { id: 'd', text: '`Print("Welcome to Pykiskis")`' },
       ],
       correctOptionId: 'c',
       explanation:
-        '`print()` must be lowercase, the parentheses must wrap the text, and the text itself must be inside quotation marks. `print("Welcome to Programiz")` satisfies all three rules.',
+        '`print()` must be lowercase, the parentheses must wrap the text, and the text itself must be inside quotation marks. `print("Welcome to Pykiskis")` satisfies all three rules.',
     },
 
     // ── 5. Your First Python Program (exercise) ──────────────────────────────

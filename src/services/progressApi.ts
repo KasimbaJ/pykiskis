@@ -64,6 +64,7 @@ export async function syncLessonProgress(
     visitedAt:      string | null
     bestCode:       string | null
     selectedOption: string | null
+    bestScore:      number | null
   },
 ): Promise<void> {
   await fetch('/api/basics-progress', {

@@ -36,6 +36,12 @@ export interface StudentProgress {
   currentStreak: number;
   bestStreak: number;
   lastActiveAt: string;
+  /** Optional Basics-track summary (populated by /api/students). */
+  basics?: {
+    completedLessons: number;
+    /** lessonId → best score (out of 10). Only progress-test lessons. */
+    testScores: Record<string, number>;
+  };
 }
 
 export interface ExecutionResult {

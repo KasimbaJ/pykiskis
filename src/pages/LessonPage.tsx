@@ -7,6 +7,7 @@ import TheoryView from '../components/basics/TheoryView'
 import QuizView from '../components/basics/QuizView'
 import ExerciseView from '../components/basics/ExerciseView'
 import RecapView from '../components/basics/RecapView'
+import ProgressTestView from '../components/basics/ProgressTestView'
 import CourseOutlineDrawer from '../components/basics/CourseOutlineDrawer'
 import {
   adjacentLessons,
@@ -49,11 +50,12 @@ export default function LessonPage() {
   const key = lessonKey(chapter.slug, module.slug, lesson.slug)
 
   // ── 2. Store hookups ────────────────────────────────────────────────────────
-  const lessons              = useBasicsStore((s) => s.lessons)
-  const completeLesson       = useBasicsStore((s) => s.completeLesson)
-  const markLessonVisited    = useBasicsStore((s) => s.markLessonVisited)
-  const recordLessonAttempt  = useBasicsStore((s) => s.recordLessonAttempt)
-  const isLessonComplete     = useBasicsStore((s) => s.isLessonComplete)
+  const lessons                 = useBasicsStore((s) => s.lessons)
+  const completeLesson          = useBasicsStore((s) => s.completeLesson)
+  const markLessonVisited       = useBasicsStore((s) => s.markLessonVisited)
+  const recordLessonAttempt     = useBasicsStore((s) => s.recordLessonAttempt)
+  const submitProgressTestScore = useBasicsStore((s) => s.submitProgressTestScore)
+  const isLessonComplete        = useBasicsStore((s) => s.isLessonComplete)
 
   const lessonState = lessons[key]
   const completed = lessonState?.completed === true
@@ -81,7 +83,7 @@ export default function LessonPage() {
 
   // ── 7. Fire-and-forget D1 sync on any local mutation ────────────────────────
   const syncToD1 = useCallback(
-    (extra?: { code?: string; option?: string }) => {
+    (extra?: { code?: string; option?: string; score?: number }) => {
       getToken()
         .then(async (token) => {
           if (!token) return
@@ -94,6 +96,7 @@ export default function LessonPage() {
             visitedAt:      lp.visitedAt ?? new Date().toISOString(),
             bestCode:       extra?.code   ?? lp.bestCode       ?? null,
             selectedOption: extra?.option ?? lp.selectedOption ?? null,
+            bestScore:      extra?.score  ?? lp.bestScore      ?? null,
           })
         })
         .catch(console.error)
@@ -109,6 +112,16 @@ export default function LessonPage() {
       syncToD1(payload)
     },
     [completed, completeLesson, key, syncToD1],
+  )
+
+  // Progress-test submissions: separate from markComplete because they always
+  // mark complete (no skip) but can be retaken to improve bestScore.
+  const onTestSubmit = useCallback(
+    (score: number) => {
+      submitProgressTestScore(key, score)
+      syncToD1({ score })
+    },
+    [submitProgressTestScore, key, syncToD1],
   )
 
   // ── 9. Locked screen ────────────────────────────────────────────────────────
@@ -183,6 +196,14 @@ export default function LessonPage() {
           />
         )
       }
+      case 'progress-test':
+        return (
+          <ProgressTestView
+            lesson={lesson}
+            bestScore={lessonState?.bestScore}
+            onSubmit={onTestSubmit}
+          />
+        )
     }
   })()
 

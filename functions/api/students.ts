@@ -32,10 +32,13 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     return json({ error: 'Forbidden' }, 403)
   }
 
-  // Fetch all students and all completed levels in two queries
-  const [studentsResult, progressResult] = await Promise.all([
+  // Fetch students, phase levels, and basics lesson progress in three queries
+  const [studentsResult, progressResult, lessonResult] = await Promise.all([
     env.DB.prepare('SELECT * FROM students ORDER BY updated_at DESC').all(),
     env.DB.prepare('SELECT * FROM level_progress WHERE completed = 1').all(),
+    env.DB.prepare(
+      'SELECT user_id, lesson_id, completed, best_score FROM lesson_progress',
+    ).all(),
   ])
 
   // Group level rows by user_id
@@ -48,28 +51,54 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     ;(byUser[row.user_id] ??= []).push(row)
   }
 
+  // Group lesson_progress rows by user_id, with totals and per-test scores
+  type LessonRow = {
+    user_id: string
+    lesson_id: string
+    completed: number
+    best_score: number | null
+  }
+  type BasicsSummary = {
+    completed: number
+    /** lesson_id → best score, for progress-test lessons only. */
+    testScores: Record<string, number>
+  }
+  const basicsByUser: Record<string, BasicsSummary> = {}
+  for (const row of lessonResult.results as LessonRow[]) {
+    const s = (basicsByUser[row.user_id] ??= { completed: 0, testScores: {} })
+    if (row.completed) s.completed++
+    if (row.best_score != null) s.testScores[row.lesson_id] = row.best_score
+  }
+
   // Shape to match the frontend StudentProgress type
   type StudentRow = {
     user_id: string; name: string; current_streak: number
     best_streak: number; last_active_at: string | null
   }
-  const students = (studentsResult.results as StudentRow[]).map((s) => ({
-    studentName: s.name || '(unnamed)',
-    currentStreak: s.current_streak,
-    bestStreak: s.best_streak,
-    lastActiveAt: s.last_active_at ?? '',
-    levels: Object.fromEntries(
-      (byUser[s.user_id] ?? []).map((p) => [
-        p.level_id,
-        {
-          completed: true,
-          attempts: p.attempts,
-          completedAt: p.completed_at ?? undefined,
-          bestCode: p.best_code ?? undefined,
-        },
-      ]),
-    ),
-  }))
+  const students = (studentsResult.results as StudentRow[]).map((s) => {
+    const summary = basicsByUser[s.user_id] ?? { completed: 0, testScores: {} }
+    return {
+      studentName: s.name || '(unnamed)',
+      currentStreak: s.current_streak,
+      bestStreak: s.best_streak,
+      lastActiveAt: s.last_active_at ?? '',
+      levels: Object.fromEntries(
+        (byUser[s.user_id] ?? []).map((p) => [
+          p.level_id,
+          {
+            completed: true,
+            attempts: p.attempts,
+            completedAt: p.completed_at ?? undefined,
+            bestCode: p.best_code ?? undefined,
+          },
+        ]),
+      ),
+      basics: {
+        completedLessons: summary.completed,
+        testScores: summary.testScores,
+      },
+    }
+  })
 
   return json(students)
 }

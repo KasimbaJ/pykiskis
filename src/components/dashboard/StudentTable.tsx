@@ -1,6 +1,7 @@
-import { Users, ChevronRight, Flame, Trophy } from 'lucide-react'
+import { Users, ChevronRight, Flame, Trophy, BookOpen } from 'lucide-react'
 import type { StudentProgress } from '../../types'
 import { levels } from '../../data/levels/index'
+import { countAllBasicsLessons } from '../../data/basics/index'
 
 interface Props {
   students: StudentProgress[];
@@ -22,22 +23,30 @@ export default function StudentTable({ students, onSelectStudent }: Props) {
     )
   }
 
+  const basicsTotal = countAllBasicsLessons()
+
   return (
-    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-      <table className="w-full">
+    <div className="bg-white rounded-xl border border-slate-200 overflow-x-auto">
+      <table className="w-full min-w-[760px]">
         <thead>
           <tr className="bg-slate-50 border-b border-slate-200">
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
               Student
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Progress
+              Phase Levels
+            </th>
+            <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
+              <span className="inline-flex items-center gap-1">
+                <BookOpen className="w-3.5 h-3.5" />
+                Basics
+              </span>
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
               Streak
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Best Streak
+              Best
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
               Last Active
@@ -48,8 +57,15 @@ export default function StudentTable({ students, onSelectStudent }: Props) {
         <tbody>
           {students.map((student) => {
             const completedCount = Object.values(student.levels).filter(
-              (l) => l.completed
+              (l) => l.completed,
             ).length
+            const basicsCompleted = student.basics?.completedLessons ?? 0
+            const testScores = Object.values(student.basics?.testScores ?? {})
+            const avgTestScore =
+              testScores.length > 0
+                ? testScores.reduce((a, b) => a + b, 0) / testScores.length
+                : null
+
             return (
               <tr
                 key={student.studentName}
@@ -63,7 +79,7 @@ export default function StudentTable({ students, onSelectStudent }: Props) {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">
-                    <div className="w-24 bg-slate-200 rounded-full h-2 overflow-hidden">
+                    <div className="w-20 bg-slate-200 rounded-full h-2 overflow-hidden">
                       <div
                         className="bg-blue-600 h-full rounded-full"
                         style={{
@@ -71,9 +87,32 @@ export default function StudentTable({ students, onSelectStudent }: Props) {
                         }}
                       />
                     </div>
-                    <span className="text-sm text-slate-500">
+                    <span className="text-sm text-slate-500 tabular-nums">
                       {completedCount}/{levels.length}
                     </span>
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-20 bg-slate-200 rounded-full h-2 overflow-hidden">
+                      <div
+                        className="bg-indigo-600 h-full rounded-full"
+                        style={{
+                          width: `${basicsTotal > 0 ? (basicsCompleted / basicsTotal) * 100 : 0}%`,
+                        }}
+                      />
+                    </div>
+                    <span className="text-sm text-slate-500 tabular-nums">
+                      {basicsCompleted}/{basicsTotal}
+                    </span>
+                    {avgTestScore != null && (
+                      <span
+                        className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700"
+                        title="Average progress-test score (out of 10)"
+                      >
+                        {avgTestScore.toFixed(1)}/10
+                      </span>
+                    )}
                   </div>
                 </td>
                 <td className="px-6 py-4">

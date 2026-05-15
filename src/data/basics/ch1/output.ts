@@ -143,8 +143,8 @@ export const outputModule: Module = {
         },
         {
           kind: 'figure',
-          code: 'print("Welcome to Programiz\\nThe Amazing Spider-Man")',
-          output: 'Welcome to Programiz\nThe Amazing Spider-Man',
+          code: 'print("Welcome to Pykiskis\\nThe Amazing Spider-Man")',
+          output: 'Welcome to Pykiskis\nThe Amazing Spider-Man',
         },
         {
           kind: 'paragraph',
@@ -152,8 +152,8 @@ export const outputModule: Module = {
         },
         {
           kind: 'figure',
-          code: 'print("Welcome to Programiz\\n\\nThe Amazing Spider-Man")',
-          output: 'Welcome to Programiz\n\nThe Amazing Spider-Man',
+          code: 'print("Welcome to Pykiskis\\n\\nThe Amazing Spider-Man")',
+          output: 'Welcome to Pykiskis\n\nThe Amazing Spider-Man',
         },
         {
           kind: 'figure',

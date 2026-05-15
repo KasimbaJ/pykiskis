@@ -21,6 +21,7 @@ interface BasicsBody {
   visitedAt:      string | null
   bestCode:       string | null
   selectedOption: string | null
+  bestScore:      number | null
 }
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}(T[\d:.Z+\-]+)?$/
@@ -62,7 +63,13 @@ function validateBody(raw: unknown): BasicsBody | null {
       ? b.selectedOption.slice(0, MAX_OPTION_LEN)
       : null
 
-  return { lessonId, completed, attempts, visitedAt, bestCode, selectedOption }
+  // bestScore: 0-10 integer, or null if not a progress-test submission
+  const bestScore =
+    typeof b.bestScore === 'number' && b.bestScore >= 0 && b.bestScore <= 10
+      ? Math.floor(b.bestScore)
+      : null
+
+  return { lessonId, completed, attempts, visitedAt, bestCode, selectedOption, bestScore }
 }
 
 // ─── GET /api/basics-progress ────────────────────────────────────────────────
@@ -76,7 +83,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
 
   try {
     const rows = await env.DB.prepare(
-      'SELECT lesson_id, completed, attempts, visited_at, best_code, selected_option ' +
+      'SELECT lesson_id, completed, attempts, visited_at, best_code, selected_option, best_score ' +
         'FROM lesson_progress WHERE user_id = ?',
     )
       .bind(payload.sub)
@@ -89,6 +96,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
       visitedAt:      r.visited_at      ?? null,
       bestCode:       r.best_code       ?? null,
       selectedOption: r.selected_option ?? null,
+      bestScore:      r.best_score      ?? null,
     }))
 
     return json({ lessons })
@@ -118,16 +126,25 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!body) return json({ error: 'Invalid request body' }, 400)
 
   try {
+    // For progress-tests we keep the MAX score across retakes — the UPDATE
+    // branch only overwrites best_score if the incoming value is higher (or
+    // the column was NULL).
     await env.DB.prepare(`
       INSERT INTO lesson_progress
-        (user_id, lesson_id, completed, attempts, visited_at, best_code, selected_option)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+        (user_id, lesson_id, completed, attempts, visited_at, best_code, selected_option, best_score)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       ON CONFLICT (user_id, lesson_id) DO UPDATE SET
         completed       = excluded.completed,
         attempts        = excluded.attempts,
         visited_at      = excluded.visited_at,
         best_code       = excluded.best_code,
-        selected_option = excluded.selected_option
+        selected_option = excluded.selected_option,
+        best_score      = CASE
+          WHEN excluded.best_score IS NULL THEN best_score
+          WHEN best_score IS NULL          THEN excluded.best_score
+          WHEN excluded.best_score > best_score THEN excluded.best_score
+          ELSE best_score
+        END
     `)
       .bind(
         payload.sub,
@@ -137,6 +154,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
         body.visitedAt,
         body.bestCode,
         body.selectedOption,
+        body.bestScore,
       )
       .run()
 

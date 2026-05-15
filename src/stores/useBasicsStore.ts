@@ -27,14 +27,20 @@ interface BasicsState {
   /** Mark a lesson complete (idempotent — already-complete lessons untouched). */
   completeLesson: (
     lessonKey: string,
-    payload?: { code?: string; option?: string },
+    payload?: { code?: string; option?: string; score?: number },
   ) => void
 
   /** Record an attempt without marking complete (used by exercise / quiz wrong answers). */
   recordLessonAttempt: (
     lessonKey: string,
-    payload?: { code?: string; option?: string },
+    payload?: { code?: string; option?: string; score?: number },
   ) => void
+
+  /**
+   * Submit a progress-test score.  Marks the lesson complete (you can't skip
+   * a test) and keeps the best score across retakes.
+   */
+  submitProgressTestScore: (lessonKey: string, score: number) => void
 
   /** Mark a lesson as visited (used by theory/recap lessons on first view). */
   markLessonVisited: (lessonKey: string) => void
@@ -112,6 +118,7 @@ export const useBasicsStore = create<BasicsState>()(
               visitedAt:      existing?.visitedAt ?? new Date().toISOString(),
               bestCode:       payload?.code   ?? existing?.bestCode,
               selectedOption: payload?.option ?? existing?.selectedOption,
+              bestScore:      payload?.score  ?? existing?.bestScore,
             },
           },
         })
@@ -129,6 +136,34 @@ export const useBasicsStore = create<BasicsState>()(
               visitedAt:      existing?.visitedAt ?? new Date().toISOString(),
               bestCode:       payload?.code   ?? existing?.bestCode,
               selectedOption: payload?.option ?? existing?.selectedOption,
+              bestScore:      payload?.score  ?? existing?.bestScore,
+            },
+          },
+        })
+      },
+
+      /**
+       * Progress-test submissions: always mark complete (you can't skip a
+       * test), bump attempts, and keep the best score across retakes.  Bumps
+       * the streak on the first submission only.
+       */
+      submitProgressTestScore: (lessonKey, score) => {
+        const state = get()
+        const existing = state.lessons[lessonKey]
+        const wasCompleted = existing?.completed === true
+        if (!wasCompleted) bumpDailyStreak()
+
+        const bestScore = Math.max(score, existing?.bestScore ?? 0)
+        set({
+          lessons: {
+            ...state.lessons,
+            [lessonKey]: {
+              completed: true,
+              attempts:  (existing?.attempts ?? 0) + 1,
+              visitedAt: existing?.visitedAt ?? new Date().toISOString(),
+              bestCode:       existing?.bestCode,
+              selectedOption: existing?.selectedOption,
+              bestScore,
             },
           },
         })
@@ -162,6 +197,7 @@ export const useBasicsStore = create<BasicsState>()(
               visitedAt:      lp.visitedAt      ?? undefined,
               bestCode:       lp.bestCode       ?? undefined,
               selectedOption: lp.selectedOption ?? undefined,
+              bestScore:      lp.bestScore      ?? undefined,
             }
           } else if (lp.completed && !local.completed) {
             // Server knows this is complete — promote it locally.
@@ -171,7 +207,11 @@ export const useBasicsStore = create<BasicsState>()(
               visitedAt:      local.visitedAt ?? lp.visitedAt ?? undefined,
               bestCode:       lp.bestCode ?? local.bestCode,
               selectedOption: lp.selectedOption ?? local.selectedOption,
+              bestScore:      Math.max(lp.bestScore ?? 0, local.bestScore ?? 0) || undefined,
             }
+          } else if (local.completed && lp.bestScore != null && lp.bestScore > (local.bestScore ?? 0)) {
+            // For progress-tests: server has a higher score — promote it.
+            merged[lp.lessonId] = { ...local, bestScore: lp.bestScore }
           }
           // Otherwise local already complete or both incomplete — keep local.
         }
