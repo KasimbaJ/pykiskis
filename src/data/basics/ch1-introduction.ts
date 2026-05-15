@@ -3,8 +3,10 @@ import { getStartedModule }         from './ch1/get-started'
 import { numbersAndStringsModule }  from './ch1/numbers-and-strings'
 import { commentsModule }           from './ch1/comments'
 import { variablesModule }          from './ch1/variables'
+import { outputModule }             from './ch1/output'
 import { dataConversionModule }     from './ch1/data-conversion'
 import { getUserInputModule }       from './ch1/get-user-input'
+import { introductionExamplesModule } from './ch1/introduction-examples'
 import { recapModule }              from './ch1/recap'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -15,24 +17,10 @@ import { recapModule }              from './ch1/recap'
 // with empty lesson arrays so the chapter / drawer structure still renders.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const outputModule: Module = {
-  slug: 'output',
-  title: 'Output',
-  summary: 'Display results to the user.',
-  lessons: [],
-}
-
 const arithmeticOperatorsModule: Module = {
   slug: 'arithmetic-operators',
   title: 'Arithmetic Operators',
   summary: 'Add, subtract, multiply, divide, and more.',
-  lessons: [],
-}
-
-const introductionExamplesModule: Module = {
-  slug: 'introduction-examples',
-  title: 'Introduction Examples',
-  summary: 'Apply what you learned to small problems.',
   lessons: [],
 }
 
