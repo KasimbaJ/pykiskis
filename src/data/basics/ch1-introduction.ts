@@ -1,12 +1,64 @@
-import type { Chapter } from '../../types/basics'
+import type { Chapter, Module } from '../../types/basics'
+import { getStartedModule }         from './ch1/get-started'
+import { numbersAndStringsModule }  from './ch1/numbers-and-strings'
+import { commentsModule }           from './ch1/comments'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 1: Introduction
 //
-// Full content will be transcribed from the source PDF in a follow-up commit.
-// For now this is a skeleton with the 10 module slugs and a single placeholder
-// lesson in each, so routing and navigation can be validated end-to-end.
+// Each module lives in its own file under ./ch1/ to keep file sizes
+// manageable.  Modules that haven't been transcribed yet are stubbed below
+// with empty lesson arrays so the chapter / drawer structure still renders.
 // ─────────────────────────────────────────────────────────────────────────────
+
+const variablesModule: Module = {
+  slug: 'variables',
+  title: 'Variables',
+  summary: 'Store and reuse values in your programs.',
+  lessons: [],
+}
+
+const outputModule: Module = {
+  slug: 'output',
+  title: 'Output',
+  summary: 'Display results to the user.',
+  lessons: [],
+}
+
+const arithmeticOperatorsModule: Module = {
+  slug: 'arithmetic-operators',
+  title: 'Arithmetic Operators',
+  summary: 'Add, subtract, multiply, divide, and more.',
+  lessons: [],
+}
+
+const dataConversionModule: Module = {
+  slug: 'data-conversion',
+  title: 'Data Conversion',
+  summary: 'Convert between numbers and strings.',
+  lessons: [],
+}
+
+const getUserInputModule: Module = {
+  slug: 'get-user-input',
+  title: 'Get User Input',
+  summary: 'Read input from the user with input().',
+  lessons: [],
+}
+
+const introductionExamplesModule: Module = {
+  slug: 'introduction-examples',
+  title: 'Introduction Examples',
+  summary: 'Apply what you learned to small problems.',
+  lessons: [],
+}
+
+const recapModule: Module = {
+  slug: 'recap',
+  title: 'Recap',
+  summary: 'Wrap up Chapter 1.',
+  lessons: [],
+}
 
 export const ch1: Chapter = {
   id: 1,
@@ -19,32 +71,15 @@ export const ch1: Chapter = {
     'input from the user.',
   color: 'indigo',
   modules: [
-    {
-      slug: 'get-started',
-      title: 'Get Started',
-      summary: 'Run your first Python program.',
-      lessons: [
-        {
-          slug: 'placeholder',
-          title: 'Coming soon',
-          type: 'theory',
-          blocks: [
-            {
-              kind: 'paragraph',
-              text: 'Lesson content will appear here once Chapter 1 is fully transcribed from the source material.',
-            },
-          ],
-        },
-      ],
-    },
-    { slug: 'numbers-and-strings',  title: 'Numbers and Strings',  lessons: [] },
-    { slug: 'comments',             title: 'Comments',             lessons: [] },
-    { slug: 'variables',            title: 'Variables',            lessons: [] },
-    { slug: 'output',               title: 'Output',               lessons: [] },
-    { slug: 'arithmetic-operators', title: 'Arithmetic Operators', lessons: [] },
-    { slug: 'data-conversion',      title: 'Data Conversion',      lessons: [] },
-    { slug: 'get-user-input',       title: 'Get User Input',       lessons: [] },
-    { slug: 'introduction-examples', title: 'Introduction Examples', lessons: [] },
-    { slug: 'recap',                title: 'Recap',                lessons: [] },
+    getStartedModule,
+    numbersAndStringsModule,
+    commentsModule,
+    variablesModule,
+    outputModule,
+    arithmeticOperatorsModule,
+    dataConversionModule,
+    getUserInputModule,
+    introductionExamplesModule,
+    recapModule,
   ],
 }
