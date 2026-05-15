@@ -1,19 +1,24 @@
 import { SignIn } from '@clerk/clerk-react'
-import { Code2 } from 'lucide-react'
+import AuthLayout from '../components/auth/AuthLayout'
 
 export default function SignInPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex flex-col items-center justify-center p-4 gap-6">
-      <div className="flex items-center gap-2">
-        <Code2 className="w-8 h-8 text-blue-600" />
-        <span className="text-2xl font-bold text-slate-800">Pykiškis</span>
-      </div>
+    <AuthLayout mode="signin">
       <SignIn
         routing="path"
         path="/sign-in"
         signUpUrl="/sign-up"
         fallbackRedirectUrl="/"
+        appearance={{
+          elements: {
+            card: 'shadow-none border-0 bg-transparent',
+            rootBox: 'w-full',
+            cardBox: 'w-full',
+            formButtonPrimary:
+              'bg-blue-600 hover:bg-blue-700 text-sm normal-case font-medium',
+          },
+        }}
       />
-    </div>
+    </AuthLayout>
   )
 }
