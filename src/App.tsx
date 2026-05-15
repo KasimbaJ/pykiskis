@@ -3,16 +3,31 @@ import { Outlet } from 'react-router-dom'
 import { SignedIn, SignedOut, RedirectToSignIn, useUser, useAuth } from '@clerk/clerk-react'
 import { useProgressStore } from './stores/useProgressStore'
 import { useBasicsStore } from './stores/useBasicsStore'
-import { loadProgress, loadBasicsProgress } from './services/progressApi'
+import { loadProgress, loadBasicsProgress, registerStudent } from './services/progressApi'
 
-// Keeps the Zustand studentName in sync with whoever is signed in via Clerk
+// Keeps the Zustand studentName in sync with whoever is signed in via Clerk,
+// AND idempotently registers the student in D1 (so they appear on the Teacher
+// Dashboard before completing their first level).
 function SyncClerkUser() {
   const { user } = useUser()
+  const { getToken } = useAuth()
   const setStudentName = useProgressStore((s) => s.setStudentName)
+
+  const displayName = user?.fullName || user?.firstName || ''
+
   useEffect(() => {
-    if (user?.fullName) setStudentName(user.fullName)
-    else if (user?.firstName) setStudentName(user.firstName)
-  }, [user?.fullName, user?.firstName, setStudentName])
+    if (!displayName) return
+    setStudentName(displayName)
+
+    // Fire-and-forget D1 registration.  Idempotent: server upserts.
+    getToken()
+      .then((token) => {
+        if (!token) return
+        return registerStudent(token, displayName)
+      })
+      .catch((e) => console.error('[register] failed:', e))
+  }, [displayName, getToken, setStudentName])
+
   return null
 }
 

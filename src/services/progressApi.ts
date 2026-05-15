@@ -26,6 +26,22 @@ export async function syncLevelCompletion(
   })
 }
 
+/**
+ * Idempotently register the signed-in user in the D1 `students` table so
+ * they show up on the Teacher Dashboard immediately — before they complete
+ * their first level.  Safe to call repeatedly; the server upserts.
+ */
+export async function registerStudent(token: string, name: string): Promise<void> {
+  await fetch('/api/student-register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name }),
+  })
+}
+
 /** Load the signed-in student's own progress from D1. */
 export async function loadProgress(token: string): Promise<ServerProgress> {
   const res = await fetch('/api/progress', {
