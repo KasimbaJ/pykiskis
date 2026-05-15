@@ -94,8 +94,9 @@ export default function AuthLayout({ mode, children }: Props) {
             </div>
           </section>
 
-          {/* Auth column */}
-          <section className="order-1 lg:order-2 flex flex-col justify-center items-center lg:items-start">
+          {/* Auth column — keep the widget centered within its column at all
+              viewport widths so it visually balances the hero on the left. */}
+          <section className="order-1 lg:order-2 flex flex-col justify-center items-center">
             <div className="w-full max-w-md">
               <h2 className="text-2xl font-bold text-slate-900 mb-1">
                 {mode === 'signin' ? 'Welcome back' : 'Create your account'}
