@@ -92,6 +92,7 @@ export const recapModule: Module = {
             'first_name = input("Enter your first name: ")\n' +
             'last_name = input("Enter your last name: ")\n\n' +
             'print(f"Hey {first_name} {last_name}!")',
+          inputValues: ['Ada', 'Lovelace'],
         },
         { kind: 'heading', level: 3, text: 'Data conversion' },
         {
@@ -110,6 +111,7 @@ export const recapModule: Module = {
             'power = x ** y\n\n' +
             'print(f"Remainder: {remainder}")\n' +
             'print(f"Power: {power}")',
+          inputValues: ['10', '3'],
         },
         {
           kind: 'paragraph',

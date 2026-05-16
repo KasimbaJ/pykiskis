@@ -75,7 +75,13 @@ export default function ContentBlockRenderer({ block }: Props) {
       )
 
     case 'runnable':
-      return <RunnableBlock code={block.code} caption={block.caption} />
+      return (
+        <RunnableBlock
+          code={block.code}
+          caption={block.caption}
+          inputValues={block.inputValues}
+        />
+      )
 
     case 'figure':
       return (

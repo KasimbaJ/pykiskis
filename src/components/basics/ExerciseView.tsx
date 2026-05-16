@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { usePyodide } from '../../hooks/usePyodide'
 import { runPython } from '../../services/pythonRunner'
+import { cleanPythonError } from '../../services/pythonError'
 import type { ExerciseLesson } from '../../types/basics'
 import { renderInline } from './inline'
 
@@ -89,10 +90,11 @@ export default function ExerciseView({
     setOutput('')
     const result = await runPython(code, lesson.inputValues ?? [], {
       interactive: !(lesson.inputValues && lesson.inputValues.length > 0),
+      echoInput: true,
     })
     setIsRunning(false)
     setOutput(result.output)
-    if (result.error) setError(result.error)
+    if (result.error) setError(cleanPythonError(result.error))
   }
 
   const submit = async () => {
@@ -108,7 +110,7 @@ export default function ExerciseView({
 
     if (result.error) {
       // Python raised an error — definitely not a pass.
-      setError(result.error)
+      setError(cleanPythonError(result.error))
       setFeedback('error')
       return
     }

@@ -4,56 +4,9 @@ import { useEditorStore } from '../stores/useEditorStore'
 import { useProgressStore } from '../stores/useProgressStore'
 import { runPython, setInputRequestHandler } from '../services/pythonRunner'
 import { validateOutput, validateTheoryAnswer } from '../services/outputValidator'
+import { cleanPythonError } from '../services/pythonError'
 import { syncLevelCompletion } from '../services/progressApi'
 import type { Level } from '../types'
-
-// ── Error cleaning ────────────────────────────────────────────────────────────
-/**
- * Strip Pyodide/CPython internal frames from a Python traceback so students
- * only see lines that reference their own code.
- */
-function cleanPythonError(raw: string): string {
-  if (!raw) return raw
-  const lines = raw.split('\n')
-  const output: string[] = []
-  let i = 0
-
-  while (i < lines.length) {
-    const line = lines[i]
-
-    // Keep "Traceback…" header as-is
-    if (line.startsWith('Traceback (most recent call last):')) {
-      output.push(line)
-      i++
-      continue
-    }
-
-    // Frame entry — skip Pyodide / CPython internal files
-    if (line.startsWith('  File ')) {
-      const isInternal =
-        /\/lib\/python/.test(line) ||
-        /site-packages\/pyodide/.test(line) ||
-        /_bootstrap/.test(line) ||
-        /importlib/.test(line) ||
-        /\/pyodide\//.test(line)
-
-      if (isInternal) {
-        // Skip frame header + any indented source-snippet lines below it
-        i++
-        while (i < lines.length && lines[i].startsWith('    ')) i++
-        continue
-      }
-    }
-
-    output.push(line)
-    i++
-  }
-
-  // Remove trailing blank lines
-  while (output.length && output[output.length - 1].trim() === '') output.pop()
-
-  return output.join('\n')
-}
 
 // ── Hook ──────────────────────────────────────────────────────────────────────
 export function useCodeExecution(level: Level) {

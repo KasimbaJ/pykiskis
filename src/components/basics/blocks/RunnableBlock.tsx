@@ -6,10 +6,13 @@ import { EditorView } from '@codemirror/view'
 import { Play, Loader2 } from 'lucide-react'
 import { usePyodide } from '../../../hooks/usePyodide'
 import { runPython } from '../../../services/pythonRunner'
+import { cleanPythonError } from '../../../services/pythonError'
 
 interface Props {
   code: string
   caption?: string
+  /** Pre-supplied stdin for demos that call input(). */
+  inputValues?: string[]
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -18,9 +21,13 @@ interface Props {
 // Used inside theory lessons to let learners execute illustrative examples
 // without leaving the page.  Reuses the shared Pyodide worker; output renders
 // directly underneath the snippet.
+//
+// Runs non-interactively (no input box) but with echoInput on, so demos that
+// call input() consume `inputValues` and print a real terminal-style
+// transcript ("Enter your name: Alice").
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function RunnableBlock({ code, caption }: Props) {
+export default function RunnableBlock({ code, caption, inputValues }: Props) {
   const { isLoading: pyodideLoading, progress } = usePyodide()
   const [isRunning, setIsRunning] = useState(false)
   const [output, setOutput] = useState<string | null>(null)
@@ -31,12 +38,13 @@ export default function RunnableBlock({ code, caption }: Props) {
     setIsRunning(true)
     setError(null)
     setOutput('')
-    // Non-interactive: theory demos shouldn't prompt for stdin.  If the snippet
-    // happens to call input(), it falls back to mock mode (returns "").
-    const result = await runPython(code, [], { interactive: false })
+    const result = await runPython(code, inputValues ?? [], {
+      interactive: false,
+      echoInput: true,
+    })
     setIsRunning(false)
     setOutput(result.output)
-    if (result.error) setError(result.error)
+    if (result.error) setError(cleanPythonError(result.error))
   }
 
   return (

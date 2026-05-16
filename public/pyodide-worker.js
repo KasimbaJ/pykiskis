@@ -71,7 +71,7 @@ async function loadRequiredPackages(code) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 self.onmessage = async function (event) {
-  const { type, code, inputValues, syncBuffer, dataBuffer } = event.data
+  const { type, code, inputValues, syncBuffer, dataBuffer, echoInput } = event.data
   if (type !== 'run' || !pyodide) return
 
   // Store shared buffers for this run (null means fallback/mock mode)
@@ -160,24 +160,29 @@ exec(${JSON.stringify(code)}, {'__builtins__': _bi, 'input': _pyk_input})
     } else {
       // Fallback mode: mock input() with pre-supplied values.
       //
-      // NOTE: the mock deliberately does NOT echo the prompt to stdout.
-      // In non-interactive (grading) mode there is no input box, so the
-      // prompt is not "output" — echoing it would pollute the captured
-      // stdout and break exact-match validation against an expected output
-      // that only contains the program's print() results.
+      // Two sub-modes, controlled by echoInput:
+      //  • echoInput = false (grading): the mock does NOT echo the prompt.
+      //    The captured stdout is exactly the program's print() output, so
+      //    exact-match validation works against a clean expected output.
+      //  • echoInput = true (theory demos): the mock echoes "prompt + value"
+      //    to stdout so the demo reads like a real terminal transcript.
       const inputs = JSON.stringify(inputValues && inputValues.length > 0 ? inputValues : [])
+      const echo = echoInput ? 'True' : 'False'
       pyodide.runPython(`
-import builtins as _bi
+import builtins as _bi, sys
 
 _iv = ${inputs}
 _ii = 0
+_echo = ${echo}
 
 def _mock_input(prompt=''):
     global _ii
+    v = ''
     if _ii < len(_iv):
         v = _iv[_ii]; _ii += 1
-        return v
-    return ''
+    if _echo:
+        sys.stdout.write(str(prompt) + str(v) + '\\n')
+    return v
 
 exec(${JSON.stringify(code)}, {'__builtins__': _bi, 'input': _mock_input})
 `)

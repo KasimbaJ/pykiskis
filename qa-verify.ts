@@ -107,6 +107,35 @@ for (const module of ch1.modules) {
       }
     }
 
+    // ── Runnable blocks in theory lessons ───────────────────────────────────
+    if (lesson.type === 'theory') {
+      // A runnable that errors is acceptable when the lesson itself is about
+      // that error — intentionally-broken demos teach by failing.  Detected
+      // via an error shown in a figure OR described in the lesson prose.
+      const lessonShowsError = lesson.blocks.some(
+        (b) =>
+          (b.kind === 'figure' && /error|traceback/i.test(b.output)) ||
+          (b.kind === 'paragraph' && /\berror\b/i.test(b.text)),
+      )
+      for (const block of lesson.blocks) {
+        if (block.kind !== 'runnable') continue
+        const where = `${module.slug}/${lesson.slug}`
+        const usesInput = /\binput\s*\(/.test(block.code)
+        const code = usesInput
+          ? mockWrap(block.code, block.inputValues ?? [])
+          : block.code
+        const { err } = runPy(code)
+        if (err && !lessonShowsError) {
+          fails.push(
+            `RUNNABLE ${where} — demo errors with the given inputValues:\n` +
+            `    ${err.split('\n').filter(Boolean).slice(-1)[0]}`,
+          )
+        } else {
+          pass++
+        }
+      }
+    }
+
     // ── Figure blocks in theory lessons ─────────────────────────────────────
     if (lesson.type === 'theory') {
       for (const block of lesson.blocks) {

@@ -64,6 +64,7 @@ export const introductionExamplesModule: Module = {
             '# Compute distance in miles\n' +
             'miles = km * ratio\n' +
             'print(f"Distance in miles: {miles}")',
+          inputValues: ['100'],
         },
         { kind: 'paragraph', text: "Here's how this program works." },
         { kind: 'paragraph', text: 'In line 6: `km = float(input("Enter distance in km: "))`' },

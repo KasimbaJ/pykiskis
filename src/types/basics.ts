@@ -193,6 +193,13 @@ export interface RunnableBlock {
   code: string
   /** Optional caption shown above the snippet. */
   caption?: string
+  /**
+   * Pre-supplied stdin values for demos that call input().  Required for any
+   * runnable snippet using input() — without them the demo would receive an
+   * empty string and crash (e.g. float('')).  The values are echoed into the
+   * output alongside the prompt so the demo reads like a real terminal.
+   */
+  inputValues?: string[]
 }
 
 export interface FigureBlock {

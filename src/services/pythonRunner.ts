@@ -152,6 +152,12 @@ interface RunOptions {
   interactive?: boolean
   /** Milliseconds before the run is force-killed (default 30 000). */
   timeoutMs?: number
+  /**
+   * Non-interactive only.  When true, the mock input() echoes
+   * "prompt + value" to stdout so a theory demo reads like a real terminal.
+   * Leave false (default) for grading so captured output stays clean.
+   */
+  echoInput?: boolean
 }
 
 export function runPython(
@@ -159,7 +165,7 @@ export function runPython(
   inputValues: string[] = [],
   opts:        RunOptions = {},
 ): Promise<ExecutionResult> {
-  const { interactive = true, timeoutMs = 30_000 } = opts
+  const { interactive = true, timeoutMs = 30_000, echoInput = false } = opts
 
   return new Promise((resolve) => {
     if (!worker || !isReady) {
@@ -223,6 +229,7 @@ export function runPython(
       type: 'run',
       code,
       inputValues,
+      echoInput,
       syncBuffer: useInteractive ? syncBuffer : null,
       dataBuffer: useInteractive ? dataSAB    : null,
     })

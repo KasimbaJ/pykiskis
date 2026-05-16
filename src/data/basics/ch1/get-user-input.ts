@@ -42,6 +42,7 @@ export const getUserInputModule: Module = {
         {
           kind: 'runnable',
           code: 'name = input("Enter your name: ")\nprint("Your name is", name)',
+          inputValues: ['James'],
         },
         {
           kind: 'paragraph',
@@ -80,6 +81,7 @@ export const getUserInputModule: Module = {
         {
           kind: 'runnable',
           code: 'full_name = input()\nprint("Full Name:", full_name)',
+          inputValues: ['Micheal Smith'],
         },
         {
           kind: 'figure',
@@ -158,6 +160,9 @@ export const getUserInputModule: Module = {
             'number2 = input("Enter another number: ")\n\n' +
             'product = number1 * number2\n' +
             'print("Product:", product)',
+          // Intentionally broken demo: multiplying two strings raises a
+          // TypeError — that's the point of this lesson.
+          inputValues: ['5', '10'],
         },
         {
           kind: 'figure',
@@ -219,6 +224,7 @@ export const getUserInputModule: Module = {
             'number2 = float(number2)\n\n' +
             'product = number1 * number2\n' +
             'print("Product:", product)',
+          inputValues: ['5', '10'],
         },
         {
           kind: 'figure',
@@ -260,6 +266,7 @@ export const getUserInputModule: Module = {
             'number2 = float(input("Enter another number: "))\n\n' +
             'product = number1 * number2\n' +
             'print("Product:", product)',
+          inputValues: ['5', '10'],
         },
         {
           kind: 'paragraph',
