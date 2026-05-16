@@ -107,9 +107,15 @@ export interface ProgressTestLesson extends LessonBase {
   type: 'progress-test'
   /** Short intro shown above the questions. */
   intro: string
-  /** Suggested passing score (typically 7).  Shown to the learner but not enforced. */
+  /** Suggested passing score (out of 10).  Shown to the learner but not enforced. */
   passingScore: number
-  questions: ProgressTestQuestion[]
+  /** How many questions to present per attempt (drawn randomly from the banks). */
+  presentCount: number
+  /**
+   * One bank, or several to draw evenly from.  Module tests have a single bank;
+   * the Final Test lists all four so it can pull an even share from each.
+   */
+  questionBanks: ProgressTestQuestion[][]
 }
 
 export type ProgressTestQuestion =
@@ -138,6 +144,12 @@ export interface PredictOutputQuestion extends QuestionBase {
   code: string
   /** Single expected output string (compared after trimEnd / CRLF-normalise). */
   expectedOutput: string
+  /**
+   * Pre-supplied stdin for snippets that call input().  Used only by the QA
+   * harness to run the snippet through real Python — the learner predicts the
+   * output rather than executing the code, so this never reaches the UI.
+   */
+  inputValues?: string[]
 }
 
 export interface FillInBlankQuestion extends QuestionBase {

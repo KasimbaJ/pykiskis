@@ -14,12 +14,14 @@ import {
   progressTest2Module,
   progressTest3Module,
   progressTest4Module,
+  finalTestModule,
 } from './ch1/progress-tests'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 1: Introduction
 //
-// 10 content modules + 4 checkpoint progress tests (after modules 2, 4, 6, 8).
+// 10 content modules + 4 checkpoint progress tests (after modules 2, 4, 6, 8)
+// + a Final Test after the Recap.
 // Each module lives in its own file under ./ch1/ to keep file sizes manageable.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -48,5 +50,6 @@ export const ch1: Chapter = {
     progressTest4Module,        //   ↳ checkpoint after module 8
     introductionExamplesModule, // 9
     recapModule,                // 10
+    finalTestModule,            //   ↳ Chapter 1 Final Test, after the Recap
   ],
 }

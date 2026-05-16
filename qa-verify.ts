@@ -83,16 +83,17 @@ for (const module of ch1.modules) {
 
     // ── Progress-test predict-output questions ──────────────────────────────
     if (lesson.type === 'progress-test') {
-      for (const q of lesson.questions) {
+      for (const q of lesson.questionBanks.flat()) {
         if (q.qType !== 'predict-output') continue
         const usesInput = /\binput\s*\(/.test(q.code)
         const where = `${module.slug}/${q.id}`
-        if (usesInput) {
-          // No inputValues on test questions — flag for manual review.
-          fails.push(`PREDICT-OUTPUT ${where} — uses input(); needs MANUAL review (expected ${JSON.stringify(q.expectedOutput)})`)
+        if (usesInput && !q.inputValues) {
+          // input() with no inputValues can't be auto-run — add inputValues.
+          fails.push(`PREDICT-OUTPUT ${where} — uses input() but has no inputValues; add inputValues so it can be verified (expected ${JSON.stringify(q.expectedOutput)})`)
           continue
         }
-        const { out, err } = runPy(q.code)
+        const code = usesInput ? mockWrap(q.code, q.inputValues ?? []) : q.code
+        const { out, err } = runPy(code)
         if (err) {
           fails.push(`PREDICT-OUTPUT ${where} — code raised an error:\n    ${err.split('\n').filter(Boolean).slice(-1)[0]}`)
         } else if (normalize(out) !== normalize(q.expectedOutput)) {

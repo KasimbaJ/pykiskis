@@ -16,8 +16,10 @@ import { renderInline } from './inline'
 // ─────────────────────────────────────────────────────────────────────────────
 // ProgressTestView — multi-question checkpoint scored out of 10.
 //
-// All questions show at once; learner answers each then hits "Submit Test".
-// Score appears with per-question feedback.  "Retake" resets answers but
+// Each attempt presents a fresh random draw from the lesson's question bank(s)
+// — 10 for a module test, 20 for the Final Test.  All questions show at once;
+// the learner answers each then hits "Submit Test".  Score appears with
+// per-question feedback.  "Retake" re-rolls the draw and resets answers but
 // keeps the bestScore in the parent store.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -48,8 +50,34 @@ function isCorrect(q: ProgressTestQuestion, answer: Answer | undefined): boolean
   }
 }
 
+// ── Question selection ───────────────────────────────────────────────────────
+
+/** Fisher–Yates shuffle — returns a new array, leaves the input untouched. */
+function shuffle<T>(items: readonly T[]): T[] {
+  const a = [...items]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+/**
+ * Draw the questions for one attempt: an even share from each bank — 10/1 for
+ * a module test, 20/4 for the Final Test — then shuffle the combined set so
+ * the banks are interleaved rather than grouped.
+ */
+function selectQuestions(lesson: ProgressTestLesson): ProgressTestQuestion[] {
+  const banks = lesson.questionBanks
+  const perBank = Math.floor(lesson.presentCount / banks.length)
+  return shuffle(banks.flatMap((bank) => shuffle(bank).slice(0, perBank)))
+}
+
 export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props) {
-  const total = lesson.questions.length
+  // A fresh random draw from the bank(s) — re-rolled on Retake.
+  const [questions, setQuestions] = useState<ProgressTestQuestion[]>(
+    () => selectQuestions(lesson),
+  )
   const [answers, setAnswers] = useState<Record<string, Answer>>({})
   const [submitted, setSubmitted] = useState(false)
   const [showResults, setShowResults] = useState(false)
@@ -58,12 +86,16 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
   // Note: LessonPage gives this component a `key` so it fully remounts when
   // the learner navigates to a different test — no reset effect needed.
 
-  const score = useMemo(
-    () => lesson.questions.filter((q) => isCorrect(q, answers[q.id])).length,
-    [lesson.questions, answers],
-  )
+  const total = questions.length
 
-  const allAnswered = lesson.questions.every((q) => {
+  const correct = useMemo(
+    () => questions.filter((q) => isCorrect(q, answers[q.id])).length,
+    [questions, answers],
+  )
+  // Every test is graded out of 10, however many questions are shown.
+  const score10 = Math.round((correct / total) * 10)
+
+  const allAnswered = questions.every((q) => {
     const v = answers[q.id]
     return v != null && String(v).trim() !== ''
   })
@@ -76,11 +108,12 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
       setSubmitted(true)
       setShowResults(true)
       setSubmitting(false)
-      onSubmit?.(score)
+      onSubmit?.(score10)
     }, 250)
   }
 
   const retake = () => {
+    setQuestions(selectQuestions(lesson))
     setAnswers({})
     setSubmitted(false)
     setShowResults(false)
@@ -97,19 +130,19 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
           </div>
           {bestScore != null && (
             <span className="text-xs font-medium text-indigo-700 dark:text-indigo-300">
-              Best: <strong>{bestScore}/{total}</strong>
+              Best: <strong>{bestScore}/10</strong>
             </span>
           )}
         </div>
         <p className="text-sm text-indigo-900 dark:text-indigo-200">{renderInline(lesson.intro)}</p>
         <p className="text-xs mt-2 text-indigo-700 dark:text-indigo-300">
-          {total} questions · suggested passing score {lesson.passingScore}/{total} · unlimited retakes
+          {total} questions · graded out of 10 · suggested passing score {lesson.passingScore}/10 · unlimited retakes
         </p>
       </div>
 
       {/* Questions */}
       <ol className="space-y-6">
-        {lesson.questions.map((q, i) => (
+        {questions.map((q, i) => (
           <li
             key={q.id}
             className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4"
@@ -166,10 +199,11 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
           <>
             <div>
               <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">
-                You scored <span className="text-indigo-600">{score}/{total}</span>
+                {correct} / {total} correct · Score:{' '}
+                <span className="text-indigo-600">{score10} / 10</span>
               </p>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                {score >= lesson.passingScore
+                {score10 >= lesson.passingScore
                   ? "Nice work — that's a pass!"
                   : 'Retake the test to improve your grade.'}
               </p>
