@@ -289,10 +289,13 @@ export const outputModule: Module = {
         '- Create a variable `author` with the value `"Fitzgerald"`.\n' +
         '- Use an f-string to display the output in the format below.',
       starterCode:
-        'title = "The Great Gatsby"\n' +
-        'author = "Fitzgerald"\n\n' +
-        '# Write your code below\n' +
-        'print(f"{title} by {author}.")\n',
+        '# Replace ___ with your code below\n\n' +
+        '# Create the title variable\n' +
+        'title = ___\n\n' +
+        '# Create the author variable\n' +
+        'author = ___\n\n' +
+        '# Use an f-string to print:  <title> by <author>.\n' +
+        '___\n',
       expectedOutput: 'The Great Gatsby by Fitzgerald.',
       validationMode: 'exact',
       solution:

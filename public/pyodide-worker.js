@@ -160,18 +160,22 @@ def _pyk_input(prompt=''):
 exec(${JSON.stringify(code)}, {'__builtins__': _bi, 'input': _pyk_input})
 `)
     } else {
-      // Fallback mode: mock input() with pre-supplied values
+      // Fallback mode: mock input() with pre-supplied values.
+      //
+      // NOTE: the mock deliberately does NOT echo the prompt to stdout.
+      // In non-interactive (grading) mode there is no input box, so the
+      // prompt is not "output" — echoing it would pollute the captured
+      // stdout and break exact-match validation against an expected output
+      // that only contains the program's print() results.
       const inputs = JSON.stringify(inputValues && inputValues.length > 0 ? inputValues : [])
       pyodide.runPython(`
-import builtins as _bi, sys
+import builtins as _bi
 
 _iv = ${inputs}
 _ii = 0
 
 def _mock_input(prompt=''):
     global _ii
-    if prompt:
-        sys.stdout.write(str(prompt))
     if _ii < len(_iv):
         v = _iv[_ii]; _ii += 1
         return v

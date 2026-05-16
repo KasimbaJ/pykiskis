@@ -97,12 +97,12 @@ export const introductionExamplesModule: Module = {
         '- Print the result.',
       starterCode:
         '# Replace ___ with your code below\n\n' +
-        '# Get temperature in degree celsius from the user\n' +
-        'celsius = float(input("Enter temp in celsius"))\n\n' +
-        '# Convert it to degree fahrenheit using the formula\n' +
-        'fahrenheit = (celsius*1.8) +32\n\n' +
-        '# Print the degree in fahrenheit\n' +
-        'print(fahrenheit)\n',
+        '# Get temperature in degrees Celsius from the user\n' +
+        'celsius = ___\n\n' +
+        '# Convert it to degrees Fahrenheit using the formula\n' +
+        'fahrenheit = ___\n\n' +
+        '# Print the temperature in Fahrenheit\n' +
+        '___\n',
       expectedOutput: '95.9',
       validationMode: 'exact',
       solution:
@@ -156,14 +156,14 @@ export const introductionExamplesModule: Module = {
         '**Hint:** To find the square root of a number, let\'s say **36**, you can use `36**(1/2)`.',
       starterCode:
         '# Replace ___ with your code below\n\n' +
-        '# Get three sides of a triangle\n' +
-        'a = int(input("Enter the first side: "))\n' +
-        'b = int(input("Enter the second side: "))\n' +
-        'c = int(input("Enter the third side: "))\n\n' +
+        '# Get three sides of a triangle as integer input\n' +
+        'a = ___\n' +
+        'b = ___\n' +
+        'c = ___\n\n' +
         '# Compute the semiperimeter\n' +
-        's = (a + b + c)/2\n\n' +
-        '# Compute area and print it\n' +
-        'area = (s*(s-a)*(s-b)*(s-c))**(1/2)\n' +
+        's = ___\n\n' +
+        '# Compute the area and print it\n' +
+        'area = ___\n' +
         'print(area)\n',
       expectedOutput: '6.0',
       validationMode: 'exact',

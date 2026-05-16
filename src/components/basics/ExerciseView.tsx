@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { python } from '@codemirror/lang-python'
 import { oneDark } from '@codemirror/theme-one-dark'
-import { Play, Loader2, Send, RotateCcw, Check } from 'lucide-react'
+import {
+  Play, Loader2, Send, RotateCcw, Check,
+  CheckCircle2, XCircle, ArrowRight,
+} from 'lucide-react'
 import { usePyodide } from '../../hooks/usePyodide'
 import { runPython } from '../../services/pythonRunner'
 import type { ExerciseLesson } from '../../types/basics'
@@ -61,6 +64,8 @@ export default function ExerciseView({
   const [error, setError] = useState<string | null>(null)
   const [isRunning, setIsRunning] = useState(false)
   const [completedNow, setCompletedNow] = useState(false)
+  /** Feedback shown after a Check Code submission. null = no modal. */
+  const [feedback, setFeedback] = useState<'success' | 'error' | null>(null)
 
   // Reset editor when the lesson changes (navigation between exercises).
   useEffect(() => {
@@ -68,12 +73,14 @@ export default function ExerciseView({
     setOutput(null)
     setError(null)
     setCompletedNow(false)
+    setFeedback(null)
   }, [lesson.slug, initialCode, lesson.starterCode])
 
   const reset = () => {
     setCode(lesson.starterCode)
     setOutput(null)
     setError(null)
+    setFeedback(null)
   }
 
   const validate = (result: { output: string; error: string | null }): boolean => {
@@ -99,17 +106,25 @@ export default function ExerciseView({
     setIsRunning(true)
     setError(null)
     setOutput('')
+    setFeedback(null)
     onAttempt?.()
     const result = await runPython(code, lesson.inputValues ?? [], { interactive: false })
     setIsRunning(false)
     setOutput(result.output)
+
     if (result.error) {
+      // Python raised an error — definitely not a pass.
       setError(result.error)
+      setFeedback('error')
       return
     }
     if (validate(result)) {
       setCompletedNow(true)
+      setFeedback('success')
       onCorrect?.(code)
+    } else {
+      // Ran fine but output doesn't match the expected output.
+      setFeedback('error')
     }
   }
 
@@ -217,6 +232,83 @@ export default function ExerciseView({
         <div className="flex items-center gap-2 rounded-lg border-l-4 border-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-200">
           <Check className="w-4 h-4 flex-shrink-0 text-emerald-500" />
           <span>Nice work — exercise complete.</span>
+        </div>
+      )}
+
+      {/* Feedback modal — shown after every Check Code submission */}
+      {feedback && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-lg w-full p-6">
+            <div className="text-center mb-3">
+              {feedback === 'success' ? (
+                <CheckCircle2 className="w-14 h-14 text-emerald-500 mx-auto" />
+              ) : (
+                <XCircle className="w-14 h-14 text-rose-500 mx-auto" />
+              )}
+            </div>
+            <h2
+              className={`text-2xl font-bold text-center mb-2 ${
+                feedback === 'success' ? 'text-emerald-700' : 'text-rose-700'
+              }`}
+            >
+              {feedback === 'success' ? 'Correct!' : 'Not Quite Right'}
+            </h2>
+            <p className="text-slate-600 dark:text-slate-300 text-center mb-4">
+              {feedback === 'success'
+                ? 'Great work — your output matches. Hit Next to continue.'
+                : error
+                  ? 'Your code raised an error. Check the Output panel and try again.'
+                  : "Your output doesn't match the expected output yet. Compare them below and try again."}
+            </p>
+
+            {/* Wrong-but-ran: show expected vs actual for comparison */}
+            {feedback === 'error' && !error && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                    Expected
+                  </p>
+                  <pre className="text-xs font-mono whitespace-pre-wrap break-words rounded bg-slate-900 text-emerald-300 p-2 min-h-[3rem]">
+                    {lesson.expectedOutput}
+                  </pre>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                    Your output
+                  </p>
+                  <pre className="text-xs font-mono whitespace-pre-wrap break-words rounded bg-slate-900 text-rose-300 p-2 min-h-[3rem]">
+                    {output || '(no output)'}
+                  </pre>
+                </div>
+              </div>
+            )}
+
+            <div className="flex gap-3 justify-center">
+              {feedback === 'success' ? (
+                <button
+                  onClick={() => setFeedback(null)}
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition-colors flex items-center gap-2"
+                >
+                  Continue <ArrowRight className="w-4 h-4" />
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setFeedback(null)}
+                    className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                  >
+                    Keep Trying
+                  </button>
+                  <button
+                    onClick={() => { setFeedback(null); reset() }}
+                    className="px-4 py-2 bg-slate-600 text-white rounded-lg font-medium hover:bg-slate-700 transition-colors flex items-center gap-2"
+                  >
+                    <RotateCcw className="w-4 h-4" /> Reset Code
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>

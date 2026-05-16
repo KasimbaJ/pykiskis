@@ -315,13 +315,13 @@ export const getUserInputModule: Module = {
       ],
       starterCode:
         '# Replace ___ with your code below\n\n' +
-        '# Get two floating-point numbers as inputs\n' +
-        'number1 = float(input("Enter a number: "))\n' +
-        'number2 = float(input("Enter another number: "))\n\n' +
-        '# Add the numbers\n' +
-        'total = number1 + number2\n\n' +
+        '# Get two numbers as input and convert them to float\n' +
+        'number1 = ___\n' +
+        'number2 = ___\n\n' +
+        '# Add the numbers and store the result\n' +
+        'result = ___\n\n' +
         '# Print the square of result\n' +
-        'print(total ** 2)\n',
+        '___\n',
       expectedOutput: '81.0',
       validationMode: 'exact',
       solution:
