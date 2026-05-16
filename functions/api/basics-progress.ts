@@ -24,7 +24,7 @@ interface BasicsBody {
   bestScore:      number | null
 }
 
-const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}(T[\d:.Z+\-]+)?$/
+const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}(T[\d:.Z+-]+)?$/
 // Format: chapter.module.lesson — letters, digits, hyphen.  Length capped.
 const LESSON_ID_RE = /^[a-z0-9-]+\.[a-z0-9-]+\.[a-z0-9-]+$/
 const MAX_LESSON_ID_LEN = 200

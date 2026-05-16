@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { python } from '@codemirror/lang-python'
 import { oneDark } from '@codemirror/theme-one-dark'
@@ -55,12 +55,8 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
   const [showResults, setShowResults] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
-  // Reset state if lesson changes (navigation between tests).
-  useEffect(() => {
-    setAnswers({})
-    setSubmitted(false)
-    setShowResults(false)
-  }, [lesson.slug])
+  // Note: LessonPage gives this component a `key` so it fully remounts when
+  // the learner navigates to a different test — no reset effect needed.
 
   const score = useMemo(
     () => lesson.questions.filter((q) => isCorrect(q, answers[q.id])).length,

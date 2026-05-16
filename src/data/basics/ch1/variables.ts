@@ -553,8 +553,8 @@ export const variablesModule: Module = {
       congratsTitle: 'Congrats on completing Variables!',
       summary:
         'You can now create variables, change their values, copy them, and follow Python\'s naming rules. ' +
-        "Next up: a deeper look at **output** — printing multiple values, newlines, and f-strings.",
-      nextModuleTitle: 'Output',
+        'Next up: a quick **Progress Test** covering Comments and Variables.',
+      nextModuleTitle: 'Progress Test 2',
     },
   ],
 }

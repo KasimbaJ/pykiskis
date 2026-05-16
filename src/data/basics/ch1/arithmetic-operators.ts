@@ -608,8 +608,8 @@ export const arithmeticOperatorsModule: Module = {
       summary:
         'You can now use Python to add, subtract, multiply, divide, find quotients and remainders, ' +
         "and raise numbers to powers — plus group operations with parentheses and shorten updates with `+=`. " +
-        "Next up: converting values between integers, floats, and strings.",
-      nextModuleTitle: 'Data Conversion',
+        'Next up: a quick **Progress Test** covering Output and Arithmetic Operators.',
+      nextModuleTitle: 'Progress Test 3',
     },
   ],
 }

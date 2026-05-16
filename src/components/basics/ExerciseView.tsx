@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { python } from '@codemirror/lang-python'
 import { oneDark } from '@codemirror/theme-one-dark'
@@ -67,14 +67,8 @@ export default function ExerciseView({
   /** Feedback shown after a Check Code submission. null = no modal. */
   const [feedback, setFeedback] = useState<'success' | 'error' | null>(null)
 
-  // Reset editor when the lesson changes (navigation between exercises).
-  useEffect(() => {
-    setCode(initialCode ?? lesson.starterCode)
-    setOutput(null)
-    setError(null)
-    setCompletedNow(false)
-    setFeedback(null)
-  }, [lesson.slug, initialCode, lesson.starterCode])
+  // Note: LessonPage gives this component a `key` so it fully remounts when
+  // the learner navigates to a different lesson — no reset effect needed.
 
   const reset = () => {
     setCode(lesson.starterCode)

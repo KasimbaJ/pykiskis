@@ -1,3 +1,6 @@
+/* eslint-disable react-refresh/only-export-components --
+   This is the application entry point, not a component module — the lazy()
+   route wrappers below are intentional and don't affect fast-refresh. */
 import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'

@@ -23,9 +23,14 @@ import { useBasicsStore } from '../stores/useBasicsStore'
 import { syncLessonProgress } from '../services/progressApi'
 
 // ─────────────────────────────────────────────────────────────────────────────
-// LessonPage — renders a single lesson of any of the four types and handles
-// progress (mark complete, sync to D1, unlock gating, prev/next navigation,
-// course outline drawer).
+// LessonPage — renders a single lesson of any type and handles progress
+// (mark complete, sync to D1, unlock gating, prev/next navigation, course
+// outline drawer).
+//
+// IMPORTANT: every hook runs unconditionally on every render — the chapter /
+// module / lesson lookups are plain (possibly-undefined) values and all early
+// returns happen AFTER the hooks, so React's Rules of Hooks are respected even
+// when navigating between valid and invalid lesson URLs.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function LessonPage() {
@@ -37,53 +42,56 @@ export default function LessonPage() {
     lessonSlug:  string
   }>()
 
-  // ── 1. Look up the chapter / module / lesson ────────────────────────────────
-  if (!chapterSlug || !moduleSlug || !lessonSlug)
-    return <Navigate to="/basics" replace />
+  // ── Lookups — may be undefined.  NOT early returns. ─────────────────────────
+  const chapter = chapterSlug ? getChapterBySlug(chapterSlug) : undefined
+  const module =
+    chapterSlug && moduleSlug ? getModuleBySlug(chapterSlug, moduleSlug) : undefined
+  const lesson =
+    chapterSlug && moduleSlug && lessonSlug
+      ? getLessonBySlug(chapterSlug, moduleSlug, lessonSlug)
+      : undefined
+  const key =
+    chapter && module && lesson
+      ? lessonKey(chapter.slug, module.slug, lesson.slug)
+      : ''
 
-  const chapter = getChapterBySlug(chapterSlug)
-  const module  = getModuleBySlug(chapterSlug, moduleSlug)
-  const lesson  = getLessonBySlug(chapterSlug, moduleSlug, lessonSlug)
-  if (!chapter || !module || !lesson)
-    return <Navigate to={`/basics/${chapterSlug}`} replace />
-
-  const key = lessonKey(chapter.slug, module.slug, lesson.slug)
-
-  // ── 2. Store hookups ────────────────────────────────────────────────────────
+  // ── Store hookups ───────────────────────────────────────────────────────────
   const lessons                 = useBasicsStore((s) => s.lessons)
   const completeLesson          = useBasicsStore((s) => s.completeLesson)
   const markLessonVisited       = useBasicsStore((s) => s.markLessonVisited)
   const recordLessonAttempt     = useBasicsStore((s) => s.recordLessonAttempt)
   const submitProgressTestScore = useBasicsStore((s) => s.submitProgressTestScore)
-  const isLessonComplete        = useBasicsStore((s) => s.isLessonComplete)
 
-  const lessonState = lessons[key]
-  const completed = lessonState?.completed === true
-
-  // ── 3. Unlock gating ────────────────────────────────────────────────────────
-  const unlocked = useMemo(
-    () => isLessonUnlocked(chapter.slug, module.slug, lesson.slug, isLessonComplete),
-    [chapter.slug, module.slug, lesson.slug, isLessonComplete, lessons],
-  )
-
-  // ── 4. Navigation context (prev / next + position) ──────────────────────────
-  const { prev, next, current } = adjacentLessons(
-    chapter.slug,
-    module.slug,
-    lesson.slug,
-  )
-
-  // ── 5. Course-Outline drawer state ──────────────────────────────────────────
   const [drawerOpen, setDrawerOpen] = useState(false)
 
-  // ── 6. Mark lesson as visited on first view ─────────────────────────────────
+  const lessonState = key ? lessons[key] : undefined
+  const completed = lessonState?.completed === true
+
+  // ── Unlock gating ───────────────────────────────────────────────────────────
+  // The completion check is an inline closure over `lessons` so the memo
+  // recomputes whenever progress changes (and exhaustive-deps stays happy).
+  const unlocked = useMemo(
+    () =>
+      chapter && module && lesson
+        ? isLessonUnlocked(
+            chapter.slug,
+            module.slug,
+            lesson.slug,
+            (k) => lessons[k]?.completed === true,
+          )
+        : false,
+    [chapter, module, lesson, lessons],
+  )
+
+  // ── Mark lesson as visited on first view ────────────────────────────────────
   useEffect(() => {
-    if (unlocked) markLessonVisited(key)
+    if (key && unlocked) markLessonVisited(key)
   }, [key, unlocked, markLessonVisited])
 
-  // ── 7. Fire-and-forget D1 sync on any local mutation ────────────────────────
+  // ── Fire-and-forget D1 sync on any local mutation ───────────────────────────
   const syncToD1 = useCallback(
     (extra?: { code?: string; option?: string; score?: number }) => {
+      if (!key) return
       getToken()
         .then(async (token) => {
           if (!token) return
@@ -104,27 +112,33 @@ export default function LessonPage() {
     [getToken, key],
   )
 
-  // ── 8. Mark complete + sync helper ──────────────────────────────────────────
+  // ── Mark complete + sync helper ─────────────────────────────────────────────
   const markComplete = useCallback(
     (payload?: { code?: string; option?: string }) => {
-      if (completed) return
+      if (!key || completed) return
       completeLesson(key, payload)
       syncToD1(payload)
     },
     [completed, completeLesson, key, syncToD1],
   )
 
-  // Progress-test submissions: separate from markComplete because they always
-  // mark complete (no skip) but can be retaken to improve bestScore.
+  // Progress-test submissions: always mark complete (no skip) but can be
+  // retaken to improve bestScore.
   const onTestSubmit = useCallback(
     (score: number) => {
+      if (!key) return
       submitProgressTestScore(key, score)
       syncToD1({ score })
     },
     [submitProgressTestScore, key, syncToD1],
   )
 
-  // ── 9. Locked screen ────────────────────────────────────────────────────────
+  // ── Early returns — AFTER every hook above ──────────────────────────────────
+  if (!chapterSlug || !moduleSlug || !lessonSlug)
+    return <Navigate to="/basics" replace />
+  if (!chapter || !module || !lesson)
+    return <Navigate to={`/basics/${chapterSlug}`} replace />
+
   if (!unlocked) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -145,7 +159,10 @@ export default function LessonPage() {
     )
   }
 
-  // ── 10. Next-button handler ─────────────────────────────────────────────────
+  // ── Navigation context (prev / next + position) ─────────────────────────────
+  const { prev, next, current } = adjacentLessons(chapter.slug, module.slug, lesson.slug)
+
+  // ── Next-button handler ─────────────────────────────────────────────────────
   const onNext = () => {
     // For theory & recap lessons, advancing means the learner has read them.
     if (!completed && (lesson.type === 'theory' || lesson.type === 'recap')) {
@@ -158,14 +175,17 @@ export default function LessonPage() {
     }
   }
 
-  // ── 11. Per-type lesson content ─────────────────────────────────────────────
+  // ── Per-type lesson content ─────────────────────────────────────────────────
+  // The `key` prop forces a clean remount when navigating between lessons so
+  // each view starts with fresh internal state.
   const body = (() => {
     switch (lesson.type) {
       case 'theory':
-        return <TheoryView lesson={lesson} />
+        return <TheoryView key={key} lesson={lesson} />
       case 'quiz':
         return (
           <QuizView
+            key={key}
             lesson={lesson}
             initialSelection={lessonState?.selectedOption}
             onAttempt={(option) => recordLessonAttempt(key, { option })}
@@ -175,6 +195,7 @@ export default function LessonPage() {
       case 'exercise':
         return (
           <ExerciseView
+            key={key}
             lesson={lesson}
             initialCode={lessonState?.bestCode}
             alreadyCompleted={completed}
@@ -190,6 +211,7 @@ export default function LessonPage() {
         }
         return (
           <RecapView
+            key={key}
             lesson={lesson}
             moduleTitle={module.title}
             moduleProgress={moduleProgress}
@@ -199,6 +221,7 @@ export default function LessonPage() {
       case 'progress-test':
         return (
           <ProgressTestView
+            key={key}
             lesson={lesson}
             bestScore={lessonState?.bestScore}
             onSubmit={onTestSubmit}
@@ -207,7 +230,7 @@ export default function LessonPage() {
     }
   })()
 
-  // ── 12. Chapter-wide progress count for the footer dot ──────────────────────
+  // ── Chapter-wide progress count for the footer ──────────────────────────────
   const allKeys = chapterLessonKeys(chapter)
   const chapterCompleted = allKeys.filter((k) => lessons[k]?.completed).length
 
@@ -258,7 +281,7 @@ export default function LessonPage() {
         {body}
       </main>
 
-      {/* Footer nav — Prev / progress dots / Next */}
+      {/* Footer nav — Prev / position / Next */}
       <nav className="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 sticky bottom-0">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
           {prev ? (

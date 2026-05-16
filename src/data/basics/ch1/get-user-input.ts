@@ -340,8 +340,8 @@ export const getUserInputModule: Module = {
       congratsTitle: 'Congrats on completing Get User Input!',
       summary:
         "You can now make your programs interactive — reading text and numbers from the user with `input()`, and converting strings to `int` or `float` for calculations. " +
-        "Next up: a set of small example problems that tie together everything from Chapter 1.",
-      nextModuleTitle: 'Introduction Examples',
+        'Next up: a quick **Progress Test** covering Data Conversion and Get User Input.',
+      nextModuleTitle: 'Progress Test 4',
     },
   ],
 }

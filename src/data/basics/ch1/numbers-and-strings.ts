@@ -329,8 +329,8 @@ export const numbersAndStringsModule: Module = {
       congratsTitle: 'Congrats on completing Numbers and Strings!',
       summary:
         "You can now tell strings and numbers apart, print them, and watch out for missing quotes and case mismatches. " +
-        "Next up: how to leave notes inside your code with **comments**.",
-      nextModuleTitle: 'Comments',
+        'Next up: a quick **Progress Test** to check what you have learned so far.',
+      nextModuleTitle: 'Progress Test 1',
     },
   ],
 }

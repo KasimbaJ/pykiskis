@@ -26,7 +26,7 @@ interface ProgressBody {
   bestCode: string | null
 }
 
-const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}(T[\d:.Z+\-]+)?$/
+const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}(T[\d:.Z+-]+)?$/
 const MAX_CODE_BYTES = 10_000
 const MAX_LEVEL_ID = 100
 

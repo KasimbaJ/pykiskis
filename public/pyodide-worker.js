@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 // CDN base — used for lock file, stdlib, and packages (all via fetch(), safe under COEP:credentialless)
 const CDN = 'https://cdn.jsdelivr.net/pyodide/v0.27.4/full/'
 
