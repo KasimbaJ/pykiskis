@@ -13,7 +13,16 @@ function SyncClerkUser() {
   const { getToken } = useAuth()
   const setStudentName = useProgressStore((s) => s.setStudentName)
 
-  const displayName = user?.fullName || user?.firstName || ''
+  // Fall back through Clerk's identity fields so every account yields a
+  // non-empty name — a student who signed up with only a username (no first
+  // or last name) would otherwise sync a blank name and show as "(unnamed)"
+  // on the Teacher Dashboard.
+  const displayName =
+    user?.fullName ||
+    user?.firstName ||
+    user?.username ||
+    user?.primaryEmailAddress?.emailAddress ||
+    ''
 
   useEffect(() => {
     if (!displayName) return

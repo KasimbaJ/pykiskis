@@ -168,7 +168,9 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
           (user_id, name, current_streak, best_streak, last_active_at, last_streak_date, updated_at)
         VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
         ON CONFLICT (user_id) DO UPDATE SET
-          name             = excluded.name,
+          -- Keep the existing name if a sync arrives with a blank one — the
+          -- client may not have resolved the student's name yet.
+          name             = CASE WHEN excluded.name <> '' THEN excluded.name ELSE name END,
           current_streak   = excluded.current_streak,
           best_streak      = excluded.best_streak,
           last_active_at   = excluded.last_active_at,
