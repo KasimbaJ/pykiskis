@@ -23,6 +23,8 @@ import { useProgressStore } from './useProgressStore'
 interface BasicsState {
   /** Keyed by `${chapter.slug}.${module.slug}.${lesson.slug}`. */
   lessons: Record<string, LessonProgress>
+  /** Clerk user id that owns the locally-cached lessons (see claimForUser). */
+  ownerId: string
 
   /** Mark a lesson complete (idempotent — already-complete lessons untouched). */
   completeLesson: (
@@ -47,6 +49,13 @@ interface BasicsState {
 
   /** Merge server-side progress into local state (called once on sign-in). */
   hydrateBasicsFromServer: (data: ServerBasicsProgress) => void
+
+  /**
+   * Claim the locally-cached lessons for the signed-in user.  If the cache
+   * belongs to a different user (school computers are shared), it is wiped
+   * first so the new user starts clean and loads their own record from D1.
+   */
+  claimForUser: (userId: string) => void
 
   /** Has this lesson been completed? */
   isLessonComplete: (lessonKey: string) => boolean
@@ -101,6 +110,7 @@ export const useBasicsStore = create<BasicsState>()(
   persist(
     (set, get) => ({
       lessons: {},
+      ownerId: '',
 
       completeLesson: (lessonKey, payload) => {
         const state = get()
@@ -216,6 +226,14 @@ export const useBasicsStore = create<BasicsState>()(
           // Otherwise local already complete or both incomplete — keep local.
         }
         set({ lessons: merged })
+      },
+
+      claimForUser: (userId) => {
+        if (get().ownerId === userId) return
+        // A different student is signing in on this shared browser — wipe the
+        // cached lessons so they can't inherit them.  Their own record is
+        // loaded from D1 by hydrateBasicsFromServer right after.
+        set({ ownerId: userId, lessons: {} })
       },
 
       isLessonComplete: (lessonKey) => get().lessons[lessonKey]?.completed === true,

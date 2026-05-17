@@ -10,6 +10,8 @@ interface ProgressState {
   bestStreak: number;
   lastActiveAt: string;
   lastStreakDate: string;
+  /** Clerk user id that owns the locally-cached progress (see claimForUser). */
+  ownerId: string;
 
   setStudentName: (name: string) => void;
   completeLevel: (levelId: number, code: string) => void;
@@ -22,6 +24,12 @@ interface ProgressState {
   breakStreak: () => void;
   /** Merge server-side progress into local state (called once on sign-in). */
   hydrateFromServer: (data: ServerProgress) => void;
+  /**
+   * Claim the locally-cached progress for the signed-in user.  If the cache
+   * belongs to a different user (school computers are shared), it is wiped
+   * first so the new user starts clean and loads their own record from D1.
+   */
+  claimForUser: (userId: string) => void;
 }
 
 /** Returns YYYY-MM-DD in the user's local timezone (not UTC). */
@@ -41,6 +49,7 @@ export const useProgressStore = create<ProgressState>()(
       bestStreak: 0,
       lastActiveAt: new Date().toISOString(),
       lastStreakDate: '',
+      ownerId: '',
 
       setStudentName: (name) => set({ studentName: name }),
 
@@ -155,6 +164,22 @@ export const useProgressStore = create<ProgressState>()(
         }
 
         set(update)
+      },
+
+      claimForUser: (userId) => {
+        if (get().ownerId === userId) return
+        // A different student is signing in on this shared browser — wipe the
+        // cached progress so they can't inherit it.  Their own record is
+        // loaded from D1 by hydrateFromServer right after.  studentName is
+        // left to SyncClerkUser, which sets it from Clerk on every sign-in.
+        set({
+          ownerId: userId,
+          levels: {},
+          currentStreak: 0,
+          bestStreak: 0,
+          lastActiveAt: new Date().toISOString(),
+          lastStreakDate: '',
+        })
       },
 
       resetLevel: (levelId) => {

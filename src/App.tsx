@@ -40,17 +40,26 @@ function SyncClerkUser() {
   return null
 }
 
-// On first sign-in (or page reload while signed in), pull the student's
-// progress from D1 and merge it into the local Zustand stores so progress
-// is consistent across devices.  Runs the phase-level GET and the basics
-// GET in parallel.
+// On sign-in (or reload while signed in): first make sure the localStorage
+// progress cache belongs to THIS user — school computers are shared, so
+// claimForUser wipes it if a different student used the browser last — then
+// pull the student's own progress from D1 and merge it into the stores.
 function HydrateProgress() {
-  const { isSignedIn, getToken } = useAuth()
+  const { isSignedIn, userId, getToken } = useAuth()
+  const claimProgressForUser    = useProgressStore((s) => s.claimForUser)
+  const claimBasicsForUser      = useBasicsStore((s) => s.claimForUser)
   const hydrateFromServer       = useProgressStore((s) => s.hydrateFromServer)
   const hydrateBasicsFromServer = useBasicsStore((s) => s.hydrateBasicsFromServer)
 
   useEffect(() => {
-    if (!isSignedIn) return
+    if (!isSignedIn || !userId) return
+
+    // localStorage is shared by every account on this browser.  Claim it for
+    // the signed-in user first: if a different student used it last, their
+    // cached levels / streak / lessons are wiped so they aren't inherited.
+    claimProgressForUser(userId)
+    claimBasicsForUser(userId)
+
     getToken()
       .then(async (token) => {
         if (!token) return
@@ -68,7 +77,7 @@ function HydrateProgress() {
         if (basicsData) hydrateBasicsFromServer(basicsData)
       })
       .catch(console.error)
-  }, [isSignedIn]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isSignedIn, userId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return null
 }
