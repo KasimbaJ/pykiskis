@@ -1,9 +1,9 @@
-// QA verification — runs every Chapter 1 exercise solution and progress-test
+// QA verification — runs every Basics exercise solution and progress-test
 // predict-output snippet through real Python, replicating the app's grading
 // (mock input() that does NOT echo the prompt), and checks the output matches.
 //
 // Run: npx tsx qa-verify.ts
-import { ch1 } from './src/data/basics/ch1-introduction'
+import { chapters } from './src/data/basics/index'
 import { writeFileSync, mkdtempSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { tmpdir } from 'node:os'
@@ -58,7 +58,7 @@ function validate(mode: string, expected: string, actual: string): boolean {
 let pass = 0
 const fails: string[] = []
 
-for (const module of ch1.modules) {
+for (const module of chapters.flatMap((c) => c.modules)) {
   for (const lesson of module.lessons) {
     // ── Exercises ───────────────────────────────────────────────────────────
     if (lesson.type === 'exercise') {

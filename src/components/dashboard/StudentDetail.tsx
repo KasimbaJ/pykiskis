@@ -9,16 +9,25 @@ interface Props {
   onBack: () => void;
 }
 
-// Every progress-test lesson across the Basics track — module checkpoints and
-// the Final Test — in course order.  Derived from the course data so a newly
-// added test (e.g. the Final Test) shows up here automatically.
-const PROGRESS_TESTS: { key: string; label: string }[] = chapters.flatMap((ch) =>
-  ch.modules.flatMap((m) =>
-    m.lessons
-      .filter((l) => l.type === 'progress-test')
-      .map((l) => ({ key: `${ch.slug}.${m.slug}.${l.slug}`, label: m.title })),
-  ),
-)
+// Progress-test lessons grouped by chapter — each chapter's module checkpoints
+// and Final Test.  Derived from the course data, so a chapter that gains tests
+// shows up automatically and project / "coming soon" chapters (which have no
+// progress-test lessons) are simply omitted.
+const PROGRESS_TESTS_BY_CHAPTER: {
+  chapterId: number
+  chapterTitle: string
+  tests: { key: string; label: string }[]
+}[] = chapters
+  .map((ch) => ({
+    chapterId: ch.id,
+    chapterTitle: ch.title,
+    tests: ch.modules.flatMap((m) =>
+      m.lessons
+        .filter((l) => l.type === 'progress-test')
+        .map((l) => ({ key: `${ch.slug}.${m.slug}.${l.slug}`, label: m.title })),
+    ),
+  }))
+  .filter((group) => group.tests.length > 0)
 
 export default function StudentDetail({ student, onBack }: Props) {
   const navigate = useNavigate()
@@ -68,26 +77,35 @@ export default function StudentDetail({ student, onBack }: Props) {
             <Trophy className="w-4 h-4 text-indigo-600" />
             Progress Test Scores
           </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            {PROGRESS_TESTS.map((t) => {
-              const score = student.basics?.testScores[t.key]
-              return (
-                <li
-                  key={t.key}
-                  className="rounded-lg border border-slate-200 p-3 text-center"
-                >
-                  <p className="text-xs text-slate-500 mb-1">{t.label}</p>
-                  {score != null ? (
-                    <p className="text-lg font-bold text-indigo-700">
-                      {score}/10
-                    </p>
-                  ) : (
-                    <p className="text-sm text-slate-400">Not taken</p>
-                  )}
-                </li>
-              )
-            })}
-          </ul>
+          <div className="space-y-4">
+            {PROGRESS_TESTS_BY_CHAPTER.map((group) => (
+              <div key={group.chapterId}>
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">
+                  Ch {group.chapterId} · {group.chapterTitle}
+                </p>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                  {group.tests.map((t) => {
+                    const score = student.basics?.testScores[t.key]
+                    return (
+                      <li
+                        key={t.key}
+                        className="rounded-lg border border-slate-200 p-3 text-center"
+                      >
+                        <p className="text-xs text-slate-500 mb-1">{t.label}</p>
+                        {score != null ? (
+                          <p className="text-lg font-bold text-indigo-700">
+                            {score}/10
+                          </p>
+                        ) : (
+                          <p className="text-sm text-slate-400">Not taken</p>
+                        )}
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
