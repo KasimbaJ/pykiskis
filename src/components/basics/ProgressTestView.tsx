@@ -78,7 +78,10 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
   const [questions, setQuestions] = useState<ProgressTestQuestion[]>(
     () => selectQuestions(lesson),
   )
-  const [answers, setAnswers] = useState<Record<string, Answer>>({})
+  // Answers are keyed by draw position (0…N-1), not question id: the Final
+  // Test draws from several banks that each number their own questions
+  // q1…q25, so ids are NOT unique within a single attempt.
+  const [answers, setAnswers] = useState<Record<number, Answer>>({})
   const [submitted, setSubmitted] = useState(false)
   const [showResults, setShowResults] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -89,14 +92,14 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
   const total = questions.length
 
   const correct = useMemo(
-    () => questions.filter((q) => isCorrect(q, answers[q.id])).length,
+    () => questions.filter((q, i) => isCorrect(q, answers[i])).length,
     [questions, answers],
   )
   // Every test is graded out of 10, however many questions are shown.
   const score10 = Math.round((correct / total) * 10)
 
-  const allAnswered = questions.every((q) => {
-    const v = answers[q.id]
+  const allAnswered = questions.every((_q, i) => {
+    const v = answers[i]
     return v != null && String(v).trim() !== ''
   })
 
@@ -144,7 +147,7 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
       <ol className="space-y-6">
         {questions.map((q, i) => (
           <li
-            key={q.id}
+            key={i}
             className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4"
           >
             <div className="flex items-start gap-2 mb-3">
@@ -157,21 +160,22 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
                 </p>
               </div>
               {showResults && (
-                <ResultBadge correct={isCorrect(q, answers[q.id])} />
+                <ResultBadge correct={isCorrect(q, answers[i])} />
               )}
             </div>
 
             <QuestionInput
               question={q}
-              answer={answers[q.id]}
+              index={i}
+              answer={answers[i]}
               disabled={submitted}
-              onChange={(v) => setAnswers((prev) => ({ ...prev, [q.id]: v }))}
+              onChange={(v) => setAnswers((prev) => ({ ...prev, [i]: v }))}
             />
 
             {showResults && (
               <ExplanationBlock
                 question={q}
-                answer={answers[q.id]}
+                answer={answers[i]}
               />
             )}
           </li>
@@ -183,7 +187,7 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
         {!submitted ? (
           <>
             <span className="text-sm text-slate-500 dark:text-slate-400">
-              {Object.keys(answers).filter((k) => answers[k] != null && String(answers[k]).trim() !== '').length}
+              {Object.values(answers).filter((v) => v != null && String(v).trim() !== '').length}
               /{total} answered
             </span>
             <button
@@ -225,24 +229,27 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
 // ── Per-type question input ──────────────────────────────────────────────────
 
 function QuestionInput({
-  question, answer, disabled, onChange,
+  question, index, answer, disabled, onChange,
 }: {
   question: ProgressTestQuestion
+  index: number
   answer: Answer | undefined
   disabled: boolean
   onChange: (v: Answer) => void
 }) {
   switch (question.qType) {
-    case 'mcq':     return <MCQInput          q={question} answer={answer} disabled={disabled} onChange={onChange} />
+    case 'mcq':     return <MCQInput          q={question} name={`q${index}`} answer={answer} disabled={disabled} onChange={onChange} />
     case 'predict-output': return <PredictOutputInput q={question} answer={answer} disabled={disabled} onChange={onChange} />
     case 'fill-in-blank':  return <FillInBlankInput   q={question} answer={answer} disabled={disabled} onChange={onChange} />
   }
 }
 
 function MCQInput({
-  q, answer, disabled, onChange,
+  q, name, answer, disabled, onChange,
 }: {
   q: MCQQuestion
+  /** Unique radio-group name for this question's draw slot. */
+  name: string
   answer: Answer | undefined
   disabled: boolean
   onChange: (v: Answer) => void
@@ -264,7 +271,7 @@ function MCQInput({
             >
               <input
                 type="radio"
-                name={q.id}
+                name={name}
                 value={opt.id}
                 checked={selected}
                 disabled={disabled}
