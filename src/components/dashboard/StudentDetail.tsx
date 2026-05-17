@@ -9,6 +9,17 @@ interface Props {
   onBack: () => void;
 }
 
+// Every progress-test lesson across the Basics track — module checkpoints and
+// the Final Test — in course order.  Derived from the course data so a newly
+// added test (e.g. the Final Test) shows up here automatically.
+const PROGRESS_TESTS: { key: string; label: string }[] = chapters.flatMap((ch) =>
+  ch.modules.flatMap((m) =>
+    m.lessons
+      .filter((l) => l.type === 'progress-test')
+      .map((l) => ({ key: `${ch.slug}.${m.slug}.${l.slug}`, label: m.title })),
+  ),
+)
+
 export default function StudentDetail({ student, onBack }: Props) {
   const navigate = useNavigate()
 
@@ -57,16 +68,15 @@ export default function StudentDetail({ student, onBack }: Props) {
             <Trophy className="w-4 h-4 text-indigo-600" />
             Progress Test Scores
           </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {[1, 2, 3, 4].map((n) => {
-              const key = `introduction.progress-test-${n}.test`
-              const score = student.basics?.testScores[key]
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {PROGRESS_TESTS.map((t) => {
+              const score = student.basics?.testScores[t.key]
               return (
                 <li
-                  key={n}
+                  key={t.key}
                   className="rounded-lg border border-slate-200 p-3 text-center"
                 >
-                  <p className="text-xs text-slate-500 mb-1">Test {n}</p>
+                  <p className="text-xs text-slate-500 mb-1">{t.label}</p>
                   {score != null ? (
                     <p className="text-lg font-bold text-indigo-700">
                       {score}/10
