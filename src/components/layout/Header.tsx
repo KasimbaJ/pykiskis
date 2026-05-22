@@ -2,16 +2,22 @@ import { Link } from 'react-router-dom'
 import { BookOpen, Code2, Flame, LayoutDashboard, Terminal, Moon, Sun } from 'lucide-react'
 import { UserButton, useUser } from '@clerk/clerk-react'
 import { useProgressStore } from '../../stores/useProgressStore'
+import { useBasicsStore } from '../../stores/useBasicsStore'
 import { useThemeStore } from '../../stores/useThemeStore'
-import { levels } from '../../data/levels/index'
+import { chapters, chapterLessonKeys } from '../../data/basics/index'
+
+// Every Python Basics lesson key, computed once.  The header progress bar
+// reflects the primary Basics path rather than the 100 phase levels.
+const ALL_BASICS_KEYS = chapters.flatMap((ch) => chapterLessonKeys(ch))
 
 export default function Header() {
   const { user } = useUser()
-  const { studentName, currentStreak, getCompletedCount } = useProgressStore()
+  const { studentName, currentStreak } = useProgressStore()
+  const basicsLessons = useBasicsStore((s) => s.lessons)
   const { isDark, toggle } = useThemeStore()
-  const completed = getCompletedCount()
-  const total = levels.length
-  const progress = (completed / total) * 100
+  const completed = ALL_BASICS_KEYS.filter((k) => basicsLessons[k]?.completed).length
+  const total = ALL_BASICS_KEYS.length
+  const progress = total > 0 ? (completed / total) * 100 : 0
   const isTeacher = user?.publicMetadata?.role === 'teacher'
 
   return (
