@@ -10,6 +10,7 @@ import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
 
 const HomePage         = lazy(() => import('./pages/HomePage'))
+const LevelsPage       = lazy(() => import('./pages/LevelsPage'))
 const LevelPage        = lazy(() => import('./pages/LevelPage'))
 const DashboardPage    = lazy(() => import('./pages/DashboardPage'))
 const PlaygroundPage   = lazy(() => import('./pages/PlaygroundPage'))
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true,                   element: <HomePage /> },
+      { path: 'levels',                element: <LevelsPage /> },
       { path: 'level/:levelId',        element: <LevelPage /> },
       { path: 'dashboard',             element: <DashboardPage /> },
       { path: 'playground',            element: <PlaygroundPage /> },
