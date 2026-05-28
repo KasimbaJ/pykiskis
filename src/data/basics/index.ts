@@ -114,9 +114,13 @@ export function adjacentLessons(
 
 /**
  * Is this lesson unlocked?  Rules:
- *   1. The very first lesson of every chapter is always unlocked (so a learner
- *      can start any chapter at will once the chapter itself is open).
- *   2. Otherwise the previous lesson in the same chapter must be completed.
+ *   1. The very first lesson of every chapter is always unlocked.
+ *   2. Progress tests (module checkpoints + the Final Test) are always
+ *      unlocked — they're assessments a teacher assigns on their own schedule,
+ *      not steps in the guided content sequence.
+ *   3. Any other (content) lesson unlocks once the previous *content* lesson is
+ *      complete.  Progress tests are skipped when finding that predecessor, so
+ *      they neither block nor unlock the content chain.
  *
  * Chapter-level gating (e.g. "complete 80% of chapter N to start N+1") is
  * applied at the ChapterPage / BasicsHomePage level, not here.
@@ -134,7 +138,16 @@ export function isLessonUnlocked(
     (loc) => loc.module.slug === moduleSlug && loc.lesson.slug === lessonSlug,
   )
   if (i <= 0) return true  // not found is permissive; first lesson always unlocked
-  const prev = flat[i - 1]
+
+  // Progress tests are always open.
+  if (flat[i].lesson.type === 'progress-test') return true
+
+  // Content lessons gate on the previous *content* lesson — skip over any
+  // progress tests so they neither block nor unlock the content chain.
+  let j = i - 1
+  while (j >= 0 && flat[j].lesson.type === 'progress-test') j--
+  if (j < 0) return true
+  const prev = flat[j]
   return isLessonComplete(lessonKey(chapter.slug, prev.module.slug, prev.lesson.slug))
 }
 

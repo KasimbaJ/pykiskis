@@ -3,6 +3,12 @@ import { ArrowLeft, BookOpen, CircleCheck, CircleDashed, ChevronRight, Lock } fr
 import Header from '../components/layout/Header'
 import { getChapterBySlug, moduleLessonKeys } from '../data/basics/index'
 import { useBasicsStore } from '../stores/useBasicsStore'
+import type { Module } from '../types/basics'
+
+// A module is a progress-test checkpoint (vs. a content module) when all of its
+// lessons are progress tests.  These are always open, mirroring isLessonUnlocked.
+const isTestModule = (m: Module) =>
+  m.lessons.length > 0 && m.lessons.every((l) => l.type === 'progress-test')
 
 export default function ChapterPage() {
   const { chapterSlug } = useParams<{ chapterSlug: string }>()
@@ -57,14 +63,17 @@ export default function ChapterPage() {
               const lessonCount = mod.lessons.length
               const ready = lessonCount > 0
 
-              // Within-chapter unlock: this module is open if every lesson of
-              // the previous (populated) module is complete, OR it's the first
-              // populated module.
-              const prevPopulated = chapter.modules.slice(0, i).filter((m) => m.lessons.length > 0)
+              // Progress-test modules are always open (assessments the teacher
+              // assigns on their own schedule).  Content modules unlock when the
+              // previous *content* module is complete — test modules are skipped
+              // so they neither block nor unlock the content chain.
+              const prevPopulated = chapter.modules
+                .slice(0, i)
+                .filter((m) => m.lessons.length > 0 && !isTestModule(m))
               const previousModule = prevPopulated[prevPopulated.length - 1]
               const previousKeys   = previousModule ? moduleLessonKeys(chapter.slug, previousModule) : []
               const previousDone   = previousKeys.length === 0 || previousKeys.every((k) => lessons[k]?.completed)
-              const unlocked       = ready && previousDone
+              const unlocked       = ready && (isTestModule(mod) || previousDone)
 
               const keys = ready ? moduleLessonKeys(chapter.slug, mod) : []
               const completedCount = keys.filter((k) => lessons[k]?.completed).length
