@@ -11,7 +11,7 @@ and add the merge/commit reference.
 
 | Plan | Status | Notes |
 |------|--------|-------|
-| `code-visualizer-plan.md` | **v1 done & deployed** | Native step-through code visualizer, authored as a `visualize` content block. Phases 1–3 complete & browser-verified; live in the Variables module ("Visualizing Changing Variables"). v1-depth decision resolved = stepper + variables + output. Remaining: optional Phase 4 polish + the **v2 heap/reference diagram**. |
+| `code-visualizer-plan.md` | **v2 done & deployed** | Native step-through code visualizer authored as a `visualize` content block. v1 (stepper + variables + output) and **v2 (heap view with drawn arrows for aliasing)** both complete & browser-verified. Authored into 3 Chapter-1 lessons (Variables ×2, Arithmetic `+=`). Arrows activate automatically once mutable objects appear (Chapter 5+). Remaining: optional polish; wire into future chapters as authored. |
 
 ## How the daily routine uses this
 

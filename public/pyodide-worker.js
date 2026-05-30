@@ -78,47 +78,71 @@ async function loadRequiredPackages(code) {
 
 function buildTraceHarness(code, inputsJson) {
   return `
-import sys as _sys, io as _io, json as _json, math as _math, traceback as _tb
+import sys as _sys, io as _io, json as _json, math as _math, traceback as _tb, types as _types
 
 _MAX_STEPS = 1000
-_MAX_DEPTH = 4
 _MAX_ITEMS = 100
 _MAX_REPR = 200
+_HEAP_CAP = 300
 
 def _pyk_cap(r):
     return r if len(r) <= _MAX_REPR else r[:_MAX_REPR] + "…"
 
-def _pyk_ser(v, depth=0, seen=None):
-    if seen is None: seen = set()
-    t = type(v).__name__
+# Stable per-run object numbering so an object keeps its id across steps (arrows
+# stay visually consistent as you step).
+_pyk_idmap = {}
+_pyk_idnext = [1]
+def _pyk_idfor(v):
+    r = id(v)
+    n = _pyk_idmap.get(r)
+    if n is None:
+        n = _pyk_idnext[0]; _pyk_idnext[0] += 1; _pyk_idmap[r] = n
+    return n
+
+def _pyk_isprim(v):
+    return v is None or v is True or v is False or isinstance(v, (int, float, str))
+
+def _pyk_prim(v):
     if v is None or v is True or v is False:
-        return {"kind": "primitive", "pytype": t, "value": v}
+        return {"kind": "primitive", "pytype": type(v).__name__, "value": v}
     if isinstance(v, int):
         return {"kind": "primitive", "pytype": "int", "value": v}
     if isinstance(v, float):
-        if not _math.isfinite(v):
-            return {"kind": "object", "pytype": "float", "repr": repr(v)}
-        return {"kind": "primitive", "pytype": "float", "value": v}
-    if isinstance(v, str):
-        return {"kind": "primitive", "pytype": "str", "value": _pyk_cap(v)}
-    _vid = id(v)
-    if _vid in seen or depth >= _MAX_DEPTH:
-        return {"kind": "object", "pytype": t, "repr": _pyk_cap(repr(v))}
-    if isinstance(v, (list, tuple, set, frozenset)):
-        _seen = seen | {_vid}
-        items = []; trunc = False
-        for i, x in enumerate(v):
-            if i >= _MAX_ITEMS: trunc = True; break
-            items.append(_pyk_ser(x, depth + 1, _seen))
-        return {"kind": "sequence", "pytype": t, "items": items, "truncated": trunc}
-    if isinstance(v, dict):
-        _seen = seen | {_vid}
-        entries = []; trunc = False
-        for i, (k, val) in enumerate(v.items()):
-            if i >= _MAX_ITEMS: trunc = True; break
-            entries.append([_pyk_ser(k, depth + 1, _seen), _pyk_ser(val, depth + 1, _seen)])
-        return {"kind": "dict", "pytype": "dict", "entries": entries, "truncated": trunc}
-    return {"kind": "object", "pytype": t, "repr": _pyk_cap(repr(v))}
+        return {"kind": "primitive", "pytype": "float", "value": (repr(v) if not _math.isfinite(v) else v)}
+    return {"kind": "primitive", "pytype": "str", "value": _pyk_cap(v)}
+
+# Functions / classes / modules are noise in a beginner variables view — hide them.
+def _pyk_hide(v):
+    return isinstance(v, (_types.FunctionType, _types.BuiltinFunctionType, _types.MethodType, _types.ModuleType, type))
+
+# Serialize a value to a TraceValue: primitives inline; compound objects get a
+# heap id and return a {ref}. Object identity drives aliasing — the same object
+# referenced twice yields the same id, so the UI draws two arrows to one box.
+# Cycles are handled by the placeholder-before-recurse step.
+def _pyk_val(v, heap):
+    if _pyk_isprim(v):
+        return _pyk_prim(v)
+    n = _pyk_idfor(v)
+    if n not in heap:
+        if len(heap) >= _HEAP_CAP:
+            heap[n] = {"kind": "object", "pytype": type(v).__name__, "repr": _pyk_cap(repr(v))}
+            return {"kind": "ref", "id": n}
+        heap[n] = {"kind": "object", "pytype": type(v).__name__, "repr": ""}  # placeholder breaks cycles
+        if isinstance(v, (list, tuple, set, frozenset)):
+            items = []; trunc = False
+            for i, x in enumerate(v):
+                if i >= _MAX_ITEMS: trunc = True; break
+                items.append(_pyk_val(x, heap))
+            heap[n] = {"kind": "sequence", "pytype": type(v).__name__, "items": items, "truncated": trunc}
+        elif isinstance(v, dict):
+            entries = []; trunc = False
+            for i, (k, val) in enumerate(v.items()):
+                if i >= _MAX_ITEMS: trunc = True; break
+                entries.append([_pyk_val(k, heap), _pyk_val(val, heap)])
+            heap[n] = {"kind": "dict", "pytype": "dict", "entries": entries, "truncated": trunc}
+        else:
+            heap[n] = {"kind": "object", "pytype": type(v).__name__, "repr": _pyk_cap(repr(v))}
+    return {"kind": "ref", "id": n}
 
 _pyk_steps = []
 _pyk_trunc = [False]
@@ -130,6 +154,7 @@ def _pyk_snapshot(frame, event):
     if len(_pyk_steps) >= _MAX_STEPS:
         _pyk_trunc[0] = True
         return
+    heap = {}
     chain = []
     f = frame
     while f is not None:
@@ -141,16 +166,16 @@ def _pyk_snapshot(frame, event):
     for fr in chain:
         loc = []
         for name, val in list(fr.f_locals.items()):
-            if name in _pyk_skip or name.startswith("__"):
+            if name in _pyk_skip or name.startswith("__") or _pyk_hide(val):
                 continue
             try:
-                loc.append({"name": name, "value": _pyk_ser(val)})
+                loc.append({"name": name, "value": _pyk_val(val, heap)})
             except Exception:
-                loc.append({"name": name, "value": {"kind": "object", "pytype": "?", "repr": "<unserializable>"}})
+                loc.append({"name": name, "value": {"kind": "primitive", "pytype": "?", "value": "<unserializable>"}})
         nm = fr.f_code.co_name
         frames.append({"name": "Global" if nm == "<module>" else nm, "locals": loc})
     _pyk_steps.append({"line": frame.f_lineno, "event": event,
-                       "stdout": _pyk_out.getvalue(), "frames": frames})
+                       "stdout": _pyk_out.getvalue(), "frames": frames, "heap": heap})
 
 def _pyk_tracer(frame, event, arg):
     if frame.f_code.co_filename != "<student>":

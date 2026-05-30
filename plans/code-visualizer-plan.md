@@ -3,14 +3,18 @@
 > Self-contained handoff. A fresh session with zero prior context can execute this.
 > To start: `Read plans/code-visualizer-plan.md and execute it — Phase 1 first.`
 >
-> STATUS: **v1 COMPLETE & DEPLOYED.** Phases 1–3 done and browser-verified.
-> The OPEN v1-depth decision was RESOLVED with the user: **stepper + variables +
-> growing output** (current-line highlight, prev/next/scrubber/auto-play). The
-> **heap/reference diagram is deferred to v2** (see "Deferred to v2" below).
-> Engine, `CodeVisualizer` component, and the `visualize` content block are all
-> live; the first authored example is in the **Variables** module lesson
-> "Visualizing Changing Variables". Only optional Phase 4 polish + the v2 heap
-> view remain. See plans/README.md.
+> STATUS: **v2 COMPLETE & DEPLOYED** (heap view with drawn arrows).
+> v1 (stepper + variables + output) and v2 (identity-aware heap model + SVG
+> arrows showing aliasing) are both live and browser-verified. The worker
+> serializer now gives compound objects stable heap ids and emits {ref}s, so two
+> variables pointing at one object render as two arrows to one box (verified with
+> `a=[1,2,3]; b=a; b.append(4)`). Primitive-only snippets render as a clean
+> variables table (no arrows). Authored into: Variables ("Visualizing Changing
+> Variables" — age reassignment; "Visualizing Changing Variables" #2 — color
+> copy) and Arithmetic Operators ("Arithmetic Assignment Operators" — `+=`/`*=`).
+> NOTE: Chapter 1 has no lists/dicts, so arrows only light up from Chapter 5
+> (Data Types) onward — the engine already supports them. Nothing left but
+> optional polish + wiring into future chapters as they're authored.
 
 ## Goal
 

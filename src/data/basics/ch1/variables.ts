@@ -357,9 +357,10 @@ export const variablesModule: Module = {
       title: 'Visualizing Changing Variables',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'Run this code to see the values stored in the variables at each step of the program.' },
+        { kind: 'paragraph', text: 'Step through this code to see the values stored in the variables at each step of the program.' },
         {
-          kind: 'runnable',
+          kind: 'visualize',
+          caption: 'Watch how `color1 = color2` copies the value into `color1`.',
           code:
             'color1 = "blue"\n' +
             'print(color1)\n\n' +

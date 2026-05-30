@@ -564,6 +564,16 @@ export const arithmeticOperatorsModule: Module = {
             'print(total)',
         },
         {
+          kind: 'visualize',
+          caption: 'Step through it and watch `total` build up as each operator runs.',
+          code:
+            'total = 10\n' +
+            'total += 5\n' +
+            'total += 5\n' +
+            'total *= 2\n' +
+            'print(total)',
+        },
+        {
           kind: 'paragraph',
           text: 'Consider reading **Python Assignment Operator** to explore more examples of arithmetic assignment operators.',
         },
