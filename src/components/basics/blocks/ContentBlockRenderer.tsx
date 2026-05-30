@@ -6,6 +6,7 @@ import { Lightbulb } from 'lucide-react'
 import type { ContentBlock } from '../../../types/basics'
 import { renderInline } from '../inline'
 import RunnableBlock from './RunnableBlock'
+import CodeVisualizer from '../../visualizer/CodeVisualizer'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Renders a single ContentBlock.  Theory lessons map an array of these through
@@ -77,6 +78,15 @@ export default function ContentBlockRenderer({ block }: Props) {
     case 'runnable':
       return (
         <RunnableBlock
+          code={block.code}
+          caption={block.caption}
+          inputValues={block.inputValues}
+        />
+      )
+
+    case 'visualize':
+      return (
+        <CodeVisualizer
           code={block.code}
           caption={block.caption}
           inputValues={block.inputValues}

@@ -3,11 +3,14 @@
 > Self-contained handoff. A fresh session with zero prior context can execute this.
 > To start: `Read plans/code-visualizer-plan.md and execute it — Phase 1 first.`
 >
-> STATUS: In progress — **Phase 1 complete** (tracing engine: worker `trace`
-> branch + harness, `tracePython` service, trace types; smoke-verified via local
-> Python — steps/frames/stdout correct, 1000-step cap works). **Next: Phase 2
-> (UI)** — which opens with the OPEN v1-depth decision (stepper-only vs. heap
-> diagram); confirm that with the user before building. See plans/README.md.
+> STATUS: **v1 COMPLETE & DEPLOYED.** Phases 1–3 done and browser-verified.
+> The OPEN v1-depth decision was RESOLVED with the user: **stepper + variables +
+> growing output** (current-line highlight, prev/next/scrubber/auto-play). The
+> **heap/reference diagram is deferred to v2** (see "Deferred to v2" below).
+> Engine, `CodeVisualizer` component, and the `visualize` content block are all
+> live; the first authored example is in the **Variables** module lesson
+> "Visualizing Changing Variables". Only optional Phase 4 polish + the v2 heap
+> view remain. See plans/README.md.
 
 ## Goal
 

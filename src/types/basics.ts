@@ -170,6 +170,7 @@ export type ContentBlock =
   | CodeBlock
   | RunnableBlock
   | FigureBlock
+  | VisualizeBlock
 
 export interface ParagraphBlock {
   kind: 'paragraph'
@@ -220,6 +221,16 @@ export interface FigureBlock {
   code: string
   output: string
   caption?: string
+}
+
+export interface VisualizeBlock {
+  kind: 'visualize'
+  /** Snippet the learner steps through line by line. Keep it short (≲15 lines). */
+  code: string
+  /** Optional caption shown above the visualizer. */
+  caption?: string
+  /** Pre-supplied stdin if the snippet calls input() (deterministic mock). */
+  inputValues?: string[]
 }
 
 // ─── Progress ────────────────────────────────────────────────────────────────

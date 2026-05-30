@@ -11,7 +11,7 @@ and add the merge/commit reference.
 
 | Plan | Status | Notes |
 |------|--------|-------|
-| `code-visualizer-plan.md` | **In progress — Phase 1 done** | Native step-through code visualizer, authored into lessons as a `visualize` content block. Phase 1 (tracing engine) complete & smoke-verified. **Next: Phase 2 (UI)**, which opens with the OPEN decision (v1 depth: stepper-only vs. heap diagram) — pause and flag rather than guess. |
+| `code-visualizer-plan.md` | **v1 done & deployed** | Native step-through code visualizer, authored as a `visualize` content block. Phases 1–3 complete & browser-verified; live in the Variables module ("Visualizing Changing Variables"). v1-depth decision resolved = stepper + variables + output. Remaining: optional Phase 4 polish + the **v2 heap/reference diagram**. |
 
 ## How the daily routine uses this
 

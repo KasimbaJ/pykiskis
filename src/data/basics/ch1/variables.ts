@@ -260,10 +260,11 @@ export const variablesModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'To help you understand how a Python program works, run the example below and watch how the value stored in `age` changes from one line to the next.',
+          text: 'To help you understand how a Python program works, step through the example below and watch how the value stored in `age` changes from one line to the next.',
         },
         {
-          kind: 'runnable',
+          kind: 'visualize',
+          caption: 'Press Visualize, then step through one line at a time.',
           code:
             'age = 25\n' +
             'print(age)\n\n' +
@@ -272,7 +273,7 @@ export const variablesModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'On the first run, `age` holds `25`. The next assignment replaces that value with `100`, so the second `print(age)` shows the new value.',
+          text: 'As you step through, `age` starts at `25`. The next assignment replaces that value with `100`, so the second `print(age)` shows the new value.',
         },
       ],
     },
