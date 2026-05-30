@@ -3,7 +3,11 @@
 > Self-contained handoff. A fresh session with zero prior context can execute this.
 > To start: `Read plans/code-visualizer-plan.md and execute it — Phase 1 first.`
 >
-> STATUS: Not started (pending). See plans/README.md for the active-plan index.
+> STATUS: In progress — **Phase 1 complete** (tracing engine: worker `trace`
+> branch + harness, `tracePython` service, trace types; smoke-verified via local
+> Python — steps/frames/stdout correct, 1000-step cap works). **Next: Phase 2
+> (UI)** — which opens with the OPEN v1-depth decision (stepper-only vs. heap
+> diagram); confirm that with the user before building. See plans/README.md.
 
 ## Goal
 

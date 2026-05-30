@@ -1,4 +1,5 @@
 import type { ExecutionResult } from '../types'
+import type { TraceResult } from '../types/visualizer'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Worker + readiness state
@@ -233,5 +234,51 @@ export function runPython(
       syncBuffer: useInteractive ? syncBuffer : null,
       dataBuffer: useInteractive ? dataSAB    : null,
     })
+  })
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// tracePython — run a snippet under sys.settrace and return per-line steps
+// for the code visualizer.  Unlike runPython this never blocks for input (the
+// snapshot run is non-interactive, mock-fed), so it needs no SharedArrayBuffer
+// and returns all steps in one message.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function tracePython(
+  code:        string,
+  inputValues: string[] = [],
+  timeoutMs:   number   = 30_000,
+): Promise<TraceResult> {
+  return new Promise((resolve) => {
+    if (!worker || !isReady) {
+      resolve({ steps: [], error: 'Python is still loading…', truncated: false })
+      return
+    }
+
+    const timeout = setTimeout(() => {
+      worker?.removeEventListener('message', handler)
+      // A trace shouldn't hang (steps are capped), but guard anyway: a runaway
+      // build of huge state could stall.  Recycle the worker so later runs work.
+      worker?.terminate()
+      worker  = null
+      isReady = false
+      initPythonRunner()
+      resolve({ steps: [], error: 'Visualization timed out.', truncated: false })
+    }, timeoutMs)
+
+    const handler = (event: MessageEvent) => {
+      if (event.data.type === 'trace_result') {
+        clearTimeout(timeout)
+        worker?.removeEventListener('message', handler)
+        resolve({
+          steps:     event.data.steps     ?? [],
+          error:     event.data.error     ?? null,
+          truncated: !!event.data.truncated,
+        })
+      }
+    }
+
+    worker.addEventListener('message', handler)
+    worker.postMessage({ type: 'trace', code, inputValues })
   })
 }
