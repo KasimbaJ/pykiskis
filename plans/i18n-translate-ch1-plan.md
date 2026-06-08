@@ -44,7 +44,7 @@ run** (small PRs). The teacher reviews/refines the Lithuanian in each PR.
 ## Module checklist (one per run, in order)
 
 - [x] get-started
-- [ ] numbers-and-strings
+- [x] numbers-and-strings
 - [ ] comments
 - [ ] variables
 - [ ] output
