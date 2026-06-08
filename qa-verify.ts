@@ -4,6 +4,7 @@
 //
 // Run: npx tsx qa-verify.ts
 import { chapters } from './src/data/basics/index'
+import { localize } from './src/i18n'
 import { writeFileSync, mkdtempSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { tmpdir } from 'node:os'
@@ -116,7 +117,7 @@ for (const module of chapters.flatMap((c) => c.modules)) {
       const lessonShowsError = lesson.blocks.some(
         (b) =>
           (b.kind === 'figure' && /error|traceback/i.test(b.output)) ||
-          (b.kind === 'paragraph' && /\berror\b/i.test(b.text)),
+          (b.kind === 'paragraph' && /\berror\b/i.test(localize(b.text, 'en'))),
       )
       for (const block of lesson.blocks) {
         if (block.kind !== 'runnable') continue

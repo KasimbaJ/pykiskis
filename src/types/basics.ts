@@ -10,6 +10,8 @@
 // to avoid collisions with the numeric levelId space used by Phase levels.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import type { LocalizedString } from '../i18n'
+
 export interface Chapter {
   /** 1-7, used for ordering and display ("Ch 1"). */
   id: number
@@ -175,24 +177,24 @@ export type ContentBlock =
 export interface ParagraphBlock {
   kind: 'paragraph'
   /** Supports inline `code` (backticks) and **bold** markdown. */
-  text: string
+  text: LocalizedString
 }
 
 export interface HeadingBlock {
   kind: 'heading'
   level: 2 | 3
-  text: string
+  text: LocalizedString
 }
 
 export interface NoteBlock {
   kind: 'note'
-  text: string
+  text: LocalizedString
 }
 
 export interface ListBlock {
   kind: 'list'
   ordered: boolean
-  items: string[]
+  items: LocalizedString[]
 }
 
 export interface CodeBlock {
@@ -205,7 +207,7 @@ export interface RunnableBlock {
   kind: 'runnable'
   code: string
   /** Optional caption shown above the snippet. */
-  caption?: string
+  caption?: LocalizedString
   /**
    * Pre-supplied stdin values for demos that call input().  Required for any
    * runnable snippet using input() — without them the demo would receive an
@@ -220,7 +222,7 @@ export interface FigureBlock {
   /** Code shown above the output (no Run button — purely illustrative). */
   code: string
   output: string
-  caption?: string
+  caption?: LocalizedString
 }
 
 export interface VisualizeBlock {
@@ -228,7 +230,7 @@ export interface VisualizeBlock {
   /** Snippet the learner steps through line by line. Keep it short (≲15 lines). */
   code: string
   /** Optional caption shown above the visualizer. */
-  caption?: string
+  caption?: LocalizedString
   /** Pre-supplied stdin if the snippet calls input() (deterministic mock). */
   inputValues?: string[]
 }

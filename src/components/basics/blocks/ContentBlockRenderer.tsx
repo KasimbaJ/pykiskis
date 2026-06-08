@@ -7,6 +7,8 @@ import type { ContentBlock } from '../../../types/basics'
 import { renderInline } from '../inline'
 import RunnableBlock from './RunnableBlock'
 import CodeVisualizer from '../../visualizer/CodeVisualizer'
+import { useLangStore } from '../../../stores/useLangStore'
+import { localize } from '../../../i18n'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Renders a single ContentBlock.  Theory lessons map an array of these through
@@ -19,26 +21,28 @@ interface Props {
 }
 
 export default function ContentBlockRenderer({ block }: Props) {
+  const lang = useLangStore((s) => s.lang)
+
   switch (block.kind) {
     case 'paragraph':
       return (
         <p className="leading-relaxed text-slate-700 dark:text-slate-200">
-          {renderInline(block.text)}
+          {renderInline(localize(block.text, lang))}
         </p>
       )
 
     case 'heading':
       return block.level === 2 ? (
-        <h2 className="text-xl font-bold text-slate-800 dark:text-white mt-2">{block.text}</h2>
+        <h2 className="text-xl font-bold text-slate-800 dark:text-white mt-2">{localize(block.text, lang)}</h2>
       ) : (
-        <h3 className="text-base font-semibold text-slate-800 dark:text-white mt-1">{block.text}</h3>
+        <h3 className="text-base font-semibold text-slate-800 dark:text-white mt-1">{localize(block.text, lang)}</h3>
       )
 
     case 'note':
       return (
         <aside className="flex gap-3 rounded-lg border-l-4 border-amber-400 bg-amber-50 dark:bg-amber-900/20 px-4 py-3 text-sm text-amber-900 dark:text-amber-200">
           <Lightbulb className="w-4 h-4 mt-0.5 flex-shrink-0 text-amber-500" />
-          <p>{renderInline(block.text)}</p>
+          <p>{renderInline(localize(block.text, lang))}</p>
         </aside>
       )
 
@@ -46,13 +50,13 @@ export default function ContentBlockRenderer({ block }: Props) {
       return block.ordered ? (
         <ol className="list-decimal pl-6 space-y-1 text-slate-700 dark:text-slate-200">
           {block.items.map((item, i) => (
-            <li key={i}>{renderInline(item)}</li>
+            <li key={i}>{renderInline(localize(item, lang))}</li>
           ))}
         </ol>
       ) : (
         <ul className="list-disc pl-6 space-y-1 text-slate-700 dark:text-slate-200">
           {block.items.map((item, i) => (
-            <li key={i}>{renderInline(item)}</li>
+            <li key={i}>{renderInline(localize(item, lang))}</li>
           ))}
         </ul>
       )
@@ -79,7 +83,7 @@ export default function ContentBlockRenderer({ block }: Props) {
       return (
         <RunnableBlock
           code={block.code}
-          caption={block.caption}
+          caption={block.caption == null ? undefined : localize(block.caption, lang)}
           inputValues={block.inputValues}
         />
       )
@@ -88,7 +92,7 @@ export default function ContentBlockRenderer({ block }: Props) {
       return (
         <CodeVisualizer
           code={block.code}
-          caption={block.caption}
+          caption={block.caption == null ? undefined : localize(block.caption, lang)}
           inputValues={block.inputValues}
         />
       )
@@ -105,7 +109,7 @@ export default function ContentBlockRenderer({ block }: Props) {
           </div>
           {block.caption && (
             <figcaption className="text-xs text-slate-500 dark:text-slate-400 text-center">
-              Figure: {block.caption}
+              Figure: {localize(block.caption, lang)}
             </figcaption>
           )}
         </figure>

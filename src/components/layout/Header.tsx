@@ -4,6 +4,8 @@ import { UserButton, useUser } from '@clerk/clerk-react'
 import { useProgressStore } from '../../stores/useProgressStore'
 import { useBasicsStore } from '../../stores/useBasicsStore'
 import { useThemeStore } from '../../stores/useThemeStore'
+import { useLangStore } from '../../stores/useLangStore'
+import { LANGS } from '../../i18n'
 import { chapters, chapterLessonKeys } from '../../data/basics/index'
 
 // Every Python Basics lesson key, computed once.  The header progress bar
@@ -15,6 +17,8 @@ export default function Header() {
   const { studentName, currentStreak } = useProgressStore()
   const basicsLessons = useBasicsStore((s) => s.lessons)
   const { isDark, toggle } = useThemeStore()
+  const lang = useLangStore((s) => s.lang)
+  const setLang = useLangStore((s) => s.setLang)
   const completed = ALL_BASICS_KEYS.filter((k) => basicsLessons[k]?.completed).length
   const total = ALL_BASICS_KEYS.length
   const progress = total > 0 ? (completed / total) * 100 : 0
@@ -59,6 +63,26 @@ export default function Header() {
               {studentName}
             </span>
           )}
+
+          {/* Language toggle */}
+          <div
+            className="flex items-center rounded-md border border-slate-200 dark:border-slate-700 overflow-hidden text-xs"
+            title="Switch language"
+          >
+            {LANGS.map((l) => (
+              <button
+                key={l.code}
+                onClick={() => setLang(l.code)}
+                className={
+                  lang === l.code
+                    ? 'px-2 py-1 bg-blue-600 text-white font-semibold'
+                    : 'px-2 py-1 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400'
+                }
+              >
+                {l.label}
+              </button>
+            ))}
+          </div>
 
           <button
             onClick={toggle}
