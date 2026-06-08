@@ -45,7 +45,7 @@ run** (small PRs). The teacher reviews/refines the Lithuanian in each PR.
 
 - [x] get-started
 - [x] numbers-and-strings
-- [ ] comments
+- [x] comments
 - [ ] variables
 - [ ] output
 - [ ] arithmetic-operators
