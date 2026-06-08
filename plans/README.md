@@ -13,7 +13,7 @@ and add the merge/commit reference.
 |------|--------|-------|
 | `code-visualizer-plan.md` | **v2 done & deployed** | Native step-through code visualizer authored as a `visualize` content block. v1 (stepper + variables + output) and **v2 (heap view with drawn arrows for aliasing)** both complete & browser-verified. Authored into 3 Chapter-1 lessons (Variables ×2, Arithmetic `+=`). Arrows activate automatically once mutable objects appear (Chapter 5+). Remaining: optional polish; wire into future chapters as authored. |
 | `class-scores-table-plan.md` | **Done & deployed** | Teacher Dashboard "Test Scores" view: class-wide table (students × progress/final tests) with per-student Average + CSV export, behind an Overview/Test Scores toggle. Read-only, teacher-only; no API/DB change. |
-| `visualizer-more-lessons-plan.md` | **Pending — not started** | Add one `visualize` block to the Data Conversion `convert-to-integer` lesson (string→int step-through). Content-only, deterministic; open a draft PR. |
+| `visualizer-more-lessons-plan.md` | **Done** | Added one `visualize` block to the Data Conversion `convert-to-integer` lesson (string→int step-through). Lint + build green; deployed via PR. |
 
 ## How the daily routine uses this
 

@@ -1,6 +1,6 @@
 # Wire the visualizer into the Data Conversion lesson
 
-> STATUS: **Pending — not started.**
+> STATUS: **Done.**
 > Self-contained handoff. Small, deterministic, content-only task.
 
 ## Goal
