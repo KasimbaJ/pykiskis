@@ -2,35 +2,16 @@ import { ArrowLeft, Check, X, Clock, BookOpen, Trophy } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import type { StudentProgress } from '../../types'
 import { levels } from '../../data/levels/index'
-import { chapters, countAllBasicsLessons } from '../../data/basics/index'
+import { chapters, countAllBasicsLessons, progressTestsByChapter } from '../../data/basics/index'
 
 interface Props {
   student: StudentProgress;
   onBack: () => void;
 }
 
-// Progress-test lessons grouped by chapter — each chapter's module checkpoints
-// and Final Test.  Derived from the course data, so a chapter that gains tests
-// shows up automatically and project / "coming soon" chapters (which have no
-// progress-test lessons) are simply omitted.
-const PROGRESS_TESTS_BY_CHAPTER: {
-  chapterId: number
-  chapterTitle: string
-  tests: { key: string; label: string }[]
-}[] = chapters
-  .map((ch) => ({
-    chapterId: ch.id,
-    chapterTitle: ch.title,
-    tests: ch.modules.flatMap((m) =>
-      m.lessons
-        .filter((l) => l.type === 'progress-test')
-        .map((l) => ({ key: `${ch.slug}.${m.slug}.${l.slug}`, label: m.title })),
-    ),
-  }))
-  .filter((group) => group.tests.length > 0)
-
 export default function StudentDetail({ student, onBack }: Props) {
   const navigate = useNavigate()
+  const testGroups = progressTestsByChapter()
 
   return (
     <div>
@@ -78,7 +59,7 @@ export default function StudentDetail({ student, onBack }: Props) {
             Progress Test Scores
           </h3>
           <div className="space-y-4">
-            {PROGRESS_TESTS_BY_CHAPTER.map((group) => (
+            {testGroups.map((group) => (
               <div key={group.chapterId}>
                 <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">
                   Ch {group.chapterId} · {group.chapterTitle}

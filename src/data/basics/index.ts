@@ -162,3 +162,38 @@ export function chapterLessonKeys(chapter: Chapter): string[] {
 export function moduleLessonKeys(chapterSlug: string, module: Module): string[] {
   return module.lessons.map((l) => lessonKey(chapterSlug, module.slug, l.slug))
 }
+
+// ─── Progress-test columns (Teacher Dashboard) ───────────────────────────────
+
+export interface ProgressTestColumn {
+  /** Composite lesson key, e.g. `introduction.final-test.test`. */
+  key: string
+  /** Column label — the test module's title, e.g. "Final Test". */
+  label: string
+}
+
+export interface ProgressTestChapterGroup {
+  chapterId: number
+  chapterTitle: string
+  tests: ProgressTestColumn[]
+}
+
+/**
+ * All progress-test lessons (module checkpoints + Final Test) grouped by
+ * chapter, in course order.  Derived from the course data, so chapters that
+ * gain tests appear automatically and project / "coming soon" chapters (no
+ * progress-test lessons) are omitted.  Used by the Teacher Dashboard.
+ */
+export function progressTestsByChapter(): ProgressTestChapterGroup[] {
+  return chapters
+    .map((ch) => ({
+      chapterId: ch.id,
+      chapterTitle: ch.title,
+      tests: ch.modules.flatMap((m) =>
+        m.lessons
+          .filter((l) => l.type === 'progress-test')
+          .map((l) => ({ key: lessonKey(ch.slug, m.slug, l.slug), label: m.title })),
+      ),
+    }))
+    .filter((group) => group.tests.length > 0)
+}

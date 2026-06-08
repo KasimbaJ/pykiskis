@@ -1,8 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, RefreshCw, ShieldAlert, Loader2 } from 'lucide-react'
 import { useUser, useAuth } from '@clerk/clerk-react'
 import StudentTable from '../components/dashboard/StudentTable'
+import ClassScoresTable from '../components/dashboard/ClassScoresTable'
 import StudentDetail from '../components/dashboard/StudentDetail'
 import { useDashboardStore } from '../stores/useDashboardStore'
 
@@ -13,6 +14,8 @@ export default function DashboardPage() {
 
   const { students, selectedStudent, isLoading, error, loadStudents, setSelectedStudent } =
     useDashboardStore()
+
+  const [view, setView] = useState<'overview' | 'scores'>('overview')
 
   const refresh = () =>
     getToken()
@@ -97,7 +100,36 @@ export default function DashboardPage() {
                 {students.length} student{students.length !== 1 ? 's' : ''} enrolled
               </p>
             </div>
-            <StudentTable students={students} onSelectStudent={setSelectedStudent} />
+
+            {/* View toggle */}
+            <div className="inline-flex rounded-lg border border-slate-200 bg-white p-0.5 mb-4">
+              <button
+                onClick={() => setView('overview')}
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                  view === 'overview'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-600 hover:text-slate-800'
+                }`}
+              >
+                Overview
+              </button>
+              <button
+                onClick={() => setView('scores')}
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                  view === 'scores'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-600 hover:text-slate-800'
+                }`}
+              >
+                Test Scores
+              </button>
+            </div>
+
+            {view === 'overview' ? (
+              <StudentTable students={students} onSelectStudent={setSelectedStudent} />
+            ) : (
+              <ClassScoresTable students={students} />
+            )}
           </>
         ) : null}
       </main>
