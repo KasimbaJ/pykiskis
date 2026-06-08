@@ -18,37 +18,77 @@ export const getStartedModule: Module = {
       title: 'Introduction to Python',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'Welcome to the Python course!' },
         {
           kind: 'paragraph',
-          text: "You're about to start learning Python — one of the most popular and widely used programming languages in the world.",
-        },
-        { kind: 'heading', level: 3, text: 'Why Python?' },
-        { kind: 'paragraph', text: "It's not just easy to learn — it's also incredibly powerful." },
-        {
-          kind: 'paragraph',
-          text: 'People use it to build websites, create apps, analyze data, automate tasks, and even work on AI.',
+          text: { en: 'Welcome to the Python course!', lt: 'Sveiki atvykę į Python kursą!' },
         },
         {
           kind: 'paragraph',
-          text: "Whether you're aiming for a career in tech or just curious about coding, Python is a great place to start.",
-        },
-        { kind: 'paragraph', text: "On this page, you don't need to write any code yet." },
-        {
-          kind: 'paragraph',
-          text: "You'll be writing your own Python code very soon.",
+          text: {
+            en: "You're about to start learning Python — one of the most popular and widely used programming languages in the world.",
+            lt: 'Jūs tuoj pradėsite mokytis Python — vienos populiariausių ir plačiausiai naudojamų programavimo kalbų pasaulyje.',
+          },
         },
         {
-          kind: 'paragraph',
-          text: "And don't worry — you can't break anything. Just follow along, explore, and have fun with it.",
-        },
-        {
-          kind: 'paragraph',
-          text: 'This course will guide you step by step in a friendly and easy way — no pressure, and no prior experience needed.',
+          kind: 'heading',
+          level: 3,
+          text: { en: 'Why Python?', lt: 'Kodėl Python?' },
         },
         {
           kind: 'paragraph',
-          text: "When you're ready, click **Next Lesson** and we'll run your very first Python code together.",
+          text: {
+            en: "It's not just easy to learn — it's also incredibly powerful.",
+            lt: 'Ją ne tik lengva išmokti — ji taip pat yra nepaprastai galinga.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'People use it to build websites, create apps, analyze data, automate tasks, and even work on AI.',
+            lt: 'Žmonės ją naudoja kurdami svetaines, programas, analizuodami duomenis, automatizuodami užduotis ir netgi dirbdami su dirbtiniu intelektu.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Whether you're aiming for a career in tech or just curious about coding, Python is a great place to start.",
+            lt: 'Nesvarbu, ar siekiate karjeros IT srityje, ar tiesiog domitės programavimu — Python yra puiki vieta pradėti.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "On this page, you don't need to write any code yet.",
+            lt: 'Šiame puslapyje kodo rašyti dar nereikia.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "You'll be writing your own Python code very soon.",
+            lt: 'Labai greitai rašysite savo Python kodą.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "And don't worry — you can't break anything. Just follow along, explore, and have fun with it.",
+            lt: 'Nesijaudinkite — nieko negalite sugadinti. Tiesiog sekite paskui, tyrinėkite ir mėgaukitės.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'This course will guide you step by step in a friendly and easy way — no pressure, and no prior experience needed.',
+            lt: 'Šis kursas vedins jus žingsnis po žingsnio draugišku ir paprastu būdu — be spaudimo ir be išankstinių žinių.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "When you're ready, click **Next Lesson** and we'll run your very first Python code together.",
+            lt: 'Kai būsite pasiruošę, spustelėkite **Kita pamoka** ir kartu paleisime jūsų pirmąjį Python kodą.',
+          },
         },
       ],
     },
@@ -59,17 +99,56 @@ export const getStartedModule: Module = {
       title: 'Run Your First Python Program',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "You're about to run your very first Python program." },
-        { kind: 'paragraph', text: 'Here is a simple program that prints `Hello, World!`.' },
-        { kind: 'runnable', code: 'print("Hello, World!")' },
-        { kind: 'paragraph', text: 'All you have to do is click the **Run Code** button above.' },
-        { kind: 'paragraph', text: "You'll see `Hello, World!` appear in the Output section." },
-        { kind: 'paragraph', text: "Awesome — you've just run your very first Python program." },
         {
           kind: 'paragraph',
-          text: "Don't worry if it doesn't make complete sense yet. We'll walk through how this code works step-by-step on the next page.",
+          text: {
+            en: "You're about to run your very first Python program.",
+            lt: 'Jūs tuoj paleisite savo pirmąją Python programą.',
+          },
         },
-        { kind: 'paragraph', text: 'Go ahead and click **Next Lesson** to keep going.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Here is a simple program that prints `Hello, World!`.',
+            lt: 'Štai paprasta programa, kuri išspausdina `Hello, World!`.',
+          },
+        },
+        { kind: 'runnable', code: 'print("Hello, World!")' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'All you have to do is click the **Run Code** button above.',
+            lt: 'Jums tereikia spustelėti aukščiau esantį mygtuką **Paleisti kodą**.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "You'll see `Hello, World!` appear in the Output section.",
+            lt: 'Išvesties skiltyje pamatysite `Hello, World!`.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Awesome — you've just run your very first Python program.",
+            lt: 'Puiku — jūs ką tik paleidote savo pirmąją Python programą.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Don't worry if it doesn't make complete sense yet. We'll walk through how this code works step-by-step on the next page.",
+            lt: 'Nesijaudinkite, jei dar ne viskas aišku. Kitame puslapyje žingsnis po žingsnio apžvelgsime, kaip veikia šis kodas.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Go ahead and click **Next Lesson** to keep going.',
+            lt: 'Spustelėkite **Kita pamoka** ir tęskite.',
+          },
+        },
       ],
     },
 
@@ -79,34 +158,82 @@ export const getStartedModule: Module = {
       title: 'Working of the Program',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "Let's take a closer look at the program you just ran." },
         {
           kind: 'paragraph',
-          text: 'In Python, we use the function `print()` whenever we want to display something on the screen.',
+          text: {
+            en: "Let's take a closer look at the program you just ran.",
+            lt: 'Atidžiau pažvelkime į programą, kurią ką tik paleidote.',
+          },
         },
-        { kind: 'paragraph', text: 'The `print()` function shows whatever is inside it.' },
-        { kind: 'paragraph', text: 'For example, this program you ran earlier:' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'In Python, we use the function `print()` whenever we want to display something on the screen.',
+            lt: 'Python kalboje naudojame funkciją `print()`, kai norime kažką parodyti ekrane.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'The `print()` function shows whatever is inside it.',
+            lt: 'Funkcija `print()` rodo viską, kas yra jos viduje.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'For example, this program you ran earlier:',
+            lt: 'Pavyzdžiui, ši programa, kurią paleidote anksčiau:',
+          },
+        },
         {
           kind: 'figure',
           code: 'print("Hello, World!")',
           output: 'Hello, World!',
-          caption: 'Print Hello World',
+          caption: { en: 'Print Hello World', lt: 'Spausdinti Hello World' },
         },
         {
           kind: 'paragraph',
-          text: 'When you run the code, the output will show the text without the quotation marks.',
+          text: {
+            en: 'When you run the code, the output will show the text without the quotation marks.',
+            lt: 'Paleidus kodą, išvestyje bus rodomas tekstas be kabučių.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'The quotation marks `" "` around the text tell Python that this is plain text and should be shown exactly as written.',
+          text: {
+            en: 'The quotation marks `" "` around the text tell Python that this is plain text and should be shown exactly as written.',
+            lt: 'Kabutės `" "` aplink tekstą praneša Python, kad tai yra paprastas tekstas, kuris turi būti rodomas tiksliai taip, kaip parašyta.',
+          },
         },
         {
           kind: 'paragraph',
-          text: "Without those quotes, Python would get confused, wouldn't recognize the text, and would show an error.",
+          text: {
+            en: "Without those quotes, Python would get confused, wouldn't recognize the text, and would show an error.",
+            lt: 'Be tų kabučių Python susipainiotų, neatpažintų teksto ir rodytų klaidą.',
+          },
         },
-        { kind: 'paragraph', text: "Next, you'll do a quick quiz to help you remember what you've learned." },
-        { kind: 'paragraph', text: "After that, you'll get to write your very first Python code yourself." },
-        { kind: 'paragraph', text: 'Click **Next Lesson** to keep going.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Next, you'll do a quick quiz to help you remember what you've learned.",
+            lt: 'Toliau atliksite trumpą viktoriną, kuri padės įsiminti tai, ką išmokote.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "After that, you'll get to write your very first Python code yourself.",
+            lt: 'Po to pačys parašysite savo pirmąjį Python kodą.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Click **Next Lesson** to keep going.',
+            lt: 'Spustelėkite **Kita pamoka** ir tęskite.',
+          },
+        },
       ],
     },
 
@@ -153,25 +280,52 @@ export const getStartedModule: Module = {
       title: 'Course Overview',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'Congratulations on writing your first Python program!' },
         {
           kind: 'paragraph',
-          text: "You'll learn and write lots more code throughout this course. Here's what to expect:",
+          text: {
+            en: 'Congratulations on writing your first Python program!',
+            lt: 'Sveikiname parašius pirmąją Python programą!',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "You'll learn and write lots more code throughout this course. Here's what to expect:",
+            lt: 'Per šį kursą išmoksite ir parašysite daug daugiau kodo. Štai ko galite tikėtis:',
+          },
         },
         {
           kind: 'list',
           ordered: false,
           items: [
-            '**Learn Python Concepts** — short, friendly lessons that explain each idea.',
-            '**Write Python Code** — try out examples in the browser as you read.',
-            '**Solve Practical Exercises** — apply what you learned in small problems.',
+            {
+              en: '**Learn Python Concepts** — short, friendly lessons that explain each idea.',
+              lt: '**Mokytis Python sąvokų** — trumpos, draugiškos pamokos, paaiškinančios kiekvieną idėją.',
+            },
+            {
+              en: '**Write Python Code** — try out examples in the browser as you read.',
+              lt: '**Rašyti Python kodą** — išbandykite pavyzdžius naršyklėje skaitydami.',
+            },
+            {
+              en: '**Solve Practical Exercises** — apply what you learned in small problems.',
+              lt: '**Spręsti praktinius pratimus** — pritaikykite tai, ką išmokote, spręsdami nedideles užduotis.',
+            },
           ],
         },
         {
           kind: 'paragraph',
-          text: "By the end, you'll write hundreds of programs and create projects, including the rock-paper-scissors game, and become ready to work on real-world projects.",
+          text: {
+            en: "By the end, you'll write hundreds of programs and create projects, including the rock-paper-scissors game, and become ready to work on real-world projects.",
+            lt: 'Kurso pabaigoje parašysite šimtus programų ir sukursite projektų, įskaitant akmenio, žirklių ir popieriaus žaidimą, bei būsite pasiruošę dirbti su realiais projektais.',
+          },
         },
-        { kind: 'paragraph', text: 'Click **Next Lesson** to continue your learning journey!' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Click **Next Lesson** to continue your learning journey!',
+            lt: 'Spustelėkite **Kita pamoka** ir tęskite savo mokymosi kelionę!',
+          },
+        },
       ],
     },
 
