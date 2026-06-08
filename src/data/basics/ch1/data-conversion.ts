@@ -77,6 +77,15 @@ export const dataConversionModule: Module = {
             'print(integer_number)    # Output: 15',
         },
         {
+          kind: 'visualize',
+          caption: 'Step through it: watch the string "15" become the integer 15, then get used in arithmetic.',
+          code:
+            'text_value = "15"\n' +
+            'number = int(text_value)\n' +
+            'doubled = number * 2\n' +
+            'print(doubled)',
+        },
+        {
           kind: 'paragraph',
           text: 'Here, the `int()` function converts the string to its equivalent integer.',
         },
