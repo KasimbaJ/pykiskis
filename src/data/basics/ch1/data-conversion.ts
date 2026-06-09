@@ -21,7 +21,10 @@ export const dataConversionModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: "So far in this course, you've learned to work with three different types of data:",
+          text: {
+            en: "So far in this course, you've learned to work with three different types of data:",
+            lt: 'Iki šiol šiame kurse jūs išmokote dirbti su trimis skirtingais duomenų tipais:',
+          },
         },
         {
           kind: 'list',
@@ -34,11 +37,17 @@ export const dataConversionModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'In real-world projects, data may not always be in the format you need. For example, numbers might be stored as text, such as `"5.3"`.',
+          text: {
+            en: 'In real-world projects, data may not always be in the format you need. For example, numbers might be stored as text, such as `"5.3"`.',
+            lt: 'Realiuose projektuose duomenys ne visada būna tokio formato, kokio jums reikia. Pavyzdžiui, skaičiai gali būti saugomi kaip tekstas, pavyzdžiui, `"5.3"`.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'In such situations, you may need to change data from one type to another. In this lesson, you will learn to perform such data conversions.',
+          text: {
+            en: 'In such situations, you may need to change data from one type to another. In this lesson, you will learn to perform such data conversions.',
+            lt: 'Tokiose situacijose gali prireikti keisti duomenis iš vieno tipo į kitą. Šioje pamokoje jūs išmoksite atlikti tokias duomenų konversijas.',
+          },
         },
       ],
     },
@@ -51,9 +60,19 @@ export const dataConversionModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'We use the `int()` function to convert data from other types to integers.',
+          text: {
+            en: 'We use the `int()` function to convert data from other types to integers.',
+            lt: 'Naudojame funkciją `int()`, kad konvertuotume duomenis iš kitų tipų į sveikuosius skaičius.',
+          },
         },
-        { kind: 'heading', level: 3, text: 'Convert Float to Integer' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'Convert Float to Integer',
+            lt: 'Konvertuoti „float" į „integer"',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -64,9 +83,19 @@ export const dataConversionModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Here, the `int()` function converts the floating-point number to its equivalent integer.',
+          text: {
+            en: 'Here, the `int()` function converts the floating-point number to its equivalent integer.',
+            lt: 'Čia funkcija `int()` konvertuoja slankiojo kablelio skaičių į atitinkamą sveiką skaičių.',
+          },
         },
-        { kind: 'heading', level: 3, text: 'String to Integer' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'String to Integer',
+            lt: 'Eilutė į sveiką skaičių',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -78,7 +107,10 @@ export const dataConversionModule: Module = {
         },
         {
           kind: 'visualize',
-          caption: 'Step through it: watch the string "15" become the integer 15, then get used in arithmetic.',
+          caption: {
+            en: 'Step through it: watch the string "15" become the integer 15, then get used in arithmetic.',
+            lt: 'Eikite per kodą žingsnis po žingsnio: stebėkite, kaip eilutė „15" tampa sveiku skaičiumi 15, o tada naudojama aritmetikoje.',
+          },
           code:
             'text_value = "15"\n' +
             'number = int(text_value)\n' +
@@ -87,13 +119,25 @@ export const dataConversionModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Here, the `int()` function converts the string to its equivalent integer.',
+          text: {
+            en: 'Here, the `int()` function converts the string to its equivalent integer.',
+            lt: 'Čia funkcija `int()` konvertuoja eilutę į atitinkamą sveiką skaičių.',
+          },
         },
         {
           kind: 'note',
-          text: 'Note: If the `int()` function cannot convert the string to its equivalent integer, we will get an error.',
+          text: {
+            en: 'Note: If the `int()` function cannot convert the string to its equivalent integer, we will get an error.',
+            lt: 'Pastaba: jei funkcija `int()` negali konvertuoti eilutės į atitinkamą sveiką skaičių, gausite klaidą.',
+          },
         },
-        { kind: 'paragraph', text: 'Next, we will see an example.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Next, we will see an example.',
+            lt: 'Toliau pamatysime pavyzdį.',
+          },
+        },
       ],
     },
 
@@ -105,7 +149,10 @@ export const dataConversionModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: "We cannot convert all types of strings to integers. Let's take an example.",
+          text: {
+            en: "We cannot convert all types of strings to integers. Let's take an example.",
+            lt: 'Negalime konvertuoti visų rūšių eilučių į sveikuosius skaičius. Paimkime pavyzdį.',
+          },
         },
         {
           kind: 'runnable',
@@ -123,11 +170,17 @@ export const dataConversionModule: Module = {
             'integer_number = int(string_number)    # Error!\n\n' +
             'print(integer_number)',
           output: "ValueError: invalid literal for int() with base 10: 'Howdy!'",
-          caption: 'Output',
+          caption: {
+            en: 'Output',
+            lt: 'Išvestis',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'Here, Python cannot convert `"Howdy!"` to its equivalent integer because this string consists of alphabets instead of just numbers. Hence, we will get an error.',
+          text: {
+            en: 'Here, Python cannot convert `"Howdy!"` to its equivalent integer because this string consists of alphabets instead of just numbers. Hence, we will get an error.',
+            lt: 'Čia Python negali konvertuoti `"Howdy!"` į atitinkamą sveiką skaičių, nes ši eilutė susideda iš raidžių, o ne tik skaičių. Todėl gauname klaidą.',
+          },
         },
       ],
     },
@@ -140,9 +193,19 @@ export const dataConversionModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'We use the `float()` function to convert data from other types to floating-point numbers.',
+          text: {
+            en: 'We use the `float()` function to convert data from other types to floating-point numbers.',
+            lt: 'Naudojame funkciją `float()`, kad konvertuotume duomenis iš kitų tipų į slankiojo kablelio skaičius.',
+          },
         },
-        { kind: 'heading', level: 3, text: 'Integer to Float' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'Integer to Float',
+            lt: 'Sveikasis skaičius į slankiojo kablelio skaičių',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -153,9 +216,19 @@ export const dataConversionModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Here, the `float()` function converts the integer number to its equivalent floating-point number.',
+          text: {
+            en: 'Here, the `float()` function converts the integer number to its equivalent floating-point number.',
+            lt: 'Čia funkcija `float()` konvertuoja sveiką skaičių į atitinkamą slankiojo kablelio skaičių.',
+          },
         },
-        { kind: 'heading', level: 3, text: 'String to Float' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'String to Float',
+            lt: 'Eilutė į slankiojo kablelio skaičių',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -166,15 +239,24 @@ export const dataConversionModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Here, the `float()` function converts the string to its equivalent floating-point number.',
+          text: {
+            en: 'Here, the `float()` function converts the string to its equivalent floating-point number.',
+            lt: 'Čia funkcija `float()` konvertuoja eilutę į atitinkamą slankiojo kablelio skaičių.',
+          },
         },
         {
           kind: 'note',
-          text: 'Note: Similar to `int()`, if the `float()` function cannot convert the string to its equivalent floating-point number, we will get an error.',
+          text: {
+            en: 'Note: Similar to `int()`, if the `float()` function cannot convert the string to its equivalent floating-point number, we will get an error.',
+            lt: 'Pastaba: panašiai kaip `int()`, jei funkcija `float()` negali konvertuoti eilutės į atitinkamą slankiojo kablelio skaičių, gausite klaidą.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'Next, we will see another example of an incompatible conversion.',
+          text: {
+            en: 'Next, we will see another example of an incompatible conversion.',
+            lt: 'Toliau pamatysime dar vieną nesuderinamos konversijos pavyzdį.',
+          },
         },
       ],
     },
@@ -187,7 +269,10 @@ export const dataConversionModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: "We have already learned not all strings can be converted to integers. Similarly, some strings can't be converted to floating-point numbers. Let's look at an example to see why.",
+          text: {
+            en: "We have already learned not all strings can be converted to integers. Similarly, some strings can't be converted to floating-point numbers. Let's look at an example to see why.",
+            lt: 'Jau sužinojome, kad ne visas eilutes galima konvertuoti į sveikuosius skaičius. Panašiai kai kurių eilučių negalima konvertuoti į slankiojo kablelio skaičius. Pažiūrėkime pavyzdį, kad suprastume kodėl.',
+          },
         },
         {
           kind: 'runnable',
@@ -205,11 +290,17 @@ export const dataConversionModule: Module = {
             'float_number = float(string_number)    # Error!\n\n' +
             'print(float_number)',
           output: "ValueError: could not convert string to float: '12a'",
-          caption: 'Output',
+          caption: {
+            en: 'Output',
+            lt: 'Išvestis',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'Here, Python cannot convert `"12a"` to its equivalent floating-point number. Hence, we will get an error.',
+          text: {
+            en: 'Here, Python cannot convert `"12a"` to its equivalent floating-point number. Hence, we will get an error.',
+            lt: 'Čia Python negali konvertuoti `"12a"` į atitinkamą slankiojo kablelio skaičių. Todėl gauname klaidą.',
+          },
         },
       ],
     },
@@ -254,7 +345,10 @@ export const dataConversionModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'We use the `str()` function to convert data from other types to string numbers. For example,',
+          text: {
+            en: 'We use the `str()` function to convert data from other types to string numbers. For example,',
+            lt: 'Naudojame funkciją `str()`, kad konvertuotume duomenis iš kitų tipų į eilutes. Pavyzdžiui,',
+          },
         },
         {
           kind: 'runnable',
@@ -264,15 +358,24 @@ export const dataConversionModule: Module = {
           kind: 'figure',
           code: 'number = 5.5\nnumber_str = str(5.5)\n\nprint(number_str)',
           output: '5.5',
-          caption: 'Output',
+          caption: {
+            en: 'Output',
+            lt: 'Išvestis',
+          },
         },
         {
           kind: 'paragraph',
-          text: "It's not immediately clear from the output that `number_str` is storing a string, as printing the `number` variable would produce the same result.",
+          text: {
+            en: "It's not immediately clear from the output that `number_str` is storing a string, as printing the `number` variable would produce the same result.",
+            lt: 'Iš išvesties iš karto neaišku, kad `number_str` saugo eilutę, nes kintamojo `number` spausdinimas duotų tą patį rezultatą.',
+          },
         },
         {
           kind: 'paragraph',
-          text: "To confirm the type of data, you can use the `type()` function, which we have covered in Understanding Python's `type()` article.",
+          text: {
+            en: "To confirm the type of data, you can use the `type()` function, which we have covered in Understanding Python's `type()` article.",
+            lt: 'Norėdami patvirtinti duomenų tipą, galite naudoti funkciją `type()`, kurią aptarėme straipsnyje apie Python `type()` funkciją.',
+          },
         },
       ],
     },
@@ -283,10 +386,19 @@ export const dataConversionModule: Module = {
       title: 'Implicit Type Conversion',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "There's more to conversion." },
         {
           kind: 'paragraph',
-          text: 'Python automatically converts data of one type to another in some situations. For example,',
+          text: {
+            en: "There's more to conversion.",
+            lt: 'Konversija turi daugiau aspektų.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Python automatically converts data of one type to another in some situations. For example,',
+            lt: 'Python tam tikrose situacijose automatiškai konvertuoja duomenis iš vieno tipo į kitą. Pavyzdžiui,',
+          },
         },
         {
           kind: 'runnable',
@@ -306,19 +418,31 @@ export const dataConversionModule: Module = {
             'result = number_integer + number_float\n\n' +
             'print(result)',
           output: '124.23',
-          caption: 'Output',
+          caption: {
+            en: 'Output',
+            lt: 'Išvestis',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'Here, we are adding an integer and a floating-point number.',
+          text: {
+            en: 'Here, we are adding an integer and a floating-point number.',
+            lt: 'Čia pridedame sveiką skaičių ir slankiojo kablelio skaičių.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'In such situations, Python tries to automatically convert the integer (**123**) to its equivalent floating-point number (**123.0**) before addition.',
+          text: {
+            en: 'In such situations, Python tries to automatically convert the integer (**123**) to its equivalent floating-point number (**123.0**) before addition.',
+            lt: 'Tokiose situacijose Python bando automatiškai konvertuoti sveiką skaičių (**123**) į atitinkamą slankiojo kablelio skaičių (**123.0**) prieš sudėtį.',
+          },
         },
         {
           kind: 'paragraph',
-          text: "That's the reason why the output is also a floating-point number.",
+          text: {
+            en: "That's the reason why the output is also a floating-point number.",
+            lt: 'Todėl išvestis taip pat yra slankiojo kablelio skaičius.',
+          },
         },
       ],
     },
