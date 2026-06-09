@@ -19,12 +19,27 @@ export const getUserInputModule: Module = {
       title: 'Introduction to User Input',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "Till now, we've directly assigned values to variables like this:" },
-        { kind: 'code', code: 'name = "James"' },
-        { kind: 'paragraph', text: "Now, let's make things more interactive." },
         {
           kind: 'paragraph',
-          text: "You can ask the user for input and use that data in your program, instead of assigning values directly. Let's see how to do this.",
+          text: {
+            en: "Till now, we've directly assigned values to variables like this:",
+            lt: 'Iki šiol mes tiesiogiai priskyrėme reikšmes kintamiesiems taip:',
+          },
+        },
+        { kind: 'code', code: 'name = "James"' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Now, let's make things more interactive.",
+            lt: 'Dabar padarykime viską interaktyviau.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "You can ask the user for input and use that data in your program, instead of assigning values directly. Let's see how to do this.",
+            lt: 'Galite paprašyti vartotojo įvesti duomenis ir naudoti juos savo programoje, vietoj tiesioginio reikšmių priskyrimo. Pažiūrėkime, kaip tai padaryti.',
+          },
         },
       ],
     },
@@ -37,7 +52,10 @@ export const getUserInputModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'You can also ask the user for input and assign it to a variable using the `input()` function. For example,',
+          text: {
+            en: 'You can also ask the user for input and assign it to a variable using the `input()` function. For example,',
+            lt: 'Taip pat galite paprašyti vartotojo įvesti duomenis ir priskirti juos kintamajam naudojant `input()` funkciją. Pavyzdžiui,',
+          },
         },
         {
           kind: 'runnable',
@@ -46,27 +64,42 @@ export const getUserInputModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Here, the program prints `Enter your name:` and then waits for the user to enter data.',
+          text: {
+            en: 'Here, the program prints `Enter your name:` and then waits for the user to enter data.',
+            lt: 'Čia programa išspausdina `Enter your name:` ir tada laukia, kol vartotojas įves duomenis.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'Let us type `James` and press the **ENTER** key. In this case, the `James` string will be assigned to the `name` variable.',
+          text: {
+            en: 'Let us type `James` and press the **ENTER** key. In this case, the `James` string will be assigned to the `name` variable.',
+            lt: 'Įveskime `James` ir paspauskime klavišą **ENTER**. Tokiu atveju eilutė `James` bus priskirta kintamajam `name`.',
+          },
         },
         {
           kind: 'paragraph',
-          text: '`James` will be printed when we print the `name` variable.',
+          text: {
+            en: '`James` will be printed when we print the `name` variable.',
+            lt: '`James` bus išspausdinta, kai spausdinsime kintamąjį `name`.',
+          },
         },
         {
           kind: 'figure',
           code: '',
           output: 'Enter your name: James\nYour name is James',
-          caption: 'Sample Output 1',
+          caption: {
+            en: 'Sample Output 1',
+            lt: '1 išvesties pavyzdys',
+          },
         },
         {
           kind: 'figure',
           code: '',
           output: 'Enter your name: Emily\nYour name is Emily',
-          caption: 'Sample Output 2',
+          caption: {
+            en: 'Sample Output 2',
+            lt: '2 išvesties pavyzdys',
+          },
         },
       ],
     },
@@ -77,7 +110,13 @@ export const getUserInputModule: Module = {
       title: 'User Input Without Prompt',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "Let's take another example of user input." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Let's take another example of user input.",
+            lt: 'Paimkime kitą vartotojo įvesties pavyzdį.',
+          },
+        },
         {
           kind: 'runnable',
           code: 'full_name = input()\nprint("Full Name:", full_name)',
@@ -87,19 +126,31 @@ export const getUserInputModule: Module = {
           kind: 'figure',
           code: '',
           output: 'Micheal Smith\nFull Name: Micheal Smith',
-          caption: 'Sample Output',
+          caption: {
+            en: 'Sample Output',
+            lt: 'Išvesties pavyzdys',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'Here, we have used the `input()` function without putting text (prompt message) inside it.',
+          text: {
+            en: 'Here, we have used the `input()` function without putting text (prompt message) inside it.',
+            lt: 'Čia mes naudojome `input()` funkciją be teksto (raginimo pranešimo) jos viduje.',
+          },
         },
         {
           kind: 'paragraph',
-          text: "The `full_name = input()` function doesn't print anything but makes the program wait until the user enters some input.",
+          text: {
+            en: "The `full_name = input()` function doesn't print anything but makes the program wait until the user enters some input.",
+            lt: 'Funkcija `full_name = input()` nieko nespausdina, bet priverčia programą laukti, kol vartotojas įves kažką.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'When the user types something and hits the **ENTER** key, it is assigned to the `full_name` variable.',
+          text: {
+            en: 'When the user types something and hits the **ENTER** key, it is assigned to the `full_name` variable.',
+            lt: 'Kai vartotojas ką nors įveda ir paspaudžia klavišą **ENTER**, tai priskiriama kintamajam `full_name`.',
+          },
         },
       ],
     },
@@ -148,9 +199,18 @@ export const getUserInputModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'The `input()` function always takes input as a string. Even if our input is just a number, the `input()` function stores it as a string.',
+          text: {
+            en: 'The `input()` function always takes input as a string. Even if our input is just a number, the `input()` function stores it as a string.',
+            lt: 'Funkcija `input()` visada priima įvestį kaip eilutę. Net jei mūsų įvestis yra tik skaičius, funkcija `input()` saugo jį kaip eilutę.',
+          },
         },
-        { kind: 'paragraph', text: "Let's take an example to understand why this is important." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Let's take an example to understand why this is important.",
+            lt: 'Paimkime pavyzdį, kad suprastume, kodėl tai svarbu.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -173,35 +233,81 @@ export const getUserInputModule: Module = {
             "Traceback (most recent call last):\n" +
             '  File "<string>", line 7, in <module>\n' +
             "TypeError: can't multiply sequence by non-int of type 'str'",
-          caption: 'Sample Output',
+          caption: {
+            en: 'Sample Output',
+            lt: 'Išvesties pavyzdys',
+          },
         },
         {
           kind: 'paragraph',
-          text: "This program will give us an error after we enter two numbers. It's because the `input()` function takes input in the form of a string.",
+          text: {
+            en: "This program will give us an error after we enter two numbers. It's because the `input()` function takes input in the form of a string.",
+            lt: 'Ši programa pateiks klaidą po to, kai įvesime du skaičius. Taip yra todėl, kad funkcija `input()` priima įvestį eilutės pavidalu.',
+          },
         },
         {
           kind: 'figure',
           code: 'product = "5" * "10"',
           output: 'Error: Cannot multiply two strings',
-          caption: 'Figure: Cannot Multiply Two Strings',
+          caption: {
+            en: 'Figure: Cannot Multiply Two Strings',
+            lt: 'Paveikslėlis: negalima dauginti dviejų eilučių',
+          },
         },
-        { kind: 'paragraph', text: 'Here,' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Here,',
+            lt: 'Čia,',
+          },
+        },
         {
           kind: 'list',
           ordered: false,
           items: [
-            '`"5"` (string) is assigned to `number1` instead of **5** (integer).',
-            '`"10"` (string) is assigned to `number2` instead of **10** (integer).',
-            '`product = number1 * number2` results in an error because we cannot multiply two strings.',
+            {
+              en: '`"5"` (string) is assigned to `number1` instead of **5** (integer).',
+              lt: '`"5"` (eilutė) priskiriama `number1` vietoje **5** (sveikojo skaičiaus).',
+            },
+            {
+              en: '`"10"` (string) is assigned to `number2` instead of **10** (integer).',
+              lt: '`"10"` (eilutė) priskiriama `number2` vietoje **10** (sveikojo skaičiaus).',
+            },
+            {
+              en: '`product = number1 * number2` results in an error because we cannot multiply two strings.',
+              lt: '`product = number1 * number2` sukelia klaidą, nes negalima dauginti dviejų eilučių.',
+            },
           ],
         },
-        { kind: 'heading', level: 3, text: 'So, how do we solve this problem?' },
-        { kind: 'paragraph', text: 'We cannot directly take integers and floats as input.' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'So, how do we solve this problem?',
+            lt: 'Taigi, kaip išsprendžiame šią problemą?',
+          },
+        },
         {
           kind: 'paragraph',
-          text: 'However, we can convert the strings entered by the user to integers using the `int()` and into floating-point numbers using the `float()` function.',
+          text: {
+            en: 'We cannot directly take integers and floats as input.',
+            lt: 'Mes negalime tiesiogiai priimti sveikųjų skaičių ir slankiojo kablelio skaičių kaip įvesties.',
+          },
         },
-        { kind: 'paragraph', text: "Let's see how we can do this." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'However, we can convert the strings entered by the user to integers using the `int()` and into floating-point numbers using the `float()` function.',
+            lt: 'Tačiau galime konvertuoti vartotojo įvestas eilutes į sveikuosius skaičius naudojant `int()` ir į slankiojo kablelio skaičius naudojant `float()` funkciją.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Let's see how we can do this.",
+            lt: 'Pažiūrėkime, kaip tai galime padaryti.',
+          },
+        },
       ],
     },
 
@@ -211,7 +317,13 @@ export const getUserInputModule: Module = {
       title: 'Use input() With Numbers',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "Let's try to fix the error that occurred on the last page." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Let's try to fix the error that occurred on the last page.",
+            lt: 'Pabandykime ištaisyti klaidą, kuri įvyko paskutiniame puslapyje.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -230,11 +342,17 @@ export const getUserInputModule: Module = {
           kind: 'figure',
           code: '',
           output: 'Enter a number: 5\nEnter another number: 10\nProduct: 50.0',
-          caption: 'Sample Output',
+          caption: {
+            en: 'Sample Output',
+            lt: 'Išvesties pavyzdys',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'In this program, we have added lines to convert the string, `"5"`, stored in `number1` to its equivalent floating-point number, **5.0**. We have done the same for `number2`.',
+          text: {
+            en: 'In this program, we have added lines to convert the string, `"5"`, stored in `number1` to its equivalent floating-point number, **5.0**. We have done the same for `number2`.',
+            lt: 'Šioje programoje mes pridėjome eilutes, kurios konvertuoja eilutę `"5"`, saugomą `number1`, į atitinkamą slankiojo kablelio skaičių **5.0**. Tą patį padarėme `number2`.',
+          },
         },
         {
           kind: 'code',
@@ -245,7 +363,10 @@ export const getUserInputModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Now, the `product = number1 * number2` statement works as expected.',
+          text: {
+            en: 'Now, the `product = number1 * number2` statement works as expected.',
+            lt: 'Dabar sakinys `product = number1 * number2` veikia kaip tikėtasi.',
+          },
         },
       ],
     },
@@ -256,7 +377,13 @@ export const getUserInputModule: Module = {
       title: 'A General Tip',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'By the way, we could have written the last program like the following too.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'By the way, we could have written the last program like the following too.',
+            lt: 'Beje, galėjome parašyti paskutinę programą ir šitaip.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -270,18 +397,36 @@ export const getUserInputModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Here, we have converted the input entered by the user to `float` before they are assigned to their respective variables.',
+          text: {
+            en: 'Here, we have converted the input entered by the user to `float` before they are assigned to their respective variables.',
+            lt: 'Čia mes konvertavome vartotojo įvestus duomenis į `float` prieš priskiriant juos atitinkamiems kintamiesiems.',
+          },
         },
-        { kind: 'paragraph', text: 'Basically, this code' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Basically, this code',
+            lt: 'Iš esmės, šis kodas',
+          },
+        },
         { kind: 'code', code: 'number1 = float(input("Enter a number: "))' },
-        { kind: 'paragraph', text: 'is equivalent to' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'is equivalent to',
+            lt: 'yra lygiavertis',
+          },
+        },
         {
           kind: 'code',
           code: 'number1 = input("Enter a number: ")\nnumber1 = float(number1)',
         },
         {
           kind: 'paragraph',
-          text: 'This approach allows you to directly convert user input to `int` or `float` in fewer lines of code.',
+          text: {
+            en: 'This approach allows you to directly convert user input to `int` or `float` in fewer lines of code.',
+            lt: 'Šis metodas leidžia tiesiogiai konvertuoti vartotojo įvestį į `int` arba `float` mažesniu eilučių skaičiumi.',
+          },
         },
       ],
     },
