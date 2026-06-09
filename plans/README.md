@@ -16,7 +16,7 @@ and add the merge/commit reference.
 | `visualizer-more-lessons-plan.md` | **Done** | Added one `visualize` block to the Data Conversion `convert-to-integer` lesson (string→int step-through). Lint + build green; deployed via PR. |
 | `language-toggle-plan.md` | **Phase 1 done & deployed** | EN/LT language toggle. Foundation (`LocalizedString`/`localize`/`useLangStore`), header toggle, and theory-content wiring shipped. Decisions: EN+LT, default EN, UI+content, routine drafts translations, custom (no dep). Remaining = complete wiring + translate. |
 | `i18n-complete-wiring-plan.md` | **Proposed (careful session — NOT the routine)** | Extend localize() wiring to non-theory basics surfaces (titles, quiz/exercise/progress-test/recap). Broad type change; do with browser verification, not unattended. |
-| `i18n-translate-ch1-plan.md` | **In progress — `variables` done** | Draft Lithuanian for Chapter 1 **theory** prose, one module per run, into draft PRs for teacher review. Only theory prose (already wired); never touches code/output/answers. `get-started`, `numbers-and-strings`, `comments`, and `variables` translated. |
+| `i18n-translate-ch1-plan.md` | **In progress — `output` done** | Draft Lithuanian for Chapter 1 **theory** prose, one module per run, into draft PRs for teacher review. Only theory prose (already wired); never touches code/output/answers. `get-started`, `numbers-and-strings`, `comments`, `variables`, and `output` translated. |
 
 ## How the daily routine uses this
 
