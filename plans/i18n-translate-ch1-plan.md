@@ -1,6 +1,6 @@
 # Translate Chapter 1 theory content to Lithuanian — one module per run
 
-> STATUS: **In progress — `introduction-examples` done.**
+> STATUS: **Done.**
 > For the daily routine. Produces a draft PR per module for the teacher to review
 > Lithuanian accuracy. Small, reviewable PRs.
 
@@ -52,7 +52,7 @@ run** (small PRs). The teacher reviews/refines the Lithuanian in each PR.
 - [x] data-conversion
 - [x] get-user-input
 - [x] introduction-examples
-- [ ] recap
+- [x] recap
 
 When all are checked, set STATUS to **Done** and update `plans/README.md`.
 (Quiz / exercise / progress-test / title translations come after the wiring in
