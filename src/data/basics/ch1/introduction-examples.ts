@@ -23,21 +23,42 @@ export const introductionExamplesModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: "To start with, take a moment to appreciate how far you've come–You're almost at the end of the first chapter!",
+          text: {
+            en: "To start with, take a moment to appreciate how far you've come–You're almost at the end of the first chapter!",
+            lt: 'Visų pirma, skirkite akimirką įvertinti, kiek jau nuėjote – beveik pasiekėte pirmojo skyriaus pabaigą!',
+          },
         },
         {
           kind: 'paragraph',
-          text: "Now, in this lesson, you'll write a few exciting programs using what you've learned.",
+          text: {
+            en: "Now, in this lesson, you'll write a few exciting programs using what you've learned.",
+            lt: 'Dabar šioje pamokoje parašysite keletą įdomių programų, naudodami tai, ko išmokote.',
+          },
         },
         {
           kind: 'list',
           ordered: false,
           items: [
-            'Convert Kilometers to Miles',
-            '**Practice:** Convert Celsius to Fahrenheit',
-            'Find the Square Root of a Number',
-            '**Practice:** Find the Area of a Triangle',
-            'Swap Two Variables',
+            {
+              en: 'Convert Kilometers to Miles',
+              lt: 'Konvertuoti kilometrus į mylias',
+            },
+            {
+              en: '**Practice:** Convert Celsius to Fahrenheit',
+              lt: '**Praktika:** Konvertuoti Celsijaus laipsnius į Farenheito',
+            },
+            {
+              en: 'Find the Square Root of a Number',
+              lt: 'Rasti skaičiaus kvadratinę šaknį',
+            },
+            {
+              en: '**Practice:** Find the Area of a Triangle',
+              lt: '**Praktika:** Rasti trikampio plotą',
+            },
+            {
+              en: 'Swap Two Variables',
+              lt: 'Sukeisti du kintamuosius',
+            },
           ],
         },
       ],
@@ -49,9 +70,22 @@ export const introductionExamplesModule: Module = {
       title: 'Convert Kilometers to Miles',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'We can convert distance in kilometers to miles using this formula:' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'We can convert distance in kilometers to miles using this formula:',
+            lt: 'Galime konvertuoti atstumą kilometrais į mylias naudodami šią formulę:',
+          },
+        },
         { kind: 'code', code: '1 kilometer = 0.621 miles' },
-        { kind: 'heading', level: 3, text: 'Example' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'Example',
+            lt: 'Pavyzdys',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -66,20 +100,47 @@ export const introductionExamplesModule: Module = {
             'print(f"Distance in miles: {miles}")',
           inputValues: ['100'],
         },
-        { kind: 'paragraph', text: "Here's how this program works." },
-        { kind: 'paragraph', text: 'In line 6: `km = float(input("Enter distance in km: "))`' },
         {
           kind: 'paragraph',
-          text: 'We are taking input from the user using the expression `input("Enter distance in km: ")`.',
+          text: {
+            en: "Here's how this program works.",
+            lt: 'Štai kaip ši programa veikia.',
+          },
         },
         {
           kind: 'paragraph',
-          text: "Before it's assigned to the variable, we have converted it to a floating-point number using the `float()` function. It's because we want the distance to be a number, not a string.",
+          text: {
+            en: 'In line 6: `km = float(input("Enter distance in km: "))`',
+            lt: '6 eilutėje: `km = float(input("Enter distance in km: "))`',
+          },
         },
-        { kind: 'paragraph', text: 'In line 12: `miles = km * ratio`' },
         {
           kind: 'paragraph',
-          text: 'We then calculated the distance in miles by multiplying the distance in kilometers by **0.621**.',
+          text: {
+            en: 'We are taking input from the user using the expression `input("Enter distance in km: ")`.',
+            lt: 'Priimame įvestį iš vartotojo naudodami išraišką `input("Enter distance in km: ")`.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Before it's assigned to the variable, we have converted it to a floating-point number using the `float()` function. It's because we want the distance to be a number, not a string.",
+            lt: 'Prieš priskiriant kintamajam, konvertavome jį į slankiojo kablelio skaičių naudojant `float()` funkciją. Taip yra todėl, kad norime, jog atstumas būtų skaičius, o ne eilutė.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'In line 12: `miles = km * ratio`',
+            lt: '12 eilutėje: `miles = km * ratio`',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'We then calculated the distance in miles by multiplying the distance in kilometers by **0.621**.',
+            lt: 'Tada apskaičiavome atstumą myliomis, daugindami atstumą kilometrais iš **0.621**.',
+          },
         },
       ],
     },
@@ -121,16 +182,35 @@ export const introductionExamplesModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'The square root of a number is a value that, when squared (multiplied by itself), equals the original number.',
+          text: {
+            en: 'The square root of a number is a value that, when squared (multiplied by itself), equals the original number.',
+            lt: 'Skaičiaus kvadratinė šaknis yra reikšmė, kuri, pakelta kvadratu (padauginta iš savęs), lygi pradiniam skaičiui.',
+          },
         },
         {
           kind: 'figure',
           code: '√25  =  25 ^ (1/2)',
           output: '5',
-          caption: 'Find Square Root',
+          caption: {
+            en: 'Find Square Root',
+            lt: 'Rasti kvadratinę šaknį',
+          },
         },
-        { kind: 'paragraph', text: 'We can use the `**` operator (exponent operator) to find the square root.' },
-        { kind: 'heading', level: 3, text: 'Example' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'We can use the `**` operator (exponent operator) to find the square root.',
+            lt: 'Galime naudoti operatorių `**` (laipsnio operatorius), kad rastume kvadratinę šaknį.',
+          },
+        },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'Example',
+            lt: 'Pavyzdys',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -184,14 +264,23 @@ export const introductionExamplesModule: Module = {
       title: 'Swap Two Variables',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'Suppose we have two variables as follows:' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Suppose we have two variables as follows:',
+            lt: 'Tarkime, turime du kintamuosius:',
+          },
+        },
         {
           kind: 'code',
           code: 'phone1 = "iPhone"\nphone2 = "Galaxy Ultra"',
         },
         {
           kind: 'paragraph',
-          text: 'After swapping, the values of `phone1` and `phone2` should be exchanged, resulting in:',
+          text: {
+            en: 'After swapping, the values of `phone1` and `phone2` should be exchanged, resulting in:',
+            lt: 'Po sukeitimo `phone1` ir `phone2` reikšmės turėtų pasikeisti vietomis, gaunant:',
+          },
         },
         {
           kind: 'code',
@@ -199,7 +288,10 @@ export const introductionExamplesModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: "Before you explore the correct solution, let's try an approach that will not work:",
+          text: {
+            en: "Before you explore the correct solution, let's try an approach that will not work:",
+            lt: 'Prieš nagrinėjant teisingą sprendimą, pabandykime metodą, kuris neveiks:',
+          },
         },
         {
           kind: 'runnable',
@@ -212,47 +304,86 @@ export const introductionExamplesModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: "**Can you figure out why the program above didn't work?**",
+          text: {
+            en: "**Can you figure out why the program above didn't work?**",
+            lt: '**Ar galite suprasti, kodėl aukščiau pateikta programa neveikė?**',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'Initially, `phone1` is assigned `"iPhone"` and `phone2` is assigned `"Galaxy Ultra"`.',
+          text: {
+            en: 'Initially, `phone1` is assigned `"iPhone"` and `phone2` is assigned `"Galaxy Ultra"`.',
+            lt: 'Iš pradžių `phone1` priskiriama `"iPhone"`, o `phone2` priskiriama `"Galaxy Ultra"`.',
+          },
         },
         {
           kind: 'figure',
           code: 'phone1 = "iPhone"\nphone2 = "Galaxy Ultra"',
           output: 'phone1 → "iPhone"\nphone2 → "Galaxy Ultra"',
-          caption: 'Assign Values to phone1 and phone2',
+          caption: {
+            en: 'Assign Values to phone1 and phone2',
+            lt: 'Priskirti reikšmes kintamiesiems phone1 ir phone2',
+          },
         },
-        { kind: 'paragraph', text: '**Step 1:** Assign `phone2` to `phone1`.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: '**Step 1:** Assign `phone2` to `phone1`.',
+            lt: '**1 žingsnis:** Priskirti `phone2` kintamajam `phone1`.',
+          },
+        },
         {
           kind: 'figure',
           code: 'phone1 = phone2',
           output: 'phone1 → "Galaxy Ultra"\nphone2 → "Galaxy Ultra"',
-          caption: 'Assign Value of phone2 to phone1',
+          caption: {
+            en: 'Assign Value of phone2 to phone1',
+            lt: 'Priskirti phone2 reikšmę kintamajam phone1',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'At this point, the value of `phone2` (`"Galaxy Ultra"`) is assigned to `phone1`. Now, both `phone1` and `phone2` hold `"Galaxy Ultra"`.',
+          text: {
+            en: 'At this point, the value of `phone2` (`"Galaxy Ultra"`) is assigned to `phone1`. Now, both `phone1` and `phone2` hold `"Galaxy Ultra"`.',
+            lt: 'Šiuo momentu `phone2` reikšmė (`"Galaxy Ultra"`) priskiriama `phone1`. Dabar tiek `phone1`, tiek `phone2` laiko `"Galaxy Ultra"`.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'The original value of `phone1` (`"iPhone"`) is overwritten and lost.',
+          text: {
+            en: 'The original value of `phone1` (`"iPhone"`) is overwritten and lost.',
+            lt: 'Originali `phone1` reikšmė (`"iPhone"`) perrašoma ir prarandama.',
+          },
         },
-        { kind: 'paragraph', text: '**Step 2:** Assign `phone1` to `phone2`.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: '**Step 2:** Assign `phone1` to `phone2`.',
+            lt: '**2 žingsnis:** Priskirti `phone1` kintamajam `phone2`.',
+          },
+        },
         {
           kind: 'figure',
           code: 'phone2 = phone1',
           output: 'phone2 → "Galaxy Ultra"\nphone1 → "Galaxy Ultra"',
-          caption: 'Assign Value of phone1 to phone2',
+          caption: {
+            en: 'Assign Value of phone1 to phone2',
+            lt: 'Priskirti phone1 reikšmę kintamajam phone2',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'Since both `phone1` and `phone2` now hold `"Galaxy Ultra"`, assigning `phone1` to `phone2` doesn\'t change anything.',
+          text: {
+            en: "Since both `phone1` and `phone2` now hold `\"Galaxy Ultra\"`, assigning `phone1` to `phone2` doesn't change anything.",
+            lt: 'Kadangi tiek `phone1`, tiek `phone2` dabar laiko `"Galaxy Ultra"`, priskyrimas `phone1` kintamajam `phone2` nieko nekeičia.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'This is why both variables end up storing `"Galaxy Ultra"`. To correctly swap the values, we need a different approach, which we\'ll explore next.',
+          text: {
+            en: "This is why both variables end up storing `\"Galaxy Ultra\"`. To correctly swap the values, we need a different approach, which we'll explore next.",
+            lt: 'Štai kodėl abu kintamieji galiausiai saugo `"Galaxy Ultra"`. Norint teisingai sukeisti reikšmes, reikia kito metodo, kurį nagrinėsime toliau.',
+          },
         },
       ],
     },
@@ -265,7 +396,10 @@ export const introductionExamplesModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'To solve the previous problem, you need to store the value of `phone1` temporarily in another variable. This prevents the original value of `phone1` from being lost during the swap.',
+          text: {
+            en: 'To solve the previous problem, you need to store the value of `phone1` temporarily in another variable. This prevents the original value of `phone1` from being lost during the swap.',
+            lt: 'Norint išspręsti ankstesnę problemą, reikia laikinai saugoti `phone1` reikšmę kitame kintamajame. Tai neleidžia pradinei `phone1` reikšmei būti prarastai sukeitimo metu.',
+          },
         },
         {
           kind: 'runnable',
@@ -282,7 +416,10 @@ export const introductionExamplesModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Run this visualizer below to understand how this code works step by step:',
+          text: {
+            en: 'Run this visualizer below to understand how this code works step by step:',
+            lt: 'Paleiskite šį vizualizatorių žemiau, kad suprastumėte, kaip šis kodas veikia žingsnis po žingsnio:',
+          },
         },
         {
           kind: 'runnable',
