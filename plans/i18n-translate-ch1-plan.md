@@ -1,6 +1,6 @@
 # Translate Chapter 1 theory content to Lithuanian — one module per run
 
-> STATUS: **In progress — `get-user-input` done.**
+> STATUS: **In progress — `introduction-examples` done.**
 > For the daily routine. Produces a draft PR per module for the teacher to review
 > Lithuanian accuracy. Small, reviewable PRs.
 
@@ -51,7 +51,7 @@ run** (small PRs). The teacher reviews/refines the Lithuanian in each PR.
 - [x] arithmetic-operators
 - [x] data-conversion
 - [x] get-user-input
-- [ ] introduction-examples
+- [x] introduction-examples
 - [ ] recap
 
 When all are checked, set STATUS to **Done** and update `plans/README.md`.
