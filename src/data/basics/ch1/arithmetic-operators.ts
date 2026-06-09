@@ -21,15 +21,24 @@ export const arithmeticOperatorsModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: "So far in this course, we've focused on just printing values and variables to keep things simple.",
+          text: {
+            en: "So far in this course, we've focused on just printing values and variables to keep things simple.",
+            lt: 'Iki šiol šiame kurse mes daugiausia spausdinome reikšmes ir kintamuosius, kad viskas būtų paprasta.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'However, to solve problems, you often need to perform calculations on variables and values, not just print them. To achieve this, we use **operators**.',
+          text: {
+            en: 'However, to solve problems, you often need to perform calculations on variables and values, not just print them. To achieve this, we use **operators**.',
+            lt: 'Tačiau norint spręsti uždavinius, dažnai reikia atlikti skaičiavimus su kintamaisiais ir reikšmėmis, o ne tik jas spausdinti. Tam naudojame **operatorius**.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'An operator is a special symbol that performs operations on values and variables. For example,',
+          text: {
+            en: 'An operator is a special symbol that performs operations on values and variables. For example,',
+            lt: 'Operatorius yra specialus simbolis, atliekantis veiksmus su reikšmėmis ir kintamaisiais. Pavyzdžiui,',
+          },
         },
         {
           kind: 'runnable',
@@ -37,8 +46,20 @@ export const arithmeticOperatorsModule: Module = {
             'total = 5 + 10\n\n' +
             'print(total)    # Output: 15',
         },
-        { kind: 'paragraph', text: 'In the program, `+` is an operator that is used to perform addition.' },
-        { kind: 'paragraph', text: "Let's learn about different types of operators and how to use them in this lesson." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "In the program, `+` is an operator that is used to perform addition.",
+            lt: 'Šioje programoje `+` yra operatorius, naudojamas sumai apskaičiuoti.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Let's learn about different types of operators and how to use them in this lesson.",
+            lt: 'Sužinokime apie skirtingus operatorių tipus ir kaip juos naudoti šioje pamokoje.',
+          },
+        },
       ],
     },
 
@@ -48,10 +69,19 @@ export const arithmeticOperatorsModule: Module = {
       title: 'Arithmetic Operators',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "Let's look at the operators we'll learn in this lesson." },
         {
           kind: 'paragraph',
-          text: "As the title suggests, we'll only deal with operators that perform basic mathematical operations; they are summarized in the table below:",
+          text: {
+            en: "Let's look at the operators we'll learn in this lesson.",
+            lt: 'Pažiūrėkime į operatorius, kuriuos išmoksime šioje pamokoje.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "As the title suggests, we'll only deal with operators that perform basic mathematical operations; they are summarized in the table below:",
+            lt: 'Kaip rodo pavadinimas, mes kalbėsime tik apie operatorius, atliekančius pagrindines matematines operacijas; jie apibendrinti lentelėje žemiau:',
+          },
         },
         {
           kind: 'figure',
@@ -65,9 +95,18 @@ export const arithmeticOperatorsModule: Module = {
             '//         x // y     Quotient\n' +
             '**         x ** y     Exponentiation',
           output: '',
-          caption: 'Arithmetic Operators in Python',
+          caption: {
+            en: 'Arithmetic Operators in Python',
+            lt: 'Python aritmetiniai operatoriai',
+          },
         },
-        { kind: 'paragraph', text: "Let's start with the `+` operator." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Let's start with the `+` operator.",
+            lt: 'Pradėkime nuo `+` operatoriaus.',
+          },
+        },
       ],
     },
 
@@ -79,7 +118,10 @@ export const arithmeticOperatorsModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'As we have seen from the last example, the `+` operator is used to add operands (values and variables).',
+          text: {
+            en: 'As we have seen from the last example, the `+` operator is used to add operands (values and variables).',
+            lt: 'Kaip matėme iš paskutinio pavyzdžio, `+` operatorius naudojamas operandams (reikšmėms ir kintamiesiems) sudėti.',
+          },
         },
         {
           kind: 'runnable',
@@ -92,9 +134,18 @@ export const arithmeticOperatorsModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'In the program, `total = x + y + 30` first computes the sum of `x`, `y`, and **30**. Then, the result is assigned to the `total` variable.',
+          text: {
+            en: 'In the program, `total = x + y + 30` first computes the sum of `x`, `y`, and **30**. Then, the result is assigned to the `total` variable.',
+            lt: 'Šioje programoje `total = x + y + 30` pirmiausia apskaičiuoja `x`, `y` ir **30** sumą. Tada rezultatas priskiriamas kintamajam `total`.',
+          },
         },
-        { kind: 'paragraph', text: 'Run the visualizer to see how variables are utilized in this program.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Run the visualizer to see how variables are utilized in this program.',
+            lt: 'Paleiskite vizualizatorių, kad pamatytumėte, kaip kintamieji naudojami šioje programoje.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -113,7 +164,13 @@ export const arithmeticOperatorsModule: Module = {
       title: 'Perform Operation and Print',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "We can also perform addition directly without using the extra variable. Let's take an example." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "We can also perform addition directly without using the extra variable. Let's take an example.",
+            lt: 'Taip pat galime atlikti sudėtį tiesiogiai, nenaudodami papildomo kintamojo. Paimkime pavyzdį.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -123,7 +180,10 @@ export const arithmeticOperatorsModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Here, the line `print(x + y)` first computes the sum of `x` and `y`. Then, the result is directly printed on the screen.',
+          text: {
+            en: 'Here, the line `print(x + y)` first computes the sum of `x` and `y`. Then, the result is directly printed on the screen.',
+            lt: 'Čia eilutė `print(x + y)` pirmiausia apskaičiuoja `x` ir `y` sumą. Tada rezultatas tiesiogiai atspausdinamas ekrane.',
+          },
         },
       ],
     },
@@ -152,7 +212,13 @@ export const arithmeticOperatorsModule: Module = {
       title: '- Operator',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'The `-` operator subtracts the value on the right from the value on the left.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'The `-` operator subtracts the value on the right from the value on the left.',
+            lt: 'Operatorius `-` atima dešinėje esančią reikšmę iš kairėje esančios reikšmės.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -163,7 +229,10 @@ export const arithmeticOperatorsModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Here, `result = x - y` first subtracts `y` from `x`. Then, the result is assigned to the `result` variable.',
+          text: {
+            en: 'Here, `result = x - y` first subtracts `y` from `x`. Then, the result is assigned to the `result` variable.',
+            lt: 'Čia `result = x - y` pirmiausia atima `y` iš `x`. Tada rezultatas priskiriamas kintamajam `result`.',
+          },
         },
       ],
     },
@@ -203,7 +272,13 @@ export const arithmeticOperatorsModule: Module = {
       title: '* Operator',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'The `*` operator multiplies two values or variables.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'The `*` operator multiplies two values or variables.',
+            lt: 'Operatorius `*` daugina dvi reikšmes arba kintamuosius.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -213,9 +288,22 @@ export const arithmeticOperatorsModule: Module = {
             'product = number1 * number2\n' +
             'print(product)',
         },
-        { kind: 'heading', level: 3, text: 'Output' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'Output',
+            lt: 'Išvestis',
+          },
+        },
         { kind: 'code', code: '50' },
-        { kind: 'paragraph', text: "Let's take one more example." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Let's take one more example.",
+            lt: 'Paimkime dar vieną pavyzdį.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -224,7 +312,14 @@ export const arithmeticOperatorsModule: Module = {
             'product = number * 10\n' +
             'print(product)',
         },
-        { kind: 'heading', level: 3, text: 'Output' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'Output',
+            lt: 'Išvestis',
+          },
+        },
         { kind: 'code', code: '55.0' },
       ],
     },
@@ -253,7 +348,13 @@ export const arithmeticOperatorsModule: Module = {
       title: '/ Operator',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'The `/` operator is used for division. For example,' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'The `/` operator is used for division. For example,',
+            lt: 'Operatorius `/` naudojamas dalijimui. Pavyzdžiui,',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -261,9 +362,22 @@ export const arithmeticOperatorsModule: Module = {
             'result = number / 4\n' +
             'print(result)',
         },
-        { kind: 'heading', level: 3, text: 'Output' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'Output',
+            lt: 'Išvestis',
+          },
+        },
         { kind: 'code', code: '6.25' },
-        { kind: 'paragraph', text: "Let's take another example." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Let's take another example.",
+            lt: 'Paimkime kitą pavyzdį.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -271,11 +385,21 @@ export const arithmeticOperatorsModule: Module = {
             'result = number / 5\n' +
             'print(result)',
         },
-        { kind: 'heading', level: 3, text: 'Output' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'Output',
+            lt: 'Išvestis',
+          },
+        },
         { kind: 'code', code: '5.0' },
         {
           kind: 'note',
-          text: '**Note:** The `/` operator always returns a floating-point value. In the above program, `25 / 5` results in **5.0** and not **5**.',
+          text: {
+            en: '**Note:** The `/` operator always returns a floating-point value. In the above program, `25 / 5` results in **5.0** and not **5**.',
+            lt: '**Pastaba:** Operatorius `/` visada grąžina slankiojo kablelio reikšmę. Pirmiau pateiktoje programoje `25 / 5` duoda **5.0**, o ne **5**.',
+          },
         },
       ],
     },
@@ -306,7 +430,10 @@ export const arithmeticOperatorsModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'The `/` operator performs division. However, if you need to find the quotient instead, use the `//` operator.',
+          text: {
+            en: 'The `/` operator performs division. However, if you need to find the quotient instead, use the `//` operator.',
+            lt: 'Operatorius `/` atlieka dalijimą. Tačiau jei reikia rasti dalmenį, naudokite operatorių `//`.',
+          },
         },
         {
           kind: 'figure',
@@ -318,9 +445,18 @@ export const arithmeticOperatorsModule: Module = {
             '    ─────\n' +
             '       1   <- Remainder',
           output: '',
-          caption: 'Figure: Basic Division Operation',
+          caption: {
+            en: 'Figure: Basic Division Operation',
+            lt: 'Iliustracija: Pagrindinis dalijimo veiksmas',
+          },
         },
-        { kind: 'paragraph', text: "Let's take an example." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Let's take an example.",
+            lt: 'Paimkime pavyzdį.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -330,8 +466,21 @@ export const arithmeticOperatorsModule: Module = {
             'quotient = dividend // divisor\n\n' +
             'print(quotient)    # Output: 6',
         },
-        { kind: 'heading', level: 3, text: '% Operator' },
-        { kind: 'paragraph', text: 'The `%` operator computes the remainder when one number is divided by another.' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: '% Operator',
+            lt: '% Operatorius',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'The `%` operator computes the remainder when one number is divided by another.',
+            lt: 'Operatorius `%` apskaičiuoja liekaną, kai vienas skaičius dalijamas iš kito.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -390,14 +539,29 @@ export const arithmeticOperatorsModule: Module = {
       title: '** Operator',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'The `**` operator computes the exponential (power) of a number.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'The `**` operator computes the exponential (power) of a number.',
+            lt: 'Operatorius `**` apskaičiuoja skaičiaus laipsnį (kėlimą laipsniu).',
+          },
+        },
         {
           kind: 'figure',
           code: 'In Python, 4**3 is equal to 4^3 in Mathematics.',
           output: '',
-          caption: 'Figure: Power of a Number',
+          caption: {
+            en: 'Figure: Power of a Number',
+            lt: 'Iliustracija: Skaičiaus laipsnis',
+          },
         },
-        { kind: 'paragraph', text: "Let's take an example." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Let's take an example.",
+            lt: 'Paimkime pavyzdį.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -406,9 +570,22 @@ export const arithmeticOperatorsModule: Module = {
             'result = base ** power\n' +
             'print(result)',
         },
-        { kind: 'heading', level: 3, text: 'Output' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'Output',
+            lt: 'Išvestis',
+          },
+        },
         { kind: 'code', code: '64' },
-        { kind: 'paragraph', text: "Let's take another example." },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Let's take another example.",
+            lt: 'Paimkime kitą pavyzdį.',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -417,7 +594,14 @@ export const arithmeticOperatorsModule: Module = {
             'result = base ** power\n' +
             'print(result)',
         },
-        { kind: 'heading', level: 3, text: 'Output' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: 'Output',
+            lt: 'Išvestis',
+          },
+        },
         { kind: 'code', code: '15.625' },
       ],
     },
@@ -474,7 +658,13 @@ export const arithmeticOperatorsModule: Module = {
       title: 'Using Parentheses in Arithmetic Operations',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'Can you guess the output of the following program?' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Can you guess the output of the following program?',
+            lt: 'Ar galite atspėti šios programos išvestį?',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -483,9 +673,18 @@ export const arithmeticOperatorsModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'In the above program, it may be harder to determine the order in which the operations are performed first.',
+          text: {
+            en: 'In the above program, it may be harder to determine the order in which the operations are performed first.',
+            lt: 'Pirmiau pateiktoje programoje gali būti sunkiau nustatyti, kuria tvarka operacijos atliekamos pirmiau.',
+          },
         },
-        { kind: 'paragraph', text: 'To avoid confusion, we can use `()` like this:' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'To avoid confusion, we can use `()` like this:',
+            lt: 'Norėdami išvengti painiavos, galime naudoti `()` taip:',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -494,7 +693,10 @@ export const arithmeticOperatorsModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Now, our code is much easier to understand. The operations are performed in a certain order during calculations.',
+          text: {
+            en: 'Now, our code is much easier to understand. The operations are performed in a certain order during calculations.',
+            lt: 'Dabar mūsų kodas yra daug lengviau suprantamas. Skaičiavimų metu operacijos atliekamos tam tikra tvarka.',
+          },
         },
       ],
     },
@@ -539,7 +741,13 @@ export const arithmeticOperatorsModule: Module = {
       title: 'Arithmetic Assignment Operators',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'Consider this program:' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Consider this program:',
+            lt: 'Apsvarstykite šią programą:',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -549,11 +757,17 @@ export const arithmeticOperatorsModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'In this program, we have added the value of the variable `total` to **5**, and assigned the result back to the `total` variable.',
+          text: {
+            en: 'In this program, we have added the value of the variable `total` to **5**, and assigned the result back to the `total` variable.',
+            lt: 'Šioje programoje pridėjome kintamojo `total` reikšmę prie **5** ir rezultatą priskyrėme atgal kintamajam `total`.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'In such case, we can use the arithmetic assignment operators `+=` to simplify code:',
+          text: {
+            en: 'In such case, we can use the arithmetic assignment operators `+=` to simplify code:',
+            lt: 'Tokiu atveju galime naudoti aritmetinius priskyrimo operatorius `+=`, kad supaprastintume kodą:',
+          },
         },
         {
           kind: 'runnable',
@@ -565,7 +779,10 @@ export const arithmeticOperatorsModule: Module = {
         },
         {
           kind: 'visualize',
-          caption: 'Step through it and watch `total` build up as each operator runs.',
+          caption: {
+            en: 'Step through it and watch `total` build up as each operator runs.',
+            lt: 'Eikite per kodą žingsnis po žingsnio ir stebėkite, kaip `total` auga, kai veikia kiekvienas operatorius.',
+          },
           code:
             'total = 10\n' +
             'total += 5\n' +
@@ -575,7 +792,10 @@ export const arithmeticOperatorsModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Consider reading **Python Assignment Operator** to explore more examples of arithmetic assignment operators.',
+          text: {
+            en: 'Consider reading **Python Assignment Operator** to explore more examples of arithmetic assignment operators.',
+            lt: 'Apsvarstykite galimybę perskaityti **Python priskyrimo operatorių** straipsnį, norėdami rasti daugiau aritmetinių priskyrimo operatorių pavyzdžių.',
+          },
         },
       ],
     },
@@ -586,10 +806,19 @@ export const arithmeticOperatorsModule: Module = {
       title: 'Recap: Operators',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "We've wrapped up our lesson on arithmetic operators." },
         {
           kind: 'paragraph',
-          text: "Before we dive into the next lesson, let's take a quick recap of all the arithmetic operators in Python:",
+          text: {
+            en: "We've wrapped up our lesson on arithmetic operators.",
+            lt: 'Baigėme pamoką apie aritmetinius operatorius.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Before we dive into the next lesson, let's take a quick recap of all the arithmetic operators in Python:",
+            lt: 'Prieš pereidami prie kitos pamokos, greitai prisiminkime visus Python aritmetinius operatorius:',
+          },
         },
         {
           kind: 'figure',
@@ -603,9 +832,18 @@ export const arithmeticOperatorsModule: Module = {
             '%          x % y      Remainder\n' +
             '**         x ** y     Exponentiation',
           output: '',
-          caption: 'Arithmetic Operators Recap',
+          caption: {
+            en: 'Arithmetic Operators Recap',
+            lt: 'Aritmetinių operatorių apžvalga',
+          },
         },
-        { kind: 'paragraph', text: 'Ready to go? Next, we will learn to convert data of one type to another.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Ready to go? Next, we will learn to convert data of one type to another.',
+            lt: 'Pasiruošę? Toliau sužinosime, kaip konvertuoti duomenis iš vieno tipo į kitą.',
+          },
+        },
       ],
     },
 
