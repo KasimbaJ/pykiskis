@@ -18,7 +18,13 @@ export const outputModule: Module = {
       title: 'Introduction to Output',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "We have previously used `print()` to display a single value or variable. Here's a quick recap:" },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "We have previously used `print()` to display a single value or variable. Here's a quick recap:",
+            lt: 'Anksčiau naudojome `print()`, norėdami rodyti vieną reikšmę arba kintamąjį. Trumpai prisiminkime:',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -33,7 +39,10 @@ export const outputModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: "Now, you'll learn how to print multiple values and variables. You'll also explore **f-strings**, which makes it easier to print multiple data in the desired format.",
+          text: {
+            en: "Now, you'll learn how to print multiple values and variables. You'll also explore **f-strings**, which makes it easier to print multiple data in the desired format.",
+            lt: 'Dabar sužinosite, kaip spausdinti kelias reikšmes ir kintamuosius. Taip pat susipažinsite su **f-eilutėmis**, kurios palengvina kelių duomenų spausdinimą norimu formatu.',
+          },
         },
       ],
     },
@@ -44,7 +53,13 @@ export const outputModule: Module = {
       title: 'Print Multiple Values',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'We can print multiple pieces of data at once by separating them with commas. For example:' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'We can print multiple pieces of data at once by separating them with commas. For example:',
+            lt: 'Galime vienu metu spausdinti kelis duomenis, atskirdami juos kableliais. Pavyzdžiui:',
+          },
+        },
         {
           kind: 'figure',
           code:
@@ -56,10 +71,19 @@ export const outputModule: Module = {
             'print("Rating:", 8.5)',
           output: '67 -5 19\nHey. Are you enjoying the course?\nRating: 8.5',
         },
-        { kind: 'paragraph', text: 'Here, the comma is used for separation and is not printed.' },
         {
           kind: 'paragraph',
-          text: "Additionally, spaces before or after the comma don't affect the output. By default, `print()` always inserts a single space between the values.",
+          text: {
+            en: 'Here, the comma is used for separation and is not printed.',
+            lt: 'Čia kablelis naudojamas atskyrimui ir nėra spausdinamas.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Additionally, spaces before or after the comma don't affect the output. By default, `print()` always inserts a single space between the values.",
+            lt: 'Be to, tarpai prieš ar po kablelio neturi įtakos išvesties rezultatui. Pagal nutylėjimą `print()` visada įterpia vieną tarpą tarp reikšmių.',
+          },
         },
       ],
     },
@@ -70,7 +94,13 @@ export const outputModule: Module = {
       title: 'Print Strings and Variables',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'You can also display values and variables using a single `print()` function. For example:' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'You can also display values and variables using a single `print()` function. For example:',
+            lt: 'Taip pat galite rodyti reikšmes ir kintamuosius naudodami vieną `print()` funkciją. Pavyzdžiui:',
+          },
+        },
         {
           kind: 'figure',
           code: 'name = "Jack"\nprint("Name:", name)',
@@ -78,13 +108,19 @@ export const outputModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Here, the `print()` function displays the string `"Name:"` as it is, and displays the value stored in the variable `name`.',
+          text: {
+            en: 'Here, the `print()` function displays the string `"Name:"` as it is, and displays the value stored in the variable `name`.',
+            lt: 'Čia `print()` funkcija rodo eilutę `"Name:"` tokią, kokia ji yra, ir rodo reikšmę, saugomą kintamajame `name`.',
+          },
         },
         {
           kind: 'figure',
           code: 'name = "Jack"\nprint("Name:", name)',
           output: 'Name: Jack',
-          caption: 'Print Strings and Variables in the Same Line',
+          caption: {
+            en: 'Print Strings and Variables in the Same Line',
+            lt: 'Eilučių ir kintamųjų spausdinimas vienoje eilutėje',
+          },
         },
       ],
     },
@@ -136,10 +172,19 @@ export const outputModule: Module = {
       title: 'Print Newline (Enter Key)',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "It's possible to use a single `print()` function to display output in multiple lines." },
         {
           kind: 'paragraph',
-          text: 'To do this, we use the newline character `\\n` in the position where we want to break the line:',
+          text: {
+            en: "It's possible to use a single `print()` function to display output in multiple lines.",
+            lt: 'Galima naudoti vieną `print()` funkciją išvesties rodymui keliose eilutėse.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'To do this, we use the newline character `\\n` in the position where we want to break the line:',
+            lt: 'Norėdami tai padaryti, naudojame naujos eilutės simbolį `\\n` toje vietoje, kur norime perkelti į kitą eilutę:',
+          },
         },
         {
           kind: 'figure',
@@ -148,7 +193,10 @@ export const outputModule: Module = {
         },
         {
           kind: 'paragraph',
-          text: 'Every use of `\\n` adds a newline. So, if we use another `\\n`, it will add a space between the separated lines.',
+          text: {
+            en: 'Every use of `\\n` adds a newline. So, if we use another `\\n`, it will add a space between the separated lines.',
+            lt: 'Kiekvienas `\\n` naudojimas prideda naują eilutę. Taigi, jei naudosime kitą `\\n`, tarp atskirtų eilučių bus pridėtas tarpas.',
+          },
         },
         {
           kind: 'figure',
@@ -159,7 +207,10 @@ export const outputModule: Module = {
           kind: 'figure',
           code: 'print("Hey\\n\\nHow are you?")',
           output: 'Hey\n\nHow are you?',
-          caption: 'Print Newline Character',
+          caption: {
+            en: 'Print Newline Character',
+            lt: 'Naujos eilutės simbolio spausdinimas',
+          },
         },
       ],
     },
@@ -205,18 +256,33 @@ export const outputModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'Python offers another way to format and print strings: **f-strings**, which simplify printing multiple values and variables.',
+          text: {
+            en: 'Python offers another way to format and print strings: **f-strings**, which simplify printing multiple values and variables.',
+            lt: 'Python siūlo kitą būdą formatuoti ir spausdinti eilutes: **f-eilutes**, kurios supaprastina kelių reikšmių ir kintamųjų spausdinimą.',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'To specify an f-string, simply put an **f** before the starting quotation marks. For example,',
+          text: {
+            en: 'To specify an f-string, simply put an **f** before the starting quotation marks. For example,',
+            lt: 'Norėdami nurodyti f-eilutę, tiesiog įdėkite **f** prieš pradines kabutes. Pavyzdžiui,',
+          },
         },
         { kind: 'runnable', code: 'print(f"Hello")' },
-        { kind: 'paragraph', text: 'This code is equivalent to:' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'This code is equivalent to:',
+            lt: 'Šis kodas yra lygiavertis:',
+          },
+        },
         { kind: 'runnable', code: 'print("Hello")' },
         {
           kind: 'paragraph',
-          text: "The true power of the f-string becomes evident when you use it with variables. Let's explore it next.",
+          text: {
+            en: "The true power of the f-string becomes evident when you use it with variables. Let's explore it next.",
+            lt: 'Tikroji f-eilutės galia atsiskleidžia naudojant ją su kintamaisiais. Panagrinėkime tai toliau.',
+          },
         },
       ],
     },
@@ -227,7 +293,13 @@ export const outputModule: Module = {
       title: 'Print Variables Using f-strings',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: 'To print variables using f-strings, you need to wrap them inside curly braces `{}`. For example:' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'To print variables using f-strings, you need to wrap them inside curly braces `{}`. For example:',
+            lt: 'Norėdami spausdinti kintamuosius naudojant f-eilutes, reikia juos apgaubti garbanotuose skliaustuose `{}`. Pavyzdžiui:',
+          },
+        },
         {
           kind: 'runnable',
           code:
@@ -235,7 +307,13 @@ export const outputModule: Module = {
             'location = "Wonderland"\n\n' +
             'print(f"My name is {name} and I live in {location}.")',
         },
-        { kind: 'paragraph', text: "Here's how this program works:" },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "Here's how this program works:",
+            lt: 'Štai kaip ši programa veikia:',
+          },
+        },
         {
           kind: 'figure',
           code:
@@ -243,11 +321,17 @@ export const outputModule: Module = {
             'location = "Wonderland"\n' +
             'print(f"My name is {name} and I live in {location}.")',
           output: 'My name is Alice and I live in Wonderland.',
-          caption: 'Working of fstrings',
+          caption: {
+            en: 'Working of fstrings',
+            lt: 'F-eilučių veikimas',
+          },
         },
         {
           kind: 'paragraph',
-          text: 'F-strings also allow you to control the spaces and formatting in your output. For example,',
+          text: {
+            en: 'F-strings also allow you to control the spaces and formatting in your output. For example,',
+            lt: 'F-eilutės taip pat leidžia valdyti tarpus ir formatavimą išvesties rezultate. Pavyzdžiui,',
+          },
         },
         {
           kind: 'runnable',
@@ -256,7 +340,13 @@ export const outputModule: Module = {
             'id = 12\n\n' +
             'print(f"#   {id}->{name}    #")',
         },
-        { kind: 'paragraph', text: 'This flexibility makes f-strings a preferred way to format and print strings.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'This flexibility makes f-strings a preferred way to format and print strings.',
+            lt: 'Šis lankstumas daro f-eilutes pageidautinu būdu formatuoti ir spausdinti eilutes.',
+          },
+        },
       ],
     },
 
@@ -308,11 +398,27 @@ export const outputModule: Module = {
       title: 'Common Mistakes (I)',
       type: 'theory',
       blocks: [
-        { kind: 'paragraph', text: "Before moving to the next lesson, let's discuss common mistakes beginners may make." },
-        { kind: 'heading', level: 3, text: '1. Spelling Error' },
         {
           kind: 'paragraph',
-          text: 'This one is obvious — using wrong variable names and misspelling words will cause an error. For example:',
+          text: {
+            en: "Before moving to the next lesson, let's discuss common mistakes beginners may make.",
+            lt: 'Prieš pereidami prie kito pamokos, aptarkime dažnas klaidas, kurias gali padaryti pradedantieji.',
+          },
+        },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: '1. Spelling Error',
+            lt: '1. Rašybos klaida',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'This one is obvious — using wrong variable names and misspelling words will cause an error. For example:',
+            lt: 'Tai akivaizdu — naudojant neteisingus kintamųjų pavadinimus ir netaisyklingai rašant žodžius, atsiras klaida. Pavyzdžiui:',
+          },
         },
         {
           kind: 'figure',
@@ -324,20 +430,57 @@ export const outputModule: Module = {
             'File "<string>", line 4, in <module>\n' +
             "NameError: name 'annual_icome' is not defined. Did you mean: 'annual_income'?",
         },
-        { kind: 'paragraph', text: 'In most cases, carefully reading the error message helps us fix these problems easily.' },
-        { kind: 'paragraph', text: 'For instance, the output clearly states that `annual_icome` is not defined in **line 4**.' },
-        { kind: 'paragraph', text: 'Also, Python is case-sensitive. So `annual_income` and `Annual_income` are also not the same.' },
         {
           kind: 'paragraph',
-          text: 'The same rule applies to `print()` as well — writing it as `Print()` or any other way will result in an error.',
+          text: {
+            en: 'In most cases, carefully reading the error message helps us fix these problems easily.',
+            lt: 'Daugeliu atvejų atidus klaidos pranešimo skaitymas padeda lengvai ištaisyti šias problemas.',
+          },
         },
-        { kind: 'heading', level: 3, text: '2. Adding Spaces at the Beginning' },
         {
           kind: 'paragraph',
-          text: 'In Python, indentation has a specific meaning. So, if we add unnecessary spaces at the beginning, we will get an error. For example,',
+          text: {
+            en: 'For instance, the output clearly states that `annual_icome` is not defined in **line 4**.',
+            lt: 'Pavyzdžiui, išvesties pranešimas aiškiai nurodo, kad `annual_icome` nėra apibrėžtas **4 eilutėje**.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'Also, Python is case-sensitive. So `annual_income` and `Annual_income` are also not the same.',
+            lt: 'Be to, Python skiria didžiąsias ir mažąsias raides. Todėl `annual_income` ir `Annual_income` taip pat nėra tas pats.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'The same rule applies to `print()` as well — writing it as `Print()` or any other way will result in an error.',
+            lt: 'Ta pati taisyklė galioja ir `print()` — rašant ją kaip `Print()` ar kitaip, atsiras klaida.',
+          },
+        },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: '2. Adding Spaces at the Beginning',
+            lt: '2. Tarpų pridėjimas pradžioje',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'In Python, indentation has a specific meaning. So, if we add unnecessary spaces at the beginning, we will get an error. For example,',
+            lt: 'Python kalboje įtrauka turi specifinę reikšmę. Todėl jei pridėsime nereikalingų tarpų pradžioje, gausime klaidą. Pavyzdžiui,',
+          },
         },
         { kind: 'code', code: '    print("Hello")    # Error' },
-        { kind: 'paragraph', text: 'If you run the program, you will get an error because there are spaces before `print()`.' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'If you run the program, you will get an error because there are spaces before `print()`.',
+            lt: 'Jei paleisite programą, gausite klaidą, nes prieš `print()` yra tarpų.',
+          },
+        },
       ],
     },
 
@@ -347,39 +490,87 @@ export const outputModule: Module = {
       title: 'Common Mistakes (II)',
       type: 'theory',
       blocks: [
-        { kind: 'heading', level: 3, text: '3. Error because of Quotation Marks' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: '3. Error because of Quotation Marks',
+            lt: '3. Klaida dėl kabučių',
+          },
+        },
         {
           kind: 'paragraph',
-          text: 'We have seen many beginners make this mistake. They usually forget to close the string with quotation marks. For example,',
+          text: {
+            en: 'We have seen many beginners make this mistake. They usually forget to close the string with quotation marks. For example,',
+            lt: 'Matėme daug pradedančiųjų, darantys šią klaidą. Jie dažniausiai pamiršta uždaryti eilutę kabutėmis. Pavyzdžiui,',
+          },
         },
         { kind: 'code', code: 'print("Hello)    # Error' },
-        { kind: 'paragraph', text: "Here, Python doesn't understand what `\"Hello` is." },
         {
           kind: 'paragraph',
-          text: "`\"Hello` is not a string because it doesn't have the closing quotation mark. And it's not a variable because we cannot use quotation marks in variable names.",
+          text: {
+            en: "Here, Python doesn't understand what `\"Hello` is.",
+            lt: 'Čia Python nesupranta, kas yra `"Hello`.',
+          },
         },
-        { kind: 'heading', level: 3, text: '4. Forgetting Commas in the print() Function' },
+        {
+          kind: 'paragraph',
+          text: {
+            en: "`\"Hello` is not a string because it doesn't have the closing quotation mark. And it's not a variable because we cannot use quotation marks in variable names.",
+            lt: '`"Hello` nėra eilutė, nes neturi uždarančios kabutės. Ir tai nėra kintamasis, nes kintamųjų pavadinimuose negalima naudoti kabučių.',
+          },
+        },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: '4. Forgetting Commas in the print() Function',
+            lt: '4. Kablelių pamiršimas `print()` funkcijoje',
+          },
+        },
         {
           kind: 'code',
           code: 'age = 20\nprint("Age:" age)    # Error',
         },
         {
           kind: 'paragraph',
-          text: "Here, Python interprets `\"Age:\" age` as a single item. Since it's neither a string nor a variable, we get an error.",
+          text: {
+            en: "Here, Python interprets `\"Age:\" age` as a single item. Since it's neither a string nor a variable, we get an error.",
+            lt: 'Čia Python interpretuoja `"Age:" age` kaip vieną elementą. Kadangi tai nei eilutė, nei kintamasis, gauname klaidą.',
+          },
         },
-        { kind: 'heading', level: 3, text: '5. Forgetting to use f in a f-string' },
+        {
+          kind: 'heading',
+          level: 3,
+          text: {
+            en: '5. Forgetting to use f in a f-string',
+            lt: '5. F pamiršimas f-eilutėje',
+          },
+        },
         {
           kind: 'code',
           code: 'age = 20\nprint("Age = {age}")    # Output: Age = {age}',
         },
         {
           kind: 'paragraph',
-          text: 'If you forget to include `f` before the quotation marks, the string is treated as a normal string. As a result, `{age}` is interpreted as plain text instead of being evaluated as a variable.',
+          text: {
+            en: 'If you forget to include `f` before the quotation marks, the string is treated as a normal string. As a result, `{age}` is interpreted as plain text instead of being evaluated as a variable.',
+            lt: 'Jei pamiršite įtraukti `f` prieš kabutę, eilutė laikoma įprasta eilute. Dėl to `{age}` interpretuojamas kaip paprastas tekstas, o ne kaip kintamasis.',
+          },
         },
-        { kind: 'paragraph', text: 'Avoid these five common mistakes and enjoy a smoother programming experience.' },
         {
           kind: 'paragraph',
-          text: 'You can improve your Python skills by practicing regularly and staying mindful of common mistakes. To learn more about printing in Python, check out the Printing Basics in Python article.',
+          text: {
+            en: 'Avoid these five common mistakes and enjoy a smoother programming experience.',
+            lt: 'Venkite šių penkių dažnų klaidų ir mėgaukitės sklandesne programavimo patirtimi.',
+          },
+        },
+        {
+          kind: 'paragraph',
+          text: {
+            en: 'You can improve your Python skills by practicing regularly and staying mindful of common mistakes. To learn more about printing in Python, check out the Printing Basics in Python article.',
+            lt: 'Galite tobulinti Python įgūdžius reguliariai praktikuodamiesi ir atkreipiant dėmesį į dažnas klaidas. Norėdami sužinoti daugiau apie spausdinimą Python kalboje, peržiūrėkite straipsnį „Python spausdinimo pagrindai".',
+          },
         },
       ],
     },
