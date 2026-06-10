@@ -1,19 +1,15 @@
 # Language Toggle (i18n) — Implementation Plan
 
-> STATUS: **Phase 1 SHIPPED.** Decisions locked: EN + LT, default EN, UI +
-> content, routine drafts translations per module for approval, lightweight
-> custom approach (no new dep). Phase 1 (foundation + theory-content wiring +
-> header toggle) is built, browser-verified, and deployed.
+> STATUS: **Phase 2 complete — pending merge.** PR: `phase2-ui-i18n`.
+> Phase 1 (foundation, types, store, header toggle, theory wiring) and
+> Phase 2 (UI chrome — all ~22 component/page files wired through t() with
+> full EN+LT dictionaries) are both done; lint + build green.
 >
 > REMAINING:
-> - **Complete the wiring** (widen + resolve the non-theory surfaces): lesson/
->   module/chapter titles, QuizView, ExerciseView, ProgressTestView, RecapView
->   (and, later, the 100-level path). Code task — best done in a careful session
->   (tsc-guided), then it unlocks translating those fields. See
->   `i18n-complete-wiring-plan.md`.
-> - **Translate content** progressively, one module per run via the daily
->   routine. Theory prose is already wired/translatable now. See
->   `i18n-translate-ch1-plan.md`.
+> - **Phase 3** — Content translation (progressive, one module per run via
+>   the daily routine). Theory prose is already wired/translatable. See
+>   `i18n-translate-ch1-plan.md` for the content-translation workflow.
+> - **Phase 4** — Per-user language persisted to D1; polish.
 
 ## The timing question (answered)
 
