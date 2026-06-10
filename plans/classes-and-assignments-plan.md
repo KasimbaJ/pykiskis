@@ -1,11 +1,14 @@
 # Classes + Assignments — Implementation Plan
 
-> STATUS: **Phase 1 (Classes) SHIPPED.** Defaults locked: join-table membership
-> (many), all-teachers-see-all (owner recorded), teacher-assigns. D1 tables live
-> (`classes`, `class_members`, `assignments`); classes API + dashboard class
-> selector + Manage Classes UI + per-class filtering deployed.
-> **Remaining:** Phase 2 (assignments — teacher) and Phase 3 (student "my
-> assignments" view). Careful, human-verified — NOT for the daily routine.
+> STATUS: **Phases 1 (Classes) + 2 (Assignments — teacher) SHIPPED.**
+> Defaults locked: join-table membership, all-teachers-see-all (owner recorded),
+> teacher-assigns. Live: classes API + class selector + Manage Classes UI +
+> per-class filtering; assignments API (list/create/delete) + an **Assignments**
+> tab per class (assign a test + due date; per-student completion, average,
+> not-done list, overdue flag — derived from existing test-score data).
+> Assignments target **tests** in v1 (schema/types also allow lesson/level).
+> **Remaining:** Phase 3 (student-facing "My assignments" view). Careful,
+> human-verified — NOT for the daily routine.
 
 ## Goal
 

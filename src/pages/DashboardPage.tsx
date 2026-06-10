@@ -6,8 +6,10 @@ import StudentTable from '../components/dashboard/StudentTable'
 import ClassScoresTable from '../components/dashboard/ClassScoresTable'
 import StudentDetail from '../components/dashboard/StudentDetail'
 import ClassManager from '../components/dashboard/ClassManager'
+import ClassAssignments from '../components/dashboard/ClassAssignments'
 import { useDashboardStore } from '../stores/useDashboardStore'
 import { useClassesStore } from '../stores/useClassesStore'
+import { useAssignmentsStore } from '../stores/useAssignmentsStore'
 
 export default function DashboardPage() {
   const { user } = useUser()
@@ -19,8 +21,9 @@ export default function DashboardPage() {
 
   const classes = useClassesStore((s) => s.classes)
   const loadClasses = useClassesStore((s) => s.load)
+  const loadAssignments = useAssignmentsStore((s) => s.load)
 
-  const [view, setView] = useState<'overview' | 'scores'>('overview')
+  const [view, setView] = useState<'overview' | 'scores' | 'assignments'>('overview')
   const [selectedClassId, setSelectedClassId] = useState<string | null>(null)
   const [showManage, setShowManage] = useState(false)
 
@@ -30,6 +33,7 @@ export default function DashboardPage() {
         if (!token) return
         loadStudents(token)
         loadClasses(token)
+        loadAssignments(token)
       })
       .catch(console.error)
 
@@ -174,13 +178,30 @@ export default function DashboardPage() {
               >
                 Test Scores
               </button>
+              <button
+                onClick={() => setView('assignments')}
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                  view === 'assignments'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-600 hover:text-slate-800'
+                }`}
+              >
+                Assignments
+              </button>
             </div>
 
-            {view === 'overview' ? (
+            {view === 'overview' && (
               <StudentTable students={visibleStudents} onSelectStudent={setSelectedStudent} />
-            ) : (
-              <ClassScoresTable students={visibleStudents} />
             )}
+            {view === 'scores' && <ClassScoresTable students={visibleStudents} />}
+            {view === 'assignments' &&
+              (activeClass ? (
+                <ClassAssignments classId={activeClass.id} students={visibleStudents} />
+              ) : (
+                <div className="bg-white rounded-xl border border-slate-200 p-8 text-center text-slate-400 text-sm">
+                  Select a class above to create and track assignments.
+                </div>
+              ))}
           </>
         ) : null}
       </main>

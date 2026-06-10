@@ -55,6 +55,18 @@ export interface Class {
   memberIds: string[];
 }
 
+/** A piece of content assigned to a class, with an optional due date. */
+export interface Assignment {
+  id: string;
+  classId: string;
+  contentType: 'lesson' | 'test' | 'level';
+  /** lesson_id (composite) / test lesson key / level id (string). */
+  contentKey: string;
+  title: string;
+  dueDate: string | null;   // YYYY-MM-DD
+  createdAt: string;
+}
+
 export interface ExecutionResult {
   output: string;
   error: string | null;

@@ -18,7 +18,7 @@ and add the merge/commit reference.
 | `i18n-complete-wiring-plan.md` | **Proposed (careful session — NOT the routine)** | Extend localize() wiring to non-theory basics surfaces (titles, quiz/exercise/progress-test/recap). Broad type change; do with browser verification, not unattended. |
 | `i18n-translate-ch1-plan.md` | **Done** | Draft Lithuanian for Chapter 1 **theory** prose, one module per run, into draft PRs for teacher review. All modules translated: `get-started`, `numbers-and-strings`, `comments`, `variables`, `output`, `arithmetic-operators`, `data-conversion`, `get-user-input`, `introduction-examples`, and `recap`. |
 
-| `classes-and-assignments-plan.md` | **Phase 1 (Classes) done & deployed** | Teacher Dashboard classes: D1 tables + classes API + class selector + Manage Classes UI + per-class roster/scores filtering. Remaining: Phase 2 assignments (teacher), Phase 3 student view. Human-verified — not for the routine. |
+| `classes-and-assignments-plan.md` | **Phases 1+2 done & deployed** | Classes (group + filter) and teacher Assignments (assign a test + due date; per-class completion, average, not-done, overdue). Remaining: Phase 3 student "My assignments" view. Human-verified — not for the routine. |
 
 ## How the daily routine uses this
 

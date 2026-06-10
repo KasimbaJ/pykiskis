@@ -1,4 +1,4 @@
-import type { StudentProgress, ServerProgress, Class } from '../types'
+import type { StudentProgress, ServerProgress, Class, Assignment } from '../types'
 import type { ServerBasicsProgress } from '../types/basics'
 
 export async function syncLevelCompletion(
@@ -94,6 +94,39 @@ export async function updateClassMembers(
   if (!res.ok) throw new Error(`Failed to update members: ${res.status}`)
   const data = (await res.json()) as { memberIds: string[] }
   return data.memberIds
+}
+
+// ─── Assignments (Teacher Dashboard) ─────────────────────────────────────────
+
+export async function fetchAssignments(token: string, classId?: string): Promise<Assignment[]> {
+  const qs = classId ? `?classId=${encodeURIComponent(classId)}` : ''
+  const res = await fetch(`/api/assignments${qs}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (!res.ok) throw new Error(`Failed to fetch assignments: ${res.status}`)
+  const data = (await res.json()) as { assignments: Assignment[] }
+  return data.assignments
+}
+
+export async function createAssignment(
+  token: string,
+  data: { classId: string; contentType: Assignment['contentType']; contentKey: string; title: string; dueDate?: string | null },
+): Promise<Assignment> {
+  const res = await fetch('/api/assignments', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) throw new Error(`Failed to create assignment: ${res.status}`)
+  return res.json() as Promise<Assignment>
+}
+
+export async function deleteAssignment(token: string, id: string): Promise<void> {
+  const res = await fetch(`/api/assignments?id=${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (!res.ok) throw new Error(`Failed to delete assignment: ${res.status}`)
 }
 
 // ─── Python Basics Learning Path ─────────────────────────────────────────────
