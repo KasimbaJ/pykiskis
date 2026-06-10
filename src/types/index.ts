@@ -31,6 +31,8 @@ export interface LevelProgress {
 }
 
 export interface StudentProgress {
+  /** Clerk user id — used to match students to class membership. */
+  userId: string;
   studentName: string;
   levels: Record<number, LevelProgress>;
   currentStreak: number;
@@ -42,6 +44,15 @@ export interface StudentProgress {
     /** lessonId → best score (out of 10). Only progress-test lessons. */
     testScores: Record<string, number>;
   };
+}
+
+/** A teacher-owned class/group of students (Teacher Dashboard). */
+export interface Class {
+  id: string;
+  name: string;
+  teacherId: string;
+  /** Clerk user ids of students in this class. */
+  memberIds: string[];
 }
 
 export interface ExecutionResult {

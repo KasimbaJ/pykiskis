@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, RefreshCw, ShieldAlert, Loader2 } from 'lucide-react'
+import { ArrowLeft, RefreshCw, ShieldAlert, Loader2, Users } from 'lucide-react'
 import { useUser, useAuth } from '@clerk/clerk-react'
 import StudentTable from '../components/dashboard/StudentTable'
 import ClassScoresTable from '../components/dashboard/ClassScoresTable'
 import StudentDetail from '../components/dashboard/StudentDetail'
+import ClassManager from '../components/dashboard/ClassManager'
 import { useDashboardStore } from '../stores/useDashboardStore'
+import { useClassesStore } from '../stores/useClassesStore'
 
 export default function DashboardPage() {
   const { user } = useUser()
@@ -15,11 +17,20 @@ export default function DashboardPage() {
   const { students, selectedStudent, isLoading, error, loadStudents, setSelectedStudent } =
     useDashboardStore()
 
+  const classes = useClassesStore((s) => s.classes)
+  const loadClasses = useClassesStore((s) => s.load)
+
   const [view, setView] = useState<'overview' | 'scores'>('overview')
+  const [selectedClassId, setSelectedClassId] = useState<string | null>(null)
+  const [showManage, setShowManage] = useState(false)
 
   const refresh = () =>
     getToken()
-      .then((token) => { if (token) loadStudents(token) })
+      .then((token) => {
+        if (!token) return
+        loadStudents(token)
+        loadClasses(token)
+      })
       .catch(console.error)
 
   useEffect(() => {
@@ -51,6 +62,12 @@ export default function DashboardPage() {
   }
 
   const student = students.find((s) => s.studentName === selectedStudent)
+
+  // Filter the roster/scores to the selected class (null = All students).
+  const activeClass = selectedClassId ? classes.find((c) => c.id === selectedClassId) ?? null : null
+  const visibleStudents = activeClass
+    ? students.filter((s) => activeClass.memberIds.includes(s.userId))
+    : students
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -94,11 +111,45 @@ export default function DashboardPage() {
           <StudentDetail student={student} onBack={() => setSelectedStudent(null)} />
         ) : !isLoading && !error ? (
           <>
-            <div className="mb-6">
+            <div className="mb-4">
               <h2 className="text-2xl font-bold text-slate-800">Student Progress</h2>
               <p className="text-slate-500 text-sm mt-1">
-                {students.length} student{students.length !== 1 ? 's' : ''} enrolled
+                {visibleStudents.length} student{visibleStudents.length !== 1 ? 's' : ''}
+                {activeClass ? ` in ${activeClass.name}` : ' enrolled'}
               </p>
+            </div>
+
+            {/* Class selector + manage */}
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <button
+                onClick={() => setSelectedClassId(null)}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium border ${
+                  !selectedClassId
+                    ? 'bg-blue-600 text-white border-blue-600'
+                    : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300'
+                }`}
+              >
+                All students
+              </button>
+              {classes.map((c) => (
+                <button
+                  key={c.id}
+                  onClick={() => setSelectedClassId(c.id)}
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium border ${
+                    selectedClassId === c.id
+                      ? 'bg-blue-600 text-white border-blue-600'
+                      : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300'
+                  }`}
+                >
+                  {c.name} <span className="opacity-70">({c.memberIds.length})</span>
+                </button>
+              ))}
+              <button
+                onClick={() => setShowManage(true)}
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium border border-dashed border-slate-300 text-slate-500 hover:border-blue-400 hover:text-blue-600"
+              >
+                <Users className="w-3.5 h-3.5" /> Manage classes
+              </button>
             </div>
 
             {/* View toggle */}
@@ -126,13 +177,17 @@ export default function DashboardPage() {
             </div>
 
             {view === 'overview' ? (
-              <StudentTable students={students} onSelectStudent={setSelectedStudent} />
+              <StudentTable students={visibleStudents} onSelectStudent={setSelectedStudent} />
             ) : (
-              <ClassScoresTable students={students} />
+              <ClassScoresTable students={visibleStudents} />
             )}
           </>
         ) : null}
       </main>
+
+      {showManage && (
+        <ClassManager students={students} onClose={() => setShowManage(false)} />
+      )}
     </div>
   )
 }

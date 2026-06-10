@@ -19,6 +19,26 @@ export interface ClerkPayload {
   azp?: string
 }
 
+/**
+ * Verify a token AND confirm the user has the `teacher` role in Clerk public
+ * metadata.  Returns the payload for a teacher, else null.  Mirrors the inline
+ * check in students.ts so teacher-only endpoints can share one helper.
+ */
+export async function verifyTeacher(
+  token: string | undefined,
+  clerkSecretKey: string,
+): Promise<ClerkPayload | null> {
+  if (!token) return null
+  const payload = await verifyClerkToken(token)
+  if (!payload) return null
+  const res = await fetch(`https://api.clerk.com/v1/users/${payload.sub}`, {
+    headers: { Authorization: `Bearer ${clerkSecretKey}` },
+  })
+  if (!res.ok) return null
+  const user = (await res.json()) as { public_metadata?: { role?: string } }
+  return user.public_metadata?.role === 'teacher' ? payload : null
+}
+
 export async function verifyClerkToken(token: string): Promise<ClerkPayload | null> {
   try {
     const parts = token.split('.')

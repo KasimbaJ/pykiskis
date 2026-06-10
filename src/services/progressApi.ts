@@ -1,4 +1,4 @@
-import type { StudentProgress, ServerProgress } from '../types'
+import type { StudentProgress, ServerProgress, Class } from '../types'
 import type { ServerBasicsProgress } from '../types/basics'
 
 export async function syncLevelCompletion(
@@ -57,6 +57,43 @@ export async function fetchStudents(token: string): Promise<StudentProgress[]> {
   })
   if (!res.ok) throw new Error(`Failed to fetch students: ${res.status}`)
   return res.json()
+}
+
+// ─── Classes (Teacher Dashboard) ─────────────────────────────────────────────
+
+export async function fetchClasses(token: string): Promise<Class[]> {
+  const res = await fetch('/api/classes', {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (!res.ok) throw new Error(`Failed to fetch classes: ${res.status}`)
+  const data = (await res.json()) as { classes: Class[] }
+  return data.classes
+}
+
+export async function createClass(token: string, name: string): Promise<Class> {
+  const res = await fetch('/api/classes', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ name }),
+  })
+  if (!res.ok) throw new Error(`Failed to create class: ${res.status}`)
+  return res.json() as Promise<Class>
+}
+
+/** Add and/or remove students from a class; returns the updated member ids. */
+export async function updateClassMembers(
+  token: string,
+  classId: string,
+  changes: { add?: string[]; remove?: string[] },
+): Promise<string[]> {
+  const res = await fetch('/api/class-members', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ classId, ...changes }),
+  })
+  if (!res.ok) throw new Error(`Failed to update members: ${res.status}`)
+  const data = (await res.json()) as { memberIds: string[] }
+  return data.memberIds
 }
 
 // ─── Python Basics Learning Path ─────────────────────────────────────────────
