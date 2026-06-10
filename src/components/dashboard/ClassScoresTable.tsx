@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react'
 import { Download, Trophy, Users, ChevronUp, ChevronDown } from 'lucide-react'
 import type { StudentProgress } from '../../types'
 import { progressTestsByChapter } from '../../data/basics/index'
+import { t } from '../../i18n'
+import { useLangStore } from '../../stores/useLangStore'
 
 interface Props {
   students: StudentProgress[]
@@ -33,6 +35,7 @@ function SortIcon({ active, dir }: { active: boolean; dir: 'asc' | 'desc' }) {
 }
 
 export default function ClassScoresTable({ students }: Props) {
+  const lang = useLangStore((s) => s.lang)
   const groups = progressTestsByChapter()
   const cols = useMemo(() => groups.flatMap((g) => g.tests), [groups])
   const [sort, setSort] = useState<SortState>({ col: null, dir: 'asc' })
@@ -123,8 +126,8 @@ export default function ClassScoresTable({ students }: Props) {
     return (
       <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
         <Users className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-        <h3 className="text-lg font-semibold text-slate-600 mb-1">No Students Yet</h3>
-        <p className="text-slate-400 text-sm">Scores will appear here once students take a test.</p>
+        <h3 className="text-lg font-semibold text-slate-600 mb-1">{t('scores.noStudents', lang)}</h3>
+        <p className="text-slate-400 text-sm">{t('scores.noStudentsDesc', lang)}</p>
       </div>
     )
   }
@@ -133,8 +136,8 @@ export default function ClassScoresTable({ students }: Props) {
     return (
       <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
         <Trophy className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-        <h3 className="text-lg font-semibold text-slate-600 mb-1">No Tests Yet</h3>
-        <p className="text-slate-400 text-sm">Progress tests will appear here as chapters are published.</p>
+        <h3 className="text-lg font-semibold text-slate-600 mb-1">{t('scores.noTests', lang)}</h3>
+        <p className="text-slate-400 text-sm">{t('scores.noTestsDesc', lang)}</p>
       </div>
     )
   }
@@ -142,16 +145,13 @@ export default function ClassScoresTable({ students }: Props) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-xs text-slate-500">
-          Best score per test, out of 10. <span className="text-slate-400">— = not taken.</span>{' '}
-          Click a column to sort.
-        </p>
+        <p className="text-xs text-slate-500">{t('scores.hint', lang)}</p>
         <button
           onClick={downloadCsv}
           className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-50"
         >
           <Download className="w-4 h-4" />
-          Download CSV
+          {t('scores.downloadCsv', lang)}
         </button>
       </div>
 
@@ -182,7 +182,7 @@ export default function ClassScoresTable({ students }: Props) {
                 className="text-center px-3 py-2 text-xs font-semibold text-slate-500 uppercase border-l border-slate-200"
               >
                 <button onClick={() => onSort('avg')} className="uppercase hover:text-slate-700">
-                  Average <SortIcon active={sort.col === 'avg'} dir={sort.dir} />
+                  {t('scores.average', lang)} <SortIcon active={sort.col === 'avg'} dir={sort.dir} />
                 </button>
               </th>
             </tr>
@@ -217,7 +217,7 @@ export default function ClassScoresTable({ students }: Props) {
                         {v != null ? (
                           <span className={`font-semibold ${scoreClass(v)}`}>{v}/10</span>
                         ) : (
-                          <span className="text-amber-400" title="Not taken">—</span>
+                          <span className="text-amber-400" title={t('scores.notTaken', lang)}>—</span>
                         )}
                       </td>
                     )
@@ -236,7 +236,7 @@ export default function ClassScoresTable({ students }: Props) {
           <tfoot>
             <tr className="bg-slate-50 border-t-2 border-slate-200">
               <td className="sticky left-0 z-10 bg-slate-50 px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase whitespace-nowrap">
-                Class average
+                {t('scores.classAvg', lang)}
               </td>
               {colStats.map((c) => (
                 <td key={c.key} className="text-center px-3 py-2 border-l border-slate-100 tabular-nums">
@@ -246,7 +246,7 @@ export default function ClassScoresTable({ students }: Props) {
                     <span className="text-slate-300">—</span>
                   )}
                   <div className="text-[10px] font-normal text-slate-400">
-                    {c.taken}/{students.length} taken
+                    {t('scores.taken', lang, { taken: c.taken, total: students.length })}
                   </div>
                 </td>
               ))}

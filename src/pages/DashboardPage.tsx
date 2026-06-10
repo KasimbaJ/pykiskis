@@ -6,6 +6,8 @@ import StudentTable from '../components/dashboard/StudentTable'
 import ClassScoresTable from '../components/dashboard/ClassScoresTable'
 import StudentDetail from '../components/dashboard/StudentDetail'
 import { useDashboardStore } from '../stores/useDashboardStore'
+import { t } from '../i18n'
+import { useLangStore } from '../stores/useLangStore'
 
 export default function DashboardPage() {
   const { user } = useUser()
@@ -14,6 +16,7 @@ export default function DashboardPage() {
 
   const { students, selectedStudent, isLoading, error, loadStudents, setSelectedStudent } =
     useDashboardStore()
+  const lang = useLangStore((s) => s.lang)
 
   const [view, setView] = useState<'overview' | 'scores'>('overview')
 
@@ -33,17 +36,15 @@ export default function DashboardPage() {
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <ShieldAlert className="w-8 h-8 text-red-500" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-800 mb-2">Teacher Access Only</h1>
+          <h1 className="text-2xl font-bold text-slate-800 mb-2">{t('dashboard.accessOnly', lang)}</h1>
           <p className="text-slate-500 mb-6 text-sm">
-            This dashboard is restricted to teachers. Ask your admin to set{' '}
-            <code className="bg-slate-100 px-1 rounded">role: "teacher"</code> in your Clerk
-            public metadata.
+            {t('dashboard.restricted', lang)}
           </p>
           <Link
             to="/"
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Learning
+            <ArrowLeft className="w-4 h-4" /> {t('dashboard.backToLearning', lang)}
           </Link>
         </div>
       </div>
@@ -61,9 +62,9 @@ export default function DashboardPage() {
               to="/"
               className="flex items-center gap-1 text-slate-500 hover:text-blue-600 transition-colors text-sm"
             >
-              <ArrowLeft className="w-4 h-4" /> Home
+              <ArrowLeft className="w-4 h-4" /> {t('dashboard.home', lang)}
             </Link>
-            <h1 className="text-lg font-bold text-slate-800">Teacher Dashboard</h1>
+            <h1 className="text-lg font-bold text-slate-800">{t('dashboard.title', lang)}</h1>
           </div>
           <button
             onClick={refresh}
@@ -80,13 +81,13 @@ export default function DashboardPage() {
         {isLoading && !students.length && (
           <div className="flex items-center justify-center py-24 text-slate-400 gap-3">
             <Loader2 className="w-5 h-5 animate-spin" />
-            Loading student data…
+            {t('dashboard.loading', lang)}
           </div>
         )}
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm mb-6">
-            Failed to load students: {error}
+            {t('dashboard.error', lang, { error: error ?? '' })}
           </div>
         )}
 
@@ -95,9 +96,11 @@ export default function DashboardPage() {
         ) : !isLoading && !error ? (
           <>
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-slate-800">Student Progress</h2>
+              <h2 className="text-2xl font-bold text-slate-800">{t('dashboard.progress', lang)}</h2>
               <p className="text-slate-500 text-sm mt-1">
-                {students.length} student{students.length !== 1 ? 's' : ''} enrolled
+                {students.length === 1
+                  ? t('dashboard.enrolled', lang, { count: students.length })
+                  : t('dashboard.enrolledPl', lang, { count: students.length })}
               </p>
             </div>
 
@@ -111,7 +114,7 @@ export default function DashboardPage() {
                     : 'text-slate-600 hover:text-slate-800'
                 }`}
               >
-                Overview
+                {t('dashboard.overview', lang)}
               </button>
               <button
                 onClick={() => setView('scores')}
@@ -121,7 +124,7 @@ export default function DashboardPage() {
                     : 'text-slate-600 hover:text-slate-800'
                 }`}
               >
-                Test Scores
+                {t('dashboard.testScores', lang)}
               </button>
             </div>
 

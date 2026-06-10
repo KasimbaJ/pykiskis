@@ -4,6 +4,8 @@ import { X, ChevronDown, CircleCheck, CircleDashed } from 'lucide-react'
 import type { Chapter, Module } from '../../types/basics'
 import { lessonKey, moduleLessonKeys } from '../../data/basics/index'
 import { useBasicsStore } from '../../stores/useBasicsStore'
+import { t, type Lang } from '../../i18n'
+import { useLangStore } from '../../stores/useLangStore'
 
 interface Props {
   chapter: Chapter
@@ -18,6 +20,7 @@ interface Props {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function CourseOutlineDrawer({ chapter, open, onClose }: Props) {
+  const lang = useLangStore((s) => s.lang)
   const { moduleSlug, lessonSlug } = useParams<{
     moduleSlug?: string
     lessonSlug?: string
@@ -58,7 +61,7 @@ export default function CourseOutlineDrawer({ chapter, open, onClose }: Props) {
         <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
           <div>
             <h2 className="text-base font-bold text-slate-800 dark:text-white">
-              Course Outline
+              {t('outline.title', lang)}
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
               Ch {chapter.id} · {chapter.title}
@@ -91,6 +94,7 @@ export default function CourseOutlineDrawer({ chapter, open, onClose }: Props) {
                 completed={completedInModule}
                 total={mod.lessons.length}
                 defaultOpen={isActive}
+                lang={lang}
               />
             )
           })}
@@ -108,6 +112,7 @@ function ModuleSection({
   completed,
   total,
   defaultOpen,
+  lang,
 }: {
   module: Module
   index: number
@@ -116,6 +121,7 @@ function ModuleSection({
   completed: number
   total: number
   defaultOpen: boolean
+  lang: Lang
 }) {
   const lessons = useBasicsStore((s) => s.lessons)
 
@@ -130,13 +136,13 @@ function ModuleSection({
             </span>
           </div>
           <span className="text-xs text-slate-400 dark:text-slate-500 shrink-0">
-            {total === 0 ? 'soon' : `${completed}/${total}`}
+            {total === 0 ? t('outline.soon', lang) : `${completed}/${total}`}
           </span>
         </summary>
 
         {mod.lessons.length === 0 ? (
           <p className="px-9 py-2 text-xs text-slate-400 dark:text-slate-500 italic">
-            Coming soon
+            {t('outline.comingSoon', lang)}
           </p>
         ) : (
           <ul className="ml-3 mt-1 mb-1 border-l border-slate-200 dark:border-slate-700 pl-2 space-y-0.5">

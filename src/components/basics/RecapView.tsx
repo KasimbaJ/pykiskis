@@ -1,6 +1,8 @@
 import { BadgeCheck, ArrowRight } from 'lucide-react'
 import type { RecapLesson } from '../../types/basics'
 import { renderInline } from './inline'
+import { t } from '../../i18n'
+import { useLangStore } from '../../stores/useLangStore'
 
 interface Props {
   lesson: RecapLesson
@@ -15,6 +17,7 @@ interface Props {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function RecapView({ lesson, moduleTitle, moduleProgress }: Props) {
+  const lang = useLangStore((s) => s.lang)
   return (
     <div className="space-y-6">
       <div className="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-gradient-to-b from-emerald-50 to-white dark:from-emerald-900/20 dark:to-slate-900 p-8 text-center">
@@ -30,11 +33,21 @@ export default function RecapView({ lesson, moduleTitle, moduleProgress }: Props
       {moduleTitle && moduleProgress && (
         <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 text-center">
           <p className="text-sm text-slate-600 dark:text-slate-300">
-            You have completed{' '}
-            <strong className="text-slate-900 dark:text-white">
-              {moduleProgress.completed}/{moduleProgress.total}
-            </strong>{' '}
-            lessons of <strong className="text-slate-900 dark:text-white">{moduleTitle}</strong>.
+            {lang === 'lt' ? (
+              t('recap.progress', 'lt', {
+                done: moduleProgress.completed,
+                total: moduleProgress.total,
+                module: moduleTitle,
+              })
+            ) : (
+              <>
+                You have completed{' '}
+                <strong className="text-slate-900 dark:text-white">
+                  {moduleProgress.completed}/{moduleProgress.total}
+                </strong>{' '}
+                lessons of <strong className="text-slate-900 dark:text-white">{moduleTitle}</strong>.
+              </>
+            )}
           </p>
         </div>
       )}
@@ -42,7 +55,7 @@ export default function RecapView({ lesson, moduleTitle, moduleProgress }: Props
       {lesson.nextModuleTitle && (
         <div className="flex justify-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 text-sm">
-            Next up <ArrowRight className="w-4 h-4" /> {lesson.nextModuleTitle}
+            {t('recap.nextUp', lang)} <ArrowRight className="w-4 h-4" /> {lesson.nextModuleTitle}
           </div>
         </div>
       )}

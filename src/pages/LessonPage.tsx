@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams, Navigate } from 'react-router-dom'
 import { useAuth } from '@clerk/clerk-react'
 import { ArrowLeft, ArrowRight, Check, Lock, List } from 'lucide-react'
 import Header from '../components/layout/Header'
+import { t } from '../i18n'
+import { useLangStore } from '../stores/useLangStore'
 import TheoryView from '../components/basics/TheoryView'
 import QuizView from '../components/basics/QuizView'
 import ExerciseView from '../components/basics/ExerciseView'
@@ -34,6 +36,7 @@ import { syncLessonProgress } from '../services/progressApi'
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function LessonPage() {
+  const lang = useLangStore((s) => s.lang)
   const navigate = useNavigate()
   const { getToken } = useAuth()
   const { chapterSlug, moduleSlug, lessonSlug } = useParams<{
@@ -146,13 +149,13 @@ export default function LessonPage() {
         <main className="max-w-3xl mx-auto px-4 py-16 text-center">
           <Lock className="w-10 h-10 mx-auto text-slate-400 mb-3" />
           <h1 className="text-xl font-bold text-slate-800 dark:text-white mb-2">
-            Lesson locked
+            {t('lesson.locked', lang)}
           </h1>
           <p className="text-slate-500 dark:text-slate-400 mb-4">
-            Finish the previous lesson to unlock this one.
+            {t('lesson.unlockPrev', lang)}
           </p>
           <Link to={`/basics/${chapter.slug}`} className="text-indigo-600 hover:underline">
-            Back to {chapter.title}
+            {chapter.title}
           </Link>
         </main>
       </div>
@@ -254,7 +257,7 @@ export default function LessonPage() {
             className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
             <List className="w-3.5 h-3.5" />
-            Course Outline
+            {t('lesson.outline', lang)}
           </button>
 
           <span className="text-xs text-slate-400 dark:text-slate-500 tabular-nums">
@@ -270,7 +273,7 @@ export default function LessonPage() {
           </p>
           {completed && (
             <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded">
-              <Check className="w-3 h-3" /> Completed
+              <Check className="w-3 h-3" /> {t('lesson.completed', lang)}
             </span>
           )}
         </div>
@@ -289,7 +292,7 @@ export default function LessonPage() {
               to={`/basics/${chapter.slug}/${prev.module.slug}/${prev.lesson.slug}`}
               className="inline-flex items-center gap-2 text-sm px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
             >
-              <ArrowLeft className="w-4 h-4" /> Previous
+              <ArrowLeft className="w-4 h-4" /> {t('lesson.previous', lang)}
             </Link>
           ) : (
             <span className="w-[88px]" />
@@ -305,7 +308,7 @@ export default function LessonPage() {
             onClick={onNext}
             className="inline-flex items-center gap-2 text-sm px-3 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
           >
-            {next ? 'Next' : 'Finish'} <ArrowRight className="w-4 h-4" />
+            {next ? t('lesson.next', lang) : t('lesson.finish', lang)} <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </nav>

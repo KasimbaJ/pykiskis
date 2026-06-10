@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { ArrowLeft, Play, Square, Send, RotateCcw, Loader2, BookOpen } from 'lucide-react'
 import Header from '../components/layout/Header'
+import { t } from '../i18n'
+import { useLangStore } from '../stores/useLangStore'
 import CodeEditor from '../components/editor/CodeEditor'
 import OutputPanel from '../components/editor/OutputPanel'
 import LevelInstructions from '../components/level/LevelInstructions'
@@ -16,6 +18,7 @@ import { usePyodide } from '../hooks/usePyodide'
 import { stopPython } from '../services/pythonRunner'
 
 export default function LevelPage() {
+  const lang = useLangStore((s) => s.lang)
   const { levelId } = useParams()
   const navigate = useNavigate()
   const { isLoading: pyodideLoading, progress: pyodideProgress } = usePyodide()
@@ -35,10 +38,10 @@ export default function LevelPage() {
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
-            Level not found
+            {t('levelPage.notFound', lang)}
           </h1>
           <Link to="/" className="text-blue-600 hover:underline">
-            Back to levels
+            {t('levelPage.backToLevels', lang)}
           </Link>
         </div>
       </div>
@@ -50,13 +53,13 @@ export default function LevelPage() {
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
-            Level Locked
+            {t('levelPage.locked', lang)}
           </h1>
           <p className="text-slate-500 dark:text-slate-400 mb-4">
-            Complete Level {level.id - 1} first to unlock this level.
+            {t('levelPage.completePrev', lang, { prev: level.id - 1 })}
           </p>
           <Link to="/" className="text-blue-600 hover:underline">
-            Back to levels
+            {t('levelPage.backToLevels', lang)}
           </Link>
         </div>
       </div>
@@ -74,11 +77,11 @@ export default function LevelPage() {
             onClick={() => navigate('/')}
             className="flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Levels
+            <ArrowLeft className="w-4 h-4" /> {t('levelPage.backToLevels2', lang)}
           </button>
           {isCompleted && (
             <span className="text-sm font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-full">
-              Completed
+              {t('levelPage.completed', lang)}
             </span>
           )}
         </div>
@@ -95,7 +98,7 @@ export default function LevelPage() {
             {level.levelMode === 'theory' && (
               <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 flex items-center gap-2 text-sm text-amber-700 dark:text-amber-300">
                 <BookOpen className="w-4 h-4" />
-                Theory level — write the code snippet shown and click Check Answer.
+                {t('levelPage.theoryTip', lang)}
               </div>
             )}
             {level.levelMode !== 'theory' && pyodideLoading && (
@@ -123,6 +126,7 @@ export default function LevelPage() {
               level={level}
               pyodideLoading={pyodideLoading}
               isRunning={isRunning}
+              lang={lang}
               onReset={() => resetEditor(level.starterCode)}
             />
             <OutputPanel />
@@ -140,11 +144,13 @@ function EditorActions({
   level,
   pyodideLoading,
   isRunning,
+  lang,
   onReset,
 }: {
   level: (typeof levels)[number];
   pyodideLoading: boolean;
   isRunning: boolean;
+  lang: import('../i18n').Lang;
   onReset: () => void;
 }) {
   const { execute, submit } = useCodeExecution(level)
@@ -160,7 +166,7 @@ function EditorActions({
             className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
           >
             <Square className="w-4 h-4 fill-current" />
-            Stop
+            {t('output.stop', lang)}
           </button>
         ) : (
           <button
@@ -169,7 +175,7 @@ function EditorActions({
             className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg font-medium hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Play className="w-4 h-4" />
-            Run
+            {t('run', lang)}
           </button>
         )
       )}
@@ -179,14 +185,14 @@ function EditorActions({
         className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-        {isTheory ? 'Check Answer' : 'Submit'}
+        {isTheory ? t('levelPage.checkAnswer', lang) : t('levelPage.submit', lang)}
       </button>
       <button
         onClick={onReset}
         className="flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
       >
         <RotateCcw className="w-4 h-4" />
-        Reset
+        {t('reset', lang)}
       </button>
     </div>
   )

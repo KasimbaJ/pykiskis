@@ -3,6 +3,8 @@ import { BookOpen, Sparkles, ChevronRight, CircleCheck } from 'lucide-react'
 import Header from '../components/layout/Header'
 import { chapters, chapterLessonKeys, countChapterLessons } from '../data/basics/index'
 import { useBasicsStore } from '../stores/useBasicsStore'
+import { t } from '../i18n'
+import { useLangStore } from '../stores/useLangStore'
 
 // Tailwind colour map for the chapter cards.  Mirrors the phase palette so the
 // two tracks feel visually consistent.
@@ -16,6 +18,7 @@ const colorMap: Record<string, { ring: string; bg: string; badge: string; title:
 }
 
 export default function BasicsHomePage() {
+  const lang = useLangStore((s) => s.lang)
   const lessons = useBasicsStore((s) => s.lessons)
 
   return (
@@ -26,12 +29,11 @@ export default function BasicsHomePage() {
           <div className="flex items-center gap-2 mb-2">
             <BookOpen className="w-7 h-7 text-indigo-600" />
             <h1 className="text-3xl font-bold text-slate-800 dark:text-white">
-              Python Basics Learning Path
+              {t('basics.title', lang)}
             </h1>
           </div>
           <p className="text-slate-500 dark:text-slate-400">
-            A friendly, chapter-based course covering Python from the ground up.
-            Read short lessons, run examples in the browser, and build small projects.
+            {t('basics.subtitle', lang)}
           </p>
         </div>
 
@@ -61,7 +63,7 @@ export default function BasicsHomePage() {
                     {chapter.featured && (
                       <span className="flex items-center gap-1 text-xs font-semibold text-amber-700 dark:text-amber-400">
                         <Sparkles className="w-3.5 h-3.5" />
-                        FEATURED
+                        {t('basics.featured', lang)}
                       </span>
                     )}
                   </div>
@@ -71,12 +73,12 @@ export default function BasicsHomePage() {
                 <p className="text-sm text-slate-600 dark:text-slate-300">{chapter.subtitle}</p>
 
                 {lessonCount === 0 ? (
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Coming soon</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{t('basics.comingSoon', lang)}</p>
                 ) : (
                   <div className="space-y-1">
                     <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                       <span>
-                        {completed}/{lessonCount} lesson{lessonCount === 1 ? '' : 's'}
+                        {completed}/{lessonCount} {t(lessonCount === 1 ? 'basics.lesson' : 'basics.lessons', lang)}
                       </span>
                       <span className="tabular-nums">{pct}%</span>
                     </div>
@@ -90,7 +92,7 @@ export default function BasicsHomePage() {
                 )}
 
                 <div className="mt-auto pt-2 flex items-center justify-end text-sm font-medium text-slate-500 dark:text-slate-300">
-                  Open chapter
+                  {t('basics.openChapter', lang)}
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </div>
               </Link>

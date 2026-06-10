@@ -3,11 +3,14 @@ import { ArrowRight, BookOpen, ChevronRight } from 'lucide-react'
 import Header from '../components/layout/Header'
 import { chapters, flattenChapter, lessonKey } from '../data/basics/index'
 import { useBasicsStore } from '../stores/useBasicsStore'
+import { t } from '../i18n'
+import { useLangStore } from '../stores/useLangStore'
 
 // The landing page funnels learners into the Python Basics course.  The
 // original 100-level "challenge" path is kept, but tucked behind a single
 // low-prominence link to /levels.
 export default function HomePage() {
+  const lang = useLangStore((s) => s.lang)
   const lessons = useBasicsStore((s) => s.lessons)
 
   // The whole Basics track in course order, used to compute the smart CTA:
@@ -23,10 +26,10 @@ export default function HomePage() {
 
   const started = completedCount > 0
   const ctaLabel = !started
-    ? 'Start Chapter 1'
+    ? t('home.startCh1', lang)
     : nextLesson
-      ? 'Continue learning'
-      : 'Review the basics'
+      ? t('home.continue', lang)
+      : t('home.review', lang)
   const ctaTo = nextLesson
     ? `/basics/${nextLesson.chapter.slug}/${nextLesson.module.slug}/${nextLesson.lesson.slug}`
     : '/basics'
@@ -42,23 +45,20 @@ export default function HomePage() {
               <BookOpen className="w-5 h-5" />
             </div>
             <span className="text-xs font-semibold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
-              Start here
+              {t('home.startHere', lang)}
             </span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-white">
-            Python Basics Learning Path
+            {t('home.heroTitle', lang)}
           </h1>
           <p className="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">
-            A friendly, chapter-based course covering Python from the ground up — read
-            short lessons, run real code in your browser, and build small projects.
+            {t('home.heroSubtitle', lang)}
           </p>
 
           {started && (
             <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
-              You have completed{' '}
-              <strong className="text-indigo-700 dark:text-indigo-300">{completedCount}</strong> of{' '}
-              {allLessons.length} lessons.
+              {t('home.progress', lang, { done: completedCount, total: allLessons.length })}
             </p>
           )}
 
@@ -74,7 +74,7 @@ export default function HomePage() {
               to="/basics"
               className="inline-flex items-center gap-1 text-sm font-medium text-indigo-700 dark:text-indigo-300 hover:underline"
             >
-              View all chapters
+              {t('home.viewChapters', lang)}
               <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
@@ -85,7 +85,7 @@ export default function HomePage() {
           to="/levels"
           className="inline-flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400"
         >
-          Looking for the 100-level challenge path?
+          {t('home.challengePath', lang)}
           <ChevronRight className="w-4 h-4" />
         </Link>
       </main>

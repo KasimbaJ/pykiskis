@@ -11,6 +11,8 @@ import { runPython } from '../../services/pythonRunner'
 import { cleanPythonError } from '../../services/pythonError'
 import type { ExerciseLesson } from '../../types/basics'
 import { renderInline } from './inline'
+import { t } from '../../i18n'
+import { useLangStore } from '../../stores/useLangStore'
 
 // Local copy of the output normaliser — keeps ExerciseView self-contained and
 // avoids dragging the Level-shaped outputValidator API across module boundaries.
@@ -59,6 +61,7 @@ export default function ExerciseView({
   onCorrect,
   onAttempt,
 }: Props) {
+  const lang = useLangStore((s) => s.lang)
   const { isLoading: pyodideLoading, progress } = usePyodide()
   const [code, setCode] = useState(initialCode ?? lesson.starterCode)
   const [output, setOutput] = useState<string | null>(null)
@@ -130,7 +133,7 @@ export default function ExerciseView({
     <div className="space-y-4">
       {/* Problem description */}
       <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 space-y-3">
-        <h3 className="font-semibold text-slate-800 dark:text-white">Problem</h3>
+        <h3 className="font-semibold text-slate-800 dark:text-white">{t('exercise.problem', lang)}</h3>
         {lesson.problemDescription
           .split(/\n\n+/)
           .map((para, i) => (
@@ -140,7 +143,7 @@ export default function ExerciseView({
           ))}
         {lesson.remember && lesson.remember.length > 0 && (
           <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
-            <p className="text-sm font-medium text-slate-800 dark:text-slate-100 mb-1.5">Remember:</p>
+            <p className="text-sm font-medium text-slate-800 dark:text-slate-100 mb-1.5">{t('exercise.remember', lang)}</p>
             <ul className="list-disc pl-5 space-y-1 text-sm text-slate-700 dark:text-slate-200">
               {lesson.remember.map((r, i) => (
                 <li key={i}>{renderInline(r)}</li>
@@ -150,7 +153,7 @@ export default function ExerciseView({
         )}
         <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
           <p className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
-            Expected Output
+            {t('exercise.expectedOut', lang)}
           </p>
           <pre className="text-sm font-mono whitespace-pre-wrap break-words rounded bg-slate-900 text-slate-100 p-2">
             {lesson.expectedOutput}
@@ -186,7 +189,7 @@ export default function ExerciseView({
           className="inline-flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg font-medium hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
-          Run
+          {t('run', lang)}
         </button>
         <button
           onClick={submit}
@@ -194,17 +197,17 @@ export default function ExerciseView({
           className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-          Check Code
+          {t('exercise.checkCode', lang)}
         </button>
         <button
           onClick={reset}
           className="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
         >
-          <RotateCcw className="w-4 h-4" /> Reset
+          <RotateCcw className="w-4 h-4" /> {t('reset', lang)}
         </button>
         {pyodideLoading && (
           <span className="self-center text-xs text-slate-500 dark:text-slate-400">
-            Loading Python… {progress.pct}%
+            {t('exercise.loadingPy', lang, { pct: progress.pct })}
           </span>
         )}
       </div>
@@ -213,7 +216,7 @@ export default function ExerciseView({
       {(output !== null || error) && (
         <div className="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-900 text-slate-100 font-mono text-sm">
           <div className="px-3 py-1.5 border-b border-slate-700/60 text-[10px] uppercase tracking-wider text-slate-400">
-            Output
+            {t('output', lang)}
           </div>
           <pre className="px-3 py-2 whitespace-pre-wrap break-words min-h-[2rem]">
             {output}
@@ -227,7 +230,7 @@ export default function ExerciseView({
       {isComplete && (
         <div className="flex items-center gap-2 rounded-lg border-l-4 border-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-200">
           <Check className="w-4 h-4 flex-shrink-0 text-emerald-500" />
-          <span>Nice work — exercise complete.</span>
+          <span>{t('exercise.complete', lang)}</span>
         </div>
       )}
 
@@ -247,14 +250,14 @@ export default function ExerciseView({
                 feedback === 'success' ? 'text-emerald-700' : 'text-rose-700'
               }`}
             >
-              {feedback === 'success' ? 'Correct!' : 'Not Quite Right'}
+              {feedback === 'success' ? t('exercise.correct', lang) : t('exercise.incorrect', lang)}
             </h2>
             <p className="text-slate-600 dark:text-slate-300 text-center mb-4">
               {feedback === 'success'
-                ? 'Great work — your output matches. Hit Next to continue.'
+                ? t('exercise.correctMsg', lang)
                 : error
-                  ? 'Your code raised an error. Check the Output panel and try again.'
-                  : "Your output doesn't match the expected output yet. Compare them below and try again."}
+                  ? t('exercise.errorMsg', lang)
+                  : t('exercise.mismatchMsg', lang)}
             </p>
 
             {/* Wrong-but-ran: show expected vs actual for comparison */}
@@ -262,7 +265,7 @@ export default function ExerciseView({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
-                    Expected
+                    {t('exercise.expected', lang)}
                   </p>
                   <pre className="text-xs font-mono whitespace-pre-wrap break-words rounded bg-slate-900 text-emerald-300 p-2 min-h-[3rem]">
                     {lesson.expectedOutput}
@@ -270,10 +273,10 @@ export default function ExerciseView({
                 </div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
-                    Your output
+                    {t('exercise.yourOutput', lang)}
                   </p>
                   <pre className="text-xs font-mono whitespace-pre-wrap break-words rounded bg-slate-900 text-rose-300 p-2 min-h-[3rem]">
-                    {output || '(no output)'}
+                    {output || t('exercise.noOutput', lang)}
                   </pre>
                 </div>
               </div>
@@ -285,7 +288,7 @@ export default function ExerciseView({
                   onClick={() => setFeedback(null)}
                   className="px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition-colors flex items-center gap-2"
                 >
-                  Continue <ArrowRight className="w-4 h-4" />
+                  {t('exercise.continue', lang)} <ArrowRight className="w-4 h-4" />
                 </button>
               ) : (
                 <>
@@ -293,13 +296,13 @@ export default function ExerciseView({
                     onClick={() => setFeedback(null)}
                     className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                   >
-                    Keep Trying
+                    {t('exercise.keepTrying', lang)}
                   </button>
                   <button
                     onClick={() => { setFeedback(null); reset() }}
                     className="px-4 py-2 bg-slate-600 text-white rounded-lg font-medium hover:bg-slate-700 transition-colors flex items-center gap-2"
                   >
-                    <RotateCcw className="w-4 h-4" /> Reset Code
+                    <RotateCcw className="w-4 h-4" /> {t('exercise.resetCode', lang)}
                   </button>
                 </>
               )}

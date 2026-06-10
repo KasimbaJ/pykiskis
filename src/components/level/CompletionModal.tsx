@@ -4,6 +4,8 @@ import { Trophy, Share2, Home, Code2 } from 'lucide-react'
 import { useEditorStore } from '../../stores/useEditorStore'
 import { useProgressStore } from '../../stores/useProgressStore'
 import type { Level } from '../../types'
+import { t } from '../../i18n'
+import { useLangStore } from '../../stores/useLangStore'
 
 // ── Confetti data ──────────────────────────────────────────────
 const COLORS = [
@@ -39,6 +41,7 @@ function generateConfetti(count = 70): Piece[] {
 interface Props { level: Level }
 
 export default function CompletionModal({ level }: Props) {
+  const lang = useLangStore((s) => s.lang)
   const { feedbackType, setFeedbackType } = useEditorStore()
   const { studentName } = useProgressStore()
   const navigate = useNavigate()
@@ -87,16 +90,16 @@ export default function CompletionModal({ level }: Props) {
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
               <Trophy className="w-9 h-9 text-yellow-300" />
             </div>
-            <h1 className="text-white text-2xl font-bold">Course Complete!</h1>
+            <h1 className="text-white text-2xl font-bold">{t('completion.title', lang)}</h1>
             <p className="text-white/80 text-sm mt-1">
-              You've mastered all 100 levels of Python 🐍
+              {t('completion.subtitle', lang)}
             </p>
           </div>
 
           {/* Certificate */}
           <div className="px-6 pt-5 pb-4">
             <p className="text-center text-xs uppercase tracking-widest text-slate-400 mb-3">
-              Certificate of Completion
+              {t('completion.cert', lang)}
             </p>
 
             <div className="border-2 border-slate-100 rounded-2xl p-5 text-center bg-slate-50">
@@ -105,16 +108,16 @@ export default function CompletionModal({ level }: Props) {
                 <span className="text-sm font-semibold text-blue-600">Pykiškis</span>
               </div>
 
-              <p className="text-slate-500 text-sm">This certifies that</p>
+              <p className="text-slate-500 text-sm">{t('completion.certifies', lang)}</p>
               <p className="text-2xl font-bold text-slate-800 mt-1 mb-2">
                 {studentName || 'Python Learner'}
               </p>
               <p className="text-slate-500 text-sm leading-relaxed">
-                has successfully completed<br />
+                {t('completion.hasCompleted', lang)}<br />
                 <span className="font-semibold text-slate-700">
-                  100 Levels of Python
+                  {t('completion.courseName', lang)}
                 </span>
-                {' '}— from fundamentals to machine learning
+                {' '}{t('completion.range', lang)}
               </p>
 
               <div className="flex items-center gap-3 mt-4">
@@ -134,7 +137,7 @@ export default function CompletionModal({ level }: Props) {
               className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-slate-900 text-white rounded-xl font-medium hover:bg-slate-700 transition-colors text-sm"
             >
               <Share2 className="w-4 h-4" />
-              Share on X / Twitter
+              {t('completion.share', lang)}
             </a>
             <button
               onClick={() => {
@@ -144,7 +147,7 @@ export default function CompletionModal({ level }: Props) {
               className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border border-slate-200 text-slate-600 rounded-xl font-medium hover:bg-slate-50 transition-colors text-sm"
             >
               <Home className="w-4 h-4" />
-              Back to Home
+              {t('completion.backHome', lang)}
             </button>
           </div>
 

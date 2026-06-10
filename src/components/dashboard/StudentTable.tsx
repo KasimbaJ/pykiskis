@@ -2,6 +2,8 @@ import { Users, ChevronRight, Flame, Trophy, BookOpen } from 'lucide-react'
 import type { StudentProgress } from '../../types'
 import { levels } from '../../data/levels/index'
 import { countAllBasicsLessons } from '../../data/basics/index'
+import { t } from '../../i18n'
+import { useLangStore } from '../../stores/useLangStore'
 
 interface Props {
   students: StudentProgress[];
@@ -9,15 +11,17 @@ interface Props {
 }
 
 export default function StudentTable({ students, onSelectStudent }: Props) {
+  const lang = useLangStore((s) => s.lang)
+
   if (students.length === 0) {
     return (
       <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
         <Users className="w-12 h-12 text-slate-300 mx-auto mb-3" />
         <h3 className="text-lg font-semibold text-slate-600 mb-1">
-          No Students Yet
+          {t('table.noStudents', lang)}
         </h3>
         <p className="text-slate-400 text-sm">
-          Student progress will appear here once they start learning.
+          {t('table.noStudentsDesc', lang)}
         </p>
       </div>
     )
@@ -31,25 +35,25 @@ export default function StudentTable({ students, onSelectStudent }: Props) {
         <thead>
           <tr className="bg-slate-50 border-b border-slate-200">
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Student
+              {t('table.student', lang)}
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Phase Levels
+              {t('table.phaseLevels', lang)}
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
               <span className="inline-flex items-center gap-1">
                 <BookOpen className="w-3.5 h-3.5" />
-                Basics
+                {t('table.basics', lang)}
               </span>
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Streak
+              {t('table.streak', lang)}
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Best
+              {t('table.best', lang)}
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Last Active
+              {t('table.lastActive', lang)}
             </th>
             <th className="px-6 py-3" />
           </tr>
