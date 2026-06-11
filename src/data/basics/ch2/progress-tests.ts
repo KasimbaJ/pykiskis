@@ -245,7 +245,244 @@ export const test1Bank: ProgressTestQuestion[] = [
   },
 ]
 
-// ── Module checkpoint test ───────────────────────────────────────────────────
+// ── Test 2 bank: Logical Operators + While Loop ──────────────────────────────
+
+export const test2Bank: ProgressTestQuestion[] = [
+  {
+    id: 'q1',
+    qType: 'mcq',
+    prompt: 'Which operator returns `True` only when **both** conditions are `True`?',
+    options: [
+      { id: 'a', text: '`or`' },
+      { id: 'b', text: '`and`' },
+      { id: 'c', text: '`not`' },
+      { id: 'd', text: '`while`' },
+    ],
+    correctOptionId: 'b',
+    explanation: '`and` is `True` only when both sides are True. `or` needs just one side True.',
+  },
+  {
+    id: 'q2',
+    qType: 'predict-output',
+    prompt: 'What is the output?',
+    code: 'print(True and False)',
+    expectedOutput: 'False',
+  },
+  {
+    id: 'q3',
+    qType: 'predict-output',
+    prompt: 'What is the output?',
+    code: 'print(True or False)',
+    expectedOutput: 'True',
+  },
+  {
+    id: 'q4',
+    qType: 'predict-output',
+    prompt: 'What is the output?',
+    code: 'print(not True)',
+    expectedOutput: 'False',
+  },
+  {
+    id: 'q5',
+    qType: 'mcq',
+    prompt: 'The `or` operator returns `False` in which case?',
+    options: [
+      { id: 'a', text: 'When both sides are `True`.' },
+      { id: 'b', text: 'When at least one side is `True`.' },
+      { id: 'c', text: 'When both sides are `False`.' },
+      { id: 'd', text: '`or` is never `False`.' },
+    ],
+    correctOptionId: 'c',
+    explanation: '`or` is only `False` when **both** sides are False; otherwise it is `True`.',
+  },
+  {
+    id: 'q6',
+    qType: 'fill-in-blank',
+    prompt: 'The logical operator that flips a boolean (True becomes False) is ___.',
+    acceptedAnswers: ['not', 'Not'],
+    hint: 'Three letters.',
+    explanation: '`not` flips a boolean: `not True` is `False`, and `not False` is `True`.',
+  },
+  {
+    id: 'q7',
+    qType: 'predict-output',
+    prompt: 'What is the output?',
+    code: 'print(5 > 3 and 10 > 2)',
+    expectedOutput: 'True',
+  },
+  {
+    id: 'q8',
+    qType: 'predict-output',
+    prompt: 'What is the output?',
+    code: 'print(False or False)',
+    expectedOutput: 'False',
+  },
+  {
+    id: 'q9',
+    qType: 'mcq',
+    prompt: 'What does `not False` evaluate to?',
+    options: [
+      { id: 'a', text: '`True`' },
+      { id: 'b', text: '`False`' },
+      { id: 'c', text: '`None`' },
+      { id: 'd', text: 'An error' },
+    ],
+    correctOptionId: 'a',
+    explanation: '`not` flips the value, so `not False` is `True`.',
+  },
+  {
+    id: 'q10',
+    qType: 'predict-output',
+    prompt: 'What is the output?',
+    code: 'age = 16\nprint(age >= 13 and age <= 19)',
+    expectedOutput: 'True',
+  },
+  {
+    id: 'q11',
+    qType: 'mcq',
+    prompt: 'In `age > 10 and age < 20`, what does Python evaluate first?',
+    options: [
+      { id: 'a', text: 'The `and`, then the comparisons.' },
+      { id: 'b', text: 'The two comparisons, then combines them with `and`.' },
+      { id: 'c', text: 'It reads strictly right to left.' },
+      { id: 'd', text: 'Nothing — this is a syntax error.' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'Comparisons are evaluated first, producing two booleans, which `and` then combines.',
+  },
+  {
+    id: 'q12',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'count = 1\nwhile count <= 3:\n    print(count)\n    count = count + 1',
+    expectedOutput: '1\n2\n3',
+  },
+  {
+    id: 'q13',
+    qType: 'mcq',
+    prompt: 'When does a `while` loop check its condition?',
+    options: [
+      { id: 'a', text: 'Only once, at the very start.' },
+      { id: 'b', text: 'Before every iteration.' },
+      { id: 'c', text: 'After every iteration.' },
+      { id: 'd', text: 'Only when the loop ends.' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'The condition is checked **before** each iteration. If it is `False`, the body is skipped.',
+  },
+  {
+    id: 'q14',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'n = 3\nwhile n > 0:\n    print(n)\n    n = n - 1',
+    expectedOutput: '3\n2\n1',
+  },
+  {
+    id: 'q15',
+    qType: 'mcq',
+    prompt: 'What causes an infinite `while` loop?',
+    options: [
+      { id: 'a', text: 'Using `<=` instead of `<`.' },
+      { id: 'b', text: 'Forgetting the colon `:`.' },
+      { id: 'c', text: 'Never updating the variable the condition checks.' },
+      { id: 'd', text: 'Printing inside the loop.' },
+    ],
+    correctOptionId: 'c',
+    explanation: 'If nothing in the body makes the condition `False`, it stays `True` forever.',
+  },
+  {
+    id: 'q16',
+    qType: 'fill-in-blank',
+    prompt: 'Each single pass through the body of a loop is called an ___.',
+    acceptedAnswers: ['iteration', 'Iteration'],
+    hint: 'Starts with "iter".',
+    explanation: 'One pass through a loop body is an **iteration**.',
+  },
+  {
+    id: 'q17',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'total = 0\ni = 1\nwhile i <= 4:\n    total = total + i\n    i = i + 1\nprint(total)',
+    expectedOutput: '10',
+  },
+  {
+    id: 'q18',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'x = 5\nwhile x > 10:\n    print("hi")\nprint("done")',
+    expectedOutput: 'done',
+  },
+  {
+    id: 'q19',
+    qType: 'mcq',
+    prompt: 'How many times does a `while` loop run if its condition is `False` from the start?',
+    options: [
+      { id: 'a', text: 'Once.' },
+      { id: 'b', text: 'Zero times.' },
+      { id: 'c', text: 'Forever.' },
+      { id: 'd', text: 'It raises an error.' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'Because the check happens first, a condition that starts `False` means the body never runs.',
+  },
+  {
+    id: 'q20',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'i = 0\nwhile i < 3:\n    print("loop")\n    i = i + 1',
+    expectedOutput: 'loop\nloop\nloop',
+  },
+  {
+    id: 'q21',
+    qType: 'fill-in-blank',
+    prompt: 'The keyword that starts a loop which repeats as long as a condition is True is ___.',
+    acceptedAnswers: ['while', 'While'],
+    hint: 'Five letters.',
+    explanation: 'A `while` loop repeats its body as long as the condition stays `True`.',
+  },
+  {
+    id: 'q22',
+    qType: 'predict-output',
+    prompt: 'What is the output?',
+    code: 'print(True and (False or True))',
+    expectedOutput: 'True',
+  },
+  {
+    id: 'q23',
+    qType: 'mcq',
+    prompt: 'What does `not (5 > 3)` evaluate to?',
+    options: [
+      { id: 'a', text: '`True`' },
+      { id: 'b', text: '`False`' },
+      { id: 'c', text: '`5`' },
+      { id: 'd', text: 'An error' },
+    ],
+    correctOptionId: 'b',
+    explanation: '`5 > 3` is `True`, and `not True` is `False`.',
+  },
+  {
+    id: 'q24',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'x = 2\nwhile x <= 8:\n    print(x)\n    x = x + 2',
+    expectedOutput: '2\n4\n6\n8',
+  },
+  {
+    id: 'q25',
+    qType: 'mcq',
+    prompt: 'What must a `while` loop body do to avoid running forever?',
+    options: [
+      { id: 'a', text: 'Always print something.' },
+      { id: 'b', text: 'Eventually make the condition `False` (usually by updating the loop variable).' },
+      { id: 'c', text: 'Use an `if` statement inside.' },
+      { id: 'd', text: 'Count only upward.' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'Something in the body must move the loop toward its end so the condition eventually becomes `False`.',
+  },
+]
+
+// ── Module checkpoint tests ──────────────────────────────────────────────────
 
 export const progressTest1Module: Module = {
   slug: 'progress-test-1',
@@ -262,6 +499,25 @@ export const progressTest1Module: Module = {
       passingScore: 7,
       presentCount: 10,
       questionBanks: [test1Bank],
+    },
+  ],
+}
+
+export const progressTest2Module: Module = {
+  slug: 'progress-test-2',
+  title: 'Progress Test 2',
+  summary: 'Checkpoint: Logical Operators + While Loop.',
+  lessons: [
+    {
+      slug: 'test',
+      title: 'Progress Test 2',
+      type: 'progress-test',
+      intro:
+        'Checkpoint covering **Logical Operators** (`and` / `or` / `not`) and the ' +
+        '**While Loop**. Retake as many times as you like to improve your score.',
+      passingScore: 7,
+      presentCount: 10,
+      questionBanks: [test2Bank],
     },
   ],
 }
