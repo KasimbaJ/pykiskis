@@ -1,4 +1,4 @@
-import type { StudentProgress, ServerProgress, Class, Assignment } from '../types'
+import type { StudentProgress, ServerProgress, Class, Assignment, MyAssignment } from '../types'
 import type { ServerBasicsProgress } from '../types/basics'
 
 export async function syncLevelCompletion(
@@ -127,6 +127,16 @@ export async function deleteAssignment(token: string, id: string): Promise<void>
     headers: { Authorization: `Bearer ${token}` },
   })
   if (!res.ok) throw new Error(`Failed to delete assignment: ${res.status}`)
+}
+
+/** The signed-in student's own assignments (with their completion status). */
+export async function fetchMyAssignments(token: string): Promise<MyAssignment[]> {
+  const res = await fetch('/api/my-assignments', {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (!res.ok) throw new Error(`Failed to fetch assignments: ${res.status}`)
+  const data = (await res.json()) as { assignments: MyAssignment[] }
+  return data.assignments
 }
 
 // ─── Python Basics Learning Path ─────────────────────────────────────────────

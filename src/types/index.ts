@@ -67,6 +67,20 @@ export interface Assignment {
   createdAt: string;
 }
 
+/** An assignment as seen by the signed-in student, with their own status. */
+export interface MyAssignment {
+  id: string;
+  classId: string;
+  contentType: 'lesson' | 'test' | 'level';
+  contentKey: string;
+  title: string;
+  dueDate: string | null;   // YYYY-MM-DD
+  /** Whether THIS student has completed the assigned content. */
+  done: boolean;
+  /** This student's best score (tests), if any. */
+  score: number | null;
+}
+
 export interface ExecutionResult {
   output: string;
   error: string | null;
