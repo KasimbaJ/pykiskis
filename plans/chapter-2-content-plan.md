@@ -139,7 +139,7 @@ completion lesson pointing to the Final Test.
 ## Checklist (one item per run, in order)
 - [x] python-booleans
 - [x] if-else-statement
-- [ ] progress-test-1 (bank)
+- [x] progress-test-1 (bank)
 - [ ] logical-operators
 - [ ] while-loop
 - [ ] progress-test-2 (bank)
