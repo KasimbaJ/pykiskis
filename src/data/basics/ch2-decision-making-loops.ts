@@ -5,6 +5,7 @@ import { progressTest1Module, progressTest2Module } from './ch2/progress-tests'
 import { logicalOperatorsModule } from './ch2/logical-operators'
 import { whileLoopModule } from './ch2/while-loop'
 import { forLoopModule } from './ch2/for-loop'
+import { breakAndContinueModule } from './ch2/break-and-continue'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 2: Decision Making & Loops
@@ -42,5 +43,6 @@ export const ch2: Chapter = {
     whileLoopModule,         // 5
     progressTest2Module,     // 6
     forLoopModule,           // 7
+    breakAndContinueModule,  // 8
   ],
 }
