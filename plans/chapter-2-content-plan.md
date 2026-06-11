@@ -143,7 +143,7 @@ completion lesson pointing to the Final Test.
 - [x] logical-operators
 - [x] while-loop
 - [x] progress-test-2 (bank)
-- [ ] for-loop
+- [x] for-loop
 - [ ] break-and-continue
 - [ ] progress-test-3 (bank)
 - [ ] control-flow-examples

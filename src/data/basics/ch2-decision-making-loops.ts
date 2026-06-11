@@ -4,6 +4,7 @@ import { ifElseStatementModule } from './ch2/if-else-statement'
 import { progressTest1Module, progressTest2Module } from './ch2/progress-tests'
 import { logicalOperatorsModule } from './ch2/logical-operators'
 import { whileLoopModule } from './ch2/while-loop'
+import { forLoopModule } from './ch2/for-loop'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 2: Decision Making & Loops
@@ -40,5 +41,6 @@ export const ch2: Chapter = {
     logicalOperatorsModule,  // 4
     whileLoopModule,         // 5
     progressTest2Module,     // 6
+    forLoopModule,           // 7
   ],
 }
