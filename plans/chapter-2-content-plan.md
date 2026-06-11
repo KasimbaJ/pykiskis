@@ -140,7 +140,7 @@ completion lesson pointing to the Final Test.
 - [x] python-booleans
 - [x] if-else-statement
 - [x] progress-test-1 (bank)
-- [ ] logical-operators
+- [x] logical-operators
 - [ ] while-loop
 - [ ] progress-test-2 (bank)
 - [ ] for-loop
