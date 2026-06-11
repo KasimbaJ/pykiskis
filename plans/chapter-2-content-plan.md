@@ -137,7 +137,7 @@ completion lesson pointing to the Final Test.
    authored, lint/build result, and "⚠ run `npx tsx qa-verify.ts` before merge".
 
 ## Checklist (one item per run, in order)
-- [ ] python-booleans
+- [x] python-booleans
 - [ ] if-else-statement
 - [ ] progress-test-1 (bank)
 - [ ] logical-operators
