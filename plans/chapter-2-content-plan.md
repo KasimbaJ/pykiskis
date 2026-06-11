@@ -1,8 +1,9 @@
 # Chapter 2 — Decision Making & Loops — Content Authoring Plan
 
-> STATUS: **Pending — in progress (one item per run).**
-> For the daily routine: draft ONE checklist item per run into a draft PR for the
-> teacher to review. Mirrors Chapter 1 in structure, depth, and conventions.
+> STATUS: **Done.** All 12 items authored, qa-verified (real Python), and merged
+> (PRs #14, #16–#24). Chapter 2 is live: 7 content modules + applied examples +
+> Recap + 3 progress tests + Final Test (15 questions, 5 per bank, /10).
+> Mirrors Chapter 1 in structure, depth, and conventions.
 
 ## Goal
 
@@ -147,8 +148,8 @@ completion lesson pointing to the Final Test.
 - [x] break-and-continue
 - [x] progress-test-3 (bank)
 - [x] control-flow-examples
-- [ ] recap
-- [ ] final-test
+- [x] recap
+- [x] final-test
 
 When all are checked, set STATUS to **Done** and update `plans/README.md`.
 

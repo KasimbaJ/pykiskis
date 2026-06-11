@@ -19,7 +19,7 @@ and add the merge/commit reference.
 | `i18n-translate-ch1-plan.md` | **Done** | Draft Lithuanian for Chapter 1 **theory** prose, one module per run, into draft PRs for teacher review. All modules translated: `get-started`, `numbers-and-strings`, `comments`, `variables`, `output`, `arithmetic-operators`, `data-conversion`, `get-user-input`, `introduction-examples`, and `recap`. |
 
 | `classes-and-assignments-plan.md` | **Complete (all 3 phases) & deployed** | Classes (group + filter), teacher Assignments (assign a test + due date; completion/average/not-done/overdue), and the student "My assignments" home-page panel with deep links. Future adds: lesson/level assignments, student join-codes. |
-| `chapter-2-content-plan.md` | **In progress — python-booleans done** | Author Ch2 "Decision Making & Loops" in the Ch1 style: 7 content modules + Recap + 3 progress tests + a final test. Routine drafts one item per run; **qa-verify must be run by a human at review** (no Python in the routine env) before merge. |
+| `chapter-2-content-plan.md` | **Done & deployed** | Ch2 "Decision Making & Loops" authored in the Ch1 style: 7 content modules (booleans, if/else, logical operators, while, for, break/continue, control-flow examples) + Recap + 3 progress-test banks (25 Q each → 10/attempt) + Final Test (15 Q, 5 per bank, /10). All 12 items qa-verified through real Python, lint/build clean, merged via PRs #14, #16–#24. |
 
 ## How the daily routine uses this
 
