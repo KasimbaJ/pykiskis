@@ -6,6 +6,7 @@ import { logicalOperatorsModule } from './ch2/logical-operators'
 import { whileLoopModule } from './ch2/while-loop'
 import { forLoopModule } from './ch2/for-loop'
 import { breakAndContinueModule } from './ch2/break-and-continue'
+import { controlFlowExamplesModule } from './ch2/control-flow-examples'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 2: Decision Making & Loops
@@ -45,5 +46,6 @@ export const ch2: Chapter = {
     forLoopModule,           // 7
     breakAndContinueModule,  // 8
     progressTest3Module,     // 9
+    controlFlowExamplesModule, // 10
   ],
 }

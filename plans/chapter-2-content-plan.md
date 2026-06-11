@@ -146,7 +146,7 @@ completion lesson pointing to the Final Test.
 - [x] for-loop
 - [x] break-and-continue
 - [x] progress-test-3 (bank)
-- [ ] control-flow-examples
+- [x] control-flow-examples
 - [ ] recap
 - [ ] final-test
 
