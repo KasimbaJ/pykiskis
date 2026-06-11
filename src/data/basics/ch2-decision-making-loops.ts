@@ -2,6 +2,7 @@ import type { Chapter } from '../../types/basics'
 import { pythonBooleansModule } from './ch2/python-booleans'
 import { ifElseStatementModule } from './ch2/if-else-statement'
 import { progressTest1Module } from './ch2/progress-tests'
+import { logicalOperatorsModule } from './ch2/logical-operators'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 2: Decision Making & Loops
@@ -35,5 +36,6 @@ export const ch2: Chapter = {
     pythonBooleansModule,    // 1
     ifElseStatementModule,   // 2
     progressTest1Module,     // 3
+    logicalOperatorsModule,  // 4
   ],
 }
