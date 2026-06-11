@@ -1,19 +1,15 @@
 # Language Toggle (i18n) — Implementation Plan
 
-> STATUS: **Phase 1 SHIPPED.** Decisions locked: EN + LT, default EN, UI +
-> content, routine drafts translations per module for approval, lightweight
-> custom approach (no new dep). Phase 1 (foundation + theory-content wiring +
-> header toggle) is built, browser-verified, and deployed.
->
-> REMAINING:
-> - **Complete the wiring** (widen + resolve the non-theory surfaces): lesson/
->   module/chapter titles, QuizView, ExerciseView, ProgressTestView, RecapView
->   (and, later, the 100-level path). Code task — best done in a careful session
->   (tsc-guided), then it unlocks translating those fields. See
->   `i18n-complete-wiring-plan.md`.
-> - **Translate content** progressively, one module per run via the daily
->   routine. Theory prose is already wired/translatable now. See
->   `i18n-translate-ch1-plan.md`.
+> STATUS: **Phase 1 SHIPPED; UI-chrome translation in review (PR #13).**
+> NOT actionable by the daily routine — do not author anything from this plan.
+> - Phase 1 (foundation + theory-content wiring + header toggle): done & deployed.
+> - UI-chrome translation (the accessibility 80/20: buttons/labels/headings via
+>   a `useT()` hook + EN/LT dictionary): drafted in **PR #13, pending human
+>   review/merge** — do NOT re-author.
+> - Lesson-content wiring (titles, quiz/exercise/progress-test/recap fields) is a
+>   separate **careful, human-only** task — see `i18n-complete-wiring-plan.md`
+>   (marked Proposed, not for the routine).
+> - Ch1 theory translation: done (`i18n-translate-ch1-plan.md`).
 
 ## The timing question (answered)
 
