@@ -1,12 +1,13 @@
 import type { Chapter } from '../../types/basics'
 import { pythonBooleansModule } from './ch2/python-booleans'
 import { ifElseStatementModule } from './ch2/if-else-statement'
-import { progressTest1Module, progressTest2Module, progressTest3Module } from './ch2/progress-tests'
+import { progressTest1Module, progressTest2Module, progressTest3Module, finalTestModule } from './ch2/progress-tests'
 import { logicalOperatorsModule } from './ch2/logical-operators'
 import { whileLoopModule } from './ch2/while-loop'
 import { forLoopModule } from './ch2/for-loop'
 import { breakAndContinueModule } from './ch2/break-and-continue'
 import { controlFlowExamplesModule } from './ch2/control-flow-examples'
+import { recapModule } from './ch2/recap'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 2: Decision Making & Loops
@@ -47,5 +48,7 @@ export const ch2: Chapter = {
     breakAndContinueModule,  // 8
     progressTest3Module,     // 9
     controlFlowExamplesModule, // 10
+    recapModule,             // 11
+    finalTestModule,         // 12
   ],
 }
