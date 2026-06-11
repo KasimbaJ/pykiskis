@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, BookOpen, ChevronRight } from 'lucide-react'
 import Header from '../components/layout/Header'
+import MyAssignments from '../components/home/MyAssignments'
 import { chapters, flattenChapter, lessonKey } from '../data/basics/index'
 import { useBasicsStore } from '../stores/useBasicsStore'
 import { useT } from '../i18n-ui'
@@ -78,6 +79,9 @@ export default function HomePage() {
             </Link>
           </div>
         </section>
+
+        {/* Assigned work (renders only when the student has assignments) */}
+        <MyAssignments />
 
         {/* Low-prominence link to the original 100-level challenge path */}
         <Link
