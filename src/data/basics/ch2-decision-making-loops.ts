@@ -1,5 +1,6 @@
 import type { Chapter } from '../../types/basics'
 import { pythonBooleansModule } from './ch2/python-booleans'
+import { ifElseStatementModule } from './ch2/if-else-statement'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 2: Decision Making & Loops
@@ -30,6 +31,7 @@ export const ch2: Chapter = {
     'while and for loops, and break/continue.',
   color: 'sky',
   modules: [
-    pythonBooleansModule,  // 1
+    pythonBooleansModule,    // 1
+    ifElseStatementModule,   // 2
   ],
 }
