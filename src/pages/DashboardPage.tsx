@@ -10,8 +10,10 @@ import ClassAssignments from '../components/dashboard/ClassAssignments'
 import { useDashboardStore } from '../stores/useDashboardStore'
 import { useClassesStore } from '../stores/useClassesStore'
 import { useAssignmentsStore } from '../stores/useAssignmentsStore'
+import { useT } from '../i18n-ui'
 
 export default function DashboardPage() {
+  const t = useT()
   const { user } = useUser()
   const { getToken } = useAuth()
   const isTeacher = user?.publicMetadata?.role === 'teacher'
@@ -48,17 +50,15 @@ export default function DashboardPage() {
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <ShieldAlert className="w-8 h-8 text-red-500" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-800 mb-2">Teacher Access Only</h1>
+          <h1 className="text-2xl font-bold text-slate-800 mb-2">{t('dashboard.accessOnly')}</h1>
           <p className="text-slate-500 mb-6 text-sm">
-            This dashboard is restricted to teachers. Ask your admin to set{' '}
-            <code className="bg-slate-100 px-1 rounded">role: "teacher"</code> in your Clerk
-            public metadata.
+            {t('dashboard.restricted')}
           </p>
           <Link
             to="/"
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Learning
+            <ArrowLeft className="w-4 h-4" /> {t('dashboard.backToLearning')}
           </Link>
         </div>
       </div>
@@ -82,9 +82,9 @@ export default function DashboardPage() {
               to="/"
               className="flex items-center gap-1 text-slate-500 hover:text-blue-600 transition-colors text-sm"
             >
-              <ArrowLeft className="w-4 h-4" /> Home
+              <ArrowLeft className="w-4 h-4" /> {t('dashboard.home')}
             </Link>
-            <h1 className="text-lg font-bold text-slate-800">Teacher Dashboard</h1>
+            <h1 className="text-lg font-bold text-slate-800">{t('dashboard.title')}</h1>
           </div>
           <button
             onClick={refresh}
@@ -101,13 +101,13 @@ export default function DashboardPage() {
         {isLoading && !students.length && (
           <div className="flex items-center justify-center py-24 text-slate-400 gap-3">
             <Loader2 className="w-5 h-5 animate-spin" />
-            Loading student data…
+            {t('dashboard.loading')}
           </div>
         )}
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm mb-6">
-            Failed to load students: {error}
+            {t('dashboard.failedToLoad', { error: error ?? '' })}
           </div>
         )}
 
@@ -116,10 +116,11 @@ export default function DashboardPage() {
         ) : !isLoading && !error ? (
           <>
             <div className="mb-4">
-              <h2 className="text-2xl font-bold text-slate-800">Student Progress</h2>
+              <h2 className="text-2xl font-bold text-slate-800">{t('dashboard.studentProgress')}</h2>
               <p className="text-slate-500 text-sm mt-1">
-                {visibleStudents.length} student{visibleStudents.length !== 1 ? 's' : ''}
-                {activeClass ? ` in ${activeClass.name}` : ' enrolled'}
+                {activeClass
+                  ? t('dashboard.inClass', { n: visibleStudents.length, s: visibleStudents.length !== 1 ? 's' : '', name: activeClass.name })
+                  : t('dashboard.enrolledCount', { n: visibleStudents.length, s: visibleStudents.length !== 1 ? 's' : '' })}
               </p>
             </div>
 
@@ -133,7 +134,7 @@ export default function DashboardPage() {
                     : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300'
                 }`}
               >
-                All students
+                {t('dashboard.allStudents')}
               </button>
               {classes.map((c) => (
                 <button
@@ -152,7 +153,7 @@ export default function DashboardPage() {
                 onClick={() => setShowManage(true)}
                 className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium border border-dashed border-slate-300 text-slate-500 hover:border-blue-400 hover:text-blue-600"
               >
-                <Users className="w-3.5 h-3.5" /> Manage classes
+                <Users className="w-3.5 h-3.5" /> {t('dashboard.manageClasses')}
               </button>
             </div>
 
@@ -166,7 +167,7 @@ export default function DashboardPage() {
                     : 'text-slate-600 hover:text-slate-800'
                 }`}
               >
-                Overview
+                {t('dashboard.overview')}
               </button>
               <button
                 onClick={() => setView('scores')}
@@ -176,7 +177,7 @@ export default function DashboardPage() {
                     : 'text-slate-600 hover:text-slate-800'
                 }`}
               >
-                Test Scores
+                {t('dashboard.testScores')}
               </button>
               <button
                 onClick={() => setView('assignments')}
@@ -186,7 +187,7 @@ export default function DashboardPage() {
                     : 'text-slate-600 hover:text-slate-800'
                 }`}
               >
-                Assignments
+                {t('dashboard.assignments')}
               </button>
             </div>
 
@@ -199,7 +200,7 @@ export default function DashboardPage() {
                 <ClassAssignments classId={activeClass.id} students={visibleStudents} />
               ) : (
                 <div className="bg-white rounded-xl border border-slate-200 p-8 text-center text-slate-400 text-sm">
-                  Select a class above to create and track assignments.
+                  {t('dashboard.selectClass')}
                 </div>
               ))}
           </>

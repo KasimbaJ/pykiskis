@@ -6,6 +6,7 @@ import { useBasicsStore } from '../../stores/useBasicsStore'
 import { useThemeStore } from '../../stores/useThemeStore'
 import { useLangStore } from '../../stores/useLangStore'
 import { LANGS } from '../../i18n'
+import { useT } from '../../i18n-ui'
 import { chapters, chapterLessonKeys } from '../../data/basics/index'
 
 // Every Python Basics lesson key, computed once.  The header progress bar
@@ -19,6 +20,7 @@ export default function Header() {
   const { isDark, toggle } = useThemeStore()
   const lang = useLangStore((s) => s.lang)
   const setLang = useLangStore((s) => s.setLang)
+  const t = useT()
   const completed = ALL_BASICS_KEYS.filter((k) => basicsLessons[k]?.completed).length
   const total = ALL_BASICS_KEYS.length
   const progress = total > 0 ? (completed / total) * 100 : 0
@@ -67,7 +69,7 @@ export default function Header() {
           {/* Language toggle */}
           <div
             className="flex items-center rounded-md border border-slate-200 dark:border-slate-700 overflow-hidden text-xs"
-            title="Switch language"
+            title={t('header.switchLanguage')}
           >
             {LANGS.map((l) => (
               <button
@@ -87,7 +89,7 @@ export default function Header() {
           <button
             onClick={toggle}
             className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={isDark ? t('header.switchToLight') : t('header.switchToDark')}
           >
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
@@ -95,7 +97,7 @@ export default function Header() {
           <Link
             to="/basics"
             className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            title="Python Basics — chapter-based course"
+            title={t('header.basics')}
           >
             <BookOpen className="w-5 h-5" />
           </Link>
@@ -103,7 +105,7 @@ export default function Header() {
           <Link
             to="/playground"
             className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            title="Python Playground"
+            title={t('header.playground')}
           >
             <Terminal className="w-5 h-5" />
           </Link>
@@ -112,7 +114,7 @@ export default function Header() {
             <Link
               to="/dashboard"
               className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              title="Teacher Dashboard"
+              title={t('header.dashboard')}
             >
               <LayoutDashboard className="w-5 h-5" />
             </Link>

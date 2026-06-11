@@ -10,6 +10,7 @@ import {
 import Header from '../components/layout/Header'
 import { runPython, stopPython, provideInput, setInputRequestHandler } from '../services/pythonRunner'
 import { usePyodide } from '../hooks/usePyodide'
+import { useT } from '../i18n-ui'
 
 interface PendingInput {
   prompt: string
@@ -155,6 +156,7 @@ const DEFAULT_CODE = EXAMPLES[0].code
 
 // ── Component ──────────────────────────────────────────────────
 export default function PlaygroundPage() {
+  const t = useT()
   const [searchParams] = useSearchParams()
   const { isLoading: pyodideLoading, progress } = usePyodide()
   const examplesRef = useRef<HTMLDivElement>(null)
@@ -254,9 +256,9 @@ export default function PlaygroundPage() {
         <div className="flex items-center gap-3 flex-wrap shrink-0">
           <div className="flex items-center gap-2">
             <Terminal className="w-5 h-5 text-blue-400" />
-            <h1 className="text-lg font-bold text-white">Python Playground</h1>
+            <h1 className="text-lg font-bold text-white">{t('playground.h1')}</h1>
             <span className="hidden sm:inline text-xs text-slate-500 ml-1">
-              — write and run any Python code
+              {t('playground.subtitle')}
             </span>
           </div>
 
@@ -267,7 +269,7 @@ export default function PlaygroundPage() {
               className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-700 text-slate-200 rounded-lg text-sm hover:bg-slate-600 transition-colors"
             >
               <ChevronDown className="w-3.5 h-3.5" />
-              Examples
+              {t('playground.examples')}
             </button>
             {showExamples && (
               <div className="absolute left-0 top-full mt-1 bg-white rounded-xl shadow-2xl z-50 min-w-[180px] py-1 border border-slate-100 overflow-hidden">
@@ -279,7 +281,7 @@ export default function PlaygroundPage() {
                   >
                     {ex.label}
                     {ex.stdin && (
-                      <span className="ml-2 text-xs text-slate-400">(uses input)</span>
+                      <span className="ml-2 text-xs text-slate-400">{t('playground.usesInput')}</span>
                     )}
                   </button>
                 ))}
@@ -296,7 +298,7 @@ export default function PlaygroundPage() {
               className="flex items-center gap-2 px-4 py-1.5 bg-red-500 text-white rounded-lg text-sm font-semibold hover:bg-red-600 transition-colors"
             >
               <Square className="w-4 h-4 fill-current" />
-              Stop
+              {t('stop')}
             </button>
           ) : (
             <button
@@ -305,7 +307,7 @@ export default function PlaygroundPage() {
               className="flex items-center gap-2 px-4 py-1.5 bg-green-500 text-white rounded-lg text-sm font-semibold hover:bg-green-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               <Play className="w-4 h-4" />
-              Run
+              {t('run')}
             </button>
           )}
 
@@ -317,7 +319,7 @@ export default function PlaygroundPage() {
             {copied
               ? <Check className="w-4 h-4 text-green-400" />
               : <Share2 className="w-4 h-4" />}
-            {copied ? 'Copied!' : 'Share'}
+            {copied ? t('copied') : t('share')}
           </button>
 
           {/* Reset */}
@@ -326,7 +328,7 @@ export default function PlaygroundPage() {
             className="flex items-center gap-2 px-3 py-1.5 bg-slate-700 text-slate-200 rounded-lg text-sm hover:bg-slate-600 transition-colors"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            Reset
+            {t('reset')}
           </button>
         </div>
 
@@ -388,7 +390,7 @@ export default function PlaygroundPage() {
               >
                 <span className="flex items-center gap-2">
                   <Terminal className="w-4 h-4 text-slate-400" />
-                  Standard Input (stdin)
+                  {t('editor.stdin')}
                   {stdin.trim() && (
                     <span className="w-2 h-2 rounded-full bg-blue-400 flex-shrink-0" />
                   )}
@@ -401,7 +403,7 @@ export default function PlaygroundPage() {
                 <textarea
                   value={stdin}
                   onChange={(e) => setStdin(e.target.value)}
-                  placeholder={"One value per line (for input() calls)\ne.g.\nAlice\n25"}
+                  placeholder={t('editor.stdinPlaceholder')}
                   rows={4}
                   spellCheck={false}
                   className="w-full bg-slate-900 text-slate-200 text-sm font-mono px-4 py-3 resize-y border-t border-slate-700 focus:outline-none placeholder:text-slate-600"
@@ -417,9 +419,9 @@ export default function PlaygroundPage() {
               <div className="bg-slate-800 px-4 py-2.5 flex items-center justify-between shrink-0">
                 <span className="text-slate-400 text-sm flex items-center gap-2">
                   <Terminal className="w-3.5 h-3.5" />
-                  Output
+                  {t('output')}
                   {pendingInput && (
-                    <span className="text-yellow-400 text-xs animate-pulse">waiting for input…</span>
+                    <span className="text-yellow-400 text-xs animate-pulse">{t('editor.waitingForInput')}</span>
                   )}
                 </span>
                 {hasRun && (output || outputError) && (
@@ -427,7 +429,7 @@ export default function PlaygroundPage() {
                     onClick={() => { setOutput(''); setOutputError(''); setHasRun(false) }}
                     className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
                   >
-                    Clear
+                    {t('clear')}
                   </button>
                 )}
               </div>
@@ -453,21 +455,19 @@ export default function PlaygroundPage() {
                         className="flex-1 min-w-0 bg-transparent text-yellow-300 outline-none caret-yellow-300 ml-0.5"
                       />
                     </div>
-                    <p className="text-slate-600 text-xs mt-2">Press Enter to submit</p>
+                    <p className="text-slate-600 text-xs mt-2">{t('editor.pressEnter')}</p>
                   </div>
                 ) : !hasRun && !isRunning ? (
                   <p className="text-slate-600 italic select-none">
-                    Click{' '}
-                    <span className="text-green-500 not-italic font-medium">Run</span>
-                    {' '}to see output here…
+                    {t('editor.clickRunToSee')}
                   </p>
                 ) : isRunning ? (
                   <span className="text-slate-500 flex items-center gap-2">
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    Executing…
+                    {t('editor.executing')}
                   </span>
                 ) : hasRun && !output && !outputError ? (
-                  <p className="text-slate-500 italic">No output produced.</p>
+                  <p className="text-slate-500 italic">{t('editor.noOutput')}</p>
                 ) : (
                   <>
                     {output && <pre className="text-green-400 whitespace-pre-wrap">{output}</pre>}

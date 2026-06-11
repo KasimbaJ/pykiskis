@@ -4,11 +4,13 @@ import Header from '../components/layout/Header'
 import MyAssignments from '../components/home/MyAssignments'
 import { chapters, flattenChapter, lessonKey } from '../data/basics/index'
 import { useBasicsStore } from '../stores/useBasicsStore'
+import { useT } from '../i18n-ui'
 
 // The landing page funnels learners into the Python Basics course.  The
 // original 100-level "challenge" path is kept, but tucked behind a single
 // low-prominence link to /levels.
 export default function HomePage() {
+  const t = useT()
   const lessons = useBasicsStore((s) => s.lessons)
 
   // The whole Basics track in course order, used to compute the smart CTA:
@@ -24,10 +26,10 @@ export default function HomePage() {
 
   const started = completedCount > 0
   const ctaLabel = !started
-    ? 'Start Chapter 1'
+    ? t('home.startCh1')
     : nextLesson
-      ? 'Continue learning'
-      : 'Review the basics'
+      ? t('home.continueLearning')
+      : t('home.reviewBasics')
   const ctaTo = nextLesson
     ? `/basics/${nextLesson.chapter.slug}/${nextLesson.module.slug}/${nextLesson.lesson.slug}`
     : '/basics'
@@ -43,23 +45,20 @@ export default function HomePage() {
               <BookOpen className="w-5 h-5" />
             </div>
             <span className="text-xs font-semibold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
-              Start here
+              {t('home.startHere')}
             </span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-white">
-            Python Basics Learning Path
+            {t('home.h1')}
           </h1>
           <p className="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">
-            A friendly, chapter-based course covering Python from the ground up — read
-            short lessons, run real code in your browser, and build small projects.
+            {t('home.desc')}
           </p>
 
           {started && (
             <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
-              You have completed{' '}
-              <strong className="text-indigo-700 dark:text-indigo-300">{completedCount}</strong> of{' '}
-              {allLessons.length} lessons.
+              {t('home.progress', { completed: completedCount, total: allLessons.length })}
             </p>
           )}
 
@@ -75,7 +74,7 @@ export default function HomePage() {
               to="/basics"
               className="inline-flex items-center gap-1 text-sm font-medium text-indigo-700 dark:text-indigo-300 hover:underline"
             >
-              View all chapters
+              {t('home.viewAll')}
               <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
@@ -89,7 +88,7 @@ export default function HomePage() {
           to="/levels"
           className="inline-flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400"
         >
-          Looking for the 100-level challenge path?
+          {t('home.lookingFor100')}
           <ChevronRight className="w-4 h-4" />
         </Link>
       </main>

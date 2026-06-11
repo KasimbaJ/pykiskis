@@ -1,6 +1,7 @@
 import { BadgeCheck, ArrowRight } from 'lucide-react'
 import type { RecapLesson } from '../../types/basics'
 import { renderInline } from './inline'
+import { useT } from '../../i18n-ui'
 
 interface Props {
   lesson: RecapLesson
@@ -15,6 +16,7 @@ interface Props {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function RecapView({ lesson, moduleTitle, moduleProgress }: Props) {
+  const t = useT()
   return (
     <div className="space-y-6">
       <div className="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-gradient-to-b from-emerald-50 to-white dark:from-emerald-900/20 dark:to-slate-900 p-8 text-center">
@@ -42,7 +44,7 @@ export default function RecapView({ lesson, moduleTitle, moduleProgress }: Props
       {lesson.nextModuleTitle && (
         <div className="flex justify-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 text-sm">
-            Next up <ArrowRight className="w-4 h-4" /> {lesson.nextModuleTitle}
+            {t('recap.nextUp')} <ArrowRight className="w-4 h-4" /> {lesson.nextModuleTitle}
           </div>
         </div>
       )}

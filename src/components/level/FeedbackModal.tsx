@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useEditorStore } from '../../stores/useEditorStore'
 import type { Level } from '../../types'
 import { levels } from '../../data/levels/index'
+import { useT } from '../../i18n-ui'
 
 interface Props {
   level: Level;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function FeedbackModal({ level, onReset }: Props) {
+  const t = useT()
   const { feedbackType, showSolution, setFeedbackType } = useEditorStore()
   const navigate = useNavigate()
 
@@ -35,27 +37,27 @@ export default function FeedbackModal({ level, onReset }: Props) {
             isSuccess ? 'text-green-700' : 'text-red-700'
           }`}
         >
-          {isSuccess ? 'Correct!' : 'Not Quite Right'}
+          {isSuccess ? t('correct') : t('notQuiteRight')}
         </h2>
 
         <p className="text-slate-600 dark:text-slate-300 text-center mb-4">
           {isSuccess
-            ? `Great job! You've completed Level ${level.id}: ${level.title}`
+            ? t('level.correctFeedback', { id: level.id, title: level.title })
             : showSolution
-              ? 'Review the expected solution below and try again.'
-              : 'Not quite! Check the hints for guidance.'}
+              ? t('level.reviewSolution')
+              : t('level.checkHints')}
         </p>
 
         {!isSuccess && showSolution && (
           <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 mb-4 border border-slate-200 dark:border-slate-600">
             <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">
-              Expected Solution
+              {t('expectedSolution')}
             </h3>
             <pre className="text-sm font-mono text-slate-800 dark:text-slate-200 whitespace-pre-wrap bg-slate-100 dark:bg-slate-900 p-3 rounded">
               {level.solution}
             </pre>
             <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mt-3 mb-1">
-              Explanation
+              {t('explanation')}
             </h3>
             <p className="text-sm text-slate-600 dark:text-slate-300">{level.explanation}</p>
           </div>
@@ -68,7 +70,7 @@ export default function FeedbackModal({ level, onReset }: Props) {
                 onClick={() => navigate('/')}
                 className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
               >
-                Back to Levels
+                {t('level.backToLevels')}
               </button>
               {level.id < levels.length && (
                 <button
@@ -78,7 +80,7 @@ export default function FeedbackModal({ level, onReset }: Props) {
                   }}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2"
                 >
-                  Next Level <ArrowRight className="w-4 h-4" />
+                  {t('level.nextLevel')} <ArrowRight className="w-4 h-4" />
                 </button>
               )}
             </>
@@ -88,7 +90,7 @@ export default function FeedbackModal({ level, onReset }: Props) {
                 onClick={() => setFeedbackType(null)}
                 className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
               >
-                Keep Trying
+                {t('keepTrying')}
               </button>
               <button
                 onClick={() => {
@@ -97,7 +99,7 @@ export default function FeedbackModal({ level, onReset }: Props) {
                 }}
                 className="px-4 py-2 bg-slate-600 text-white rounded-lg font-medium hover:bg-slate-700 transition-colors flex items-center gap-2"
               >
-                <RotateCcw className="w-4 h-4" /> Reset Code
+                <RotateCcw className="w-4 h-4" /> {t('resetCode')}
               </button>
             </>
           )}

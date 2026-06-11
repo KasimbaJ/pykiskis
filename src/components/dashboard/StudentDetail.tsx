@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import type { StudentProgress } from '../../types'
 import { levels } from '../../data/levels/index'
 import { chapters, countAllBasicsLessons, progressTestsByChapter } from '../../data/basics/index'
+import { useT } from '../../i18n-ui'
 
 interface Props {
   student: StudentProgress;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function StudentDetail({ student, onBack }: Props) {
+  const t = useT()
   const navigate = useNavigate()
   const testGroups = progressTestsByChapter()
 
@@ -19,7 +21,7 @@ export default function StudentDetail({ student, onBack }: Props) {
         onClick={onBack}
         className="flex items-center gap-1 text-slate-500 hover:text-blue-600 transition-colors text-sm mb-4"
       >
-        <ArrowLeft className="w-4 h-4" /> Back to all students
+        <ArrowLeft className="w-4 h-4" /> {t('studentDetail.back')}
       </button>
 
       <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6">
@@ -28,24 +30,24 @@ export default function StudentDetail({ student, onBack }: Props) {
         </h2>
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-500 mt-2">
           <span>
-            Phase levels:{' '}
+            {t('studentDetail.phaseLevels')}{' '}
             <strong className="text-slate-800">
               {Object.values(student.levels).filter((l) => l.completed).length}
               /{levels.length}
             </strong>
           </span>
           <span>
-            Basics lessons:{' '}
+            {t('studentDetail.basicsLessons')}{' '}
             <strong className="text-indigo-700">
               {student.basics?.completedLessons ?? 0}/{countAllBasicsLessons()}
             </strong>
           </span>
           <span>
-            Current streak:{' '}
+            {t('studentDetail.currentStreak')}{' '}
             <strong className="text-orange-500">{student.currentStreak}</strong>
           </span>
           <span>
-            Best streak:{' '}
+            {t('studentDetail.bestStreak')}{' '}
             <strong className="text-yellow-600">{student.bestStreak}</strong>
           </span>
         </div>
@@ -56,7 +58,7 @@ export default function StudentDetail({ student, onBack }: Props) {
         <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6">
           <h3 className="text-base font-semibold text-slate-800 mb-3 flex items-center gap-2">
             <Trophy className="w-4 h-4 text-indigo-600" />
-            Progress Test Scores
+            {t('studentDetail.testScores')}
           </h3>
           <div className="space-y-4">
             {testGroups.map((group) => (
@@ -65,20 +67,20 @@ export default function StudentDetail({ student, onBack }: Props) {
                   Ch {group.chapterId} · {group.chapterTitle}
                 </p>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                  {group.tests.map((t) => {
-                    const score = student.basics?.testScores[t.key]
+                  {group.tests.map((test) => {
+                    const score = student.basics?.testScores[test.key]
                     return (
                       <li
-                        key={t.key}
+                        key={test.key}
                         className="rounded-lg border border-slate-200 p-3 text-center"
                       >
-                        <p className="text-xs text-slate-500 mb-1">{t.label}</p>
+                        <p className="text-xs text-slate-500 mb-1">{test.label}</p>
                         {score != null ? (
                           <p className="text-lg font-bold text-indigo-700">
                             {score}/10
                           </p>
                         ) : (
-                          <p className="text-sm text-slate-400">Not taken</p>
+                          <p className="text-sm text-slate-400">{t('studentDetail.notTaken')}</p>
                         )}
                       </li>
                     )
@@ -95,7 +97,7 @@ export default function StudentDetail({ student, onBack }: Props) {
         <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6">
           <h3 className="text-base font-semibold text-slate-800 mb-3 flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-indigo-600" />
-            Python Basics
+            {t('studentDetail.pythonBasics')}
           </h3>
           <ul className="space-y-2">
             {chapters.map((ch) => {
@@ -111,7 +113,7 @@ export default function StudentDetail({ student, onBack }: Props) {
                   <span className="text-slate-700">
                     Ch {ch.id} · {ch.title}
                   </span>
-                  <span className="text-slate-500 tabular-nums">{total} lessons</span>
+                  <span className="text-slate-500 tabular-nums">{t('studentDetail.lessons', { n: total })}</span>
                 </li>
               )
             })}
@@ -119,7 +121,7 @@ export default function StudentDetail({ student, onBack }: Props) {
         </div>
       )}
 
-      <h3 className="text-base font-semibold text-slate-800 mb-3">Phase Levels</h3>
+      <h3 className="text-base font-semibold text-slate-800 mb-3">{t('studentDetail.phaseLevelsH3')}</h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {levels.map((level) => {
@@ -139,7 +141,7 @@ export default function StudentDetail({ student, onBack }: Props) {
             >
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs font-semibold text-slate-500 uppercase">
-                  Level {level.id}
+                  {t('level.id', { id: level.id })}
                 </span>
                 {isCompleted ? (
                   <Check className="w-4 h-4 text-green-600" />
@@ -153,7 +155,7 @@ export default function StudentDetail({ student, onBack }: Props) {
                 {level.title}
               </h4>
               <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
-                <span>Attempts: {progress?.attempts ?? 0}</span>
+                <span>{t('studentDetail.attempts', { n: progress?.attempts ?? 0 })}</span>
                 {isCompleted && progress?.completedAt && (
                   <span>
                     {new Date(progress.completedAt).toLocaleDateString()}
@@ -164,7 +166,7 @@ export default function StudentDetail({ student, onBack }: Props) {
                 onClick={() => navigate(`/level/${level.id}`)}
                 className="mt-2 text-xs text-blue-600 hover:text-blue-800 font-medium"
               >
-                Test this level
+                {t('studentDetail.testLevel')}
               </button>
             </div>
           )

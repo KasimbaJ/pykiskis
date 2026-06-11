@@ -7,6 +7,7 @@ import LevelCard from '../components/level/LevelCard'
 import { getLevelsByPhase, levels } from '../data/levels/index'
 import { phases } from '../data/phases'
 import { useProgressStore } from '../stores/useProgressStore'
+import { useT } from '../i18n-ui'
 
 function isPhaseUnlocked(
   phaseId: number,
@@ -20,6 +21,7 @@ function isPhaseUnlocked(
 // The original 100-level / 5-phase "challenge" path.  Lives at /levels — a
 // secondary track linked from the Basics-focused home page.
 export default function LevelsPage() {
+  const t = useT()
   const { getPhaseProgress, isLevelUnlocked, levels: progress } = useProgressStore()
   const [search, setSearch] = useState('')
 
@@ -47,15 +49,15 @@ export default function LevelsPage() {
           to="/"
           className="inline-flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-4"
         >
-          <ArrowLeft className="w-4 h-4" /> Python Basics
+          <ArrowLeft className="w-4 h-4" /> {t('levels.pythonBasics')}
         </Link>
 
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-slate-800 dark:text-white">
-            Python Learning Path
+            {t('levels.h1')}
           </h1>
           <p className="text-slate-500 dark:text-slate-400 mt-1">
-            100 levels across 5 phases — from Hello World to Professional Portfolio.
+            {t('levels.desc')}
           </p>
         </div>
 
@@ -64,7 +66,7 @@ export default function LevelsPage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
-            placeholder="Search levels by title, concept or number…"
+            placeholder={t('levels.search')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-9 pr-10 py-2.5 border border-slate-200 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
@@ -83,7 +85,7 @@ export default function LevelsPage() {
         {searchResults ? (
           <div>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-              {searchResults.length} level{searchResults.length !== 1 ? 's' : ''} found
+              {t('levels.found', { n: searchResults.length, s: searchResults.length !== 1 ? 's' : '' })}
             </p>
             {searchResults.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -98,7 +100,7 @@ export default function LevelsPage() {
               </div>
             ) : (
               <p className="text-slate-400 dark:text-slate-500 text-center py-16">
-                No levels match "{search}".
+                {t('levels.noMatch', { query: search })}
               </p>
             )}
           </div>

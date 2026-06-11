@@ -4,6 +4,7 @@ import Header from '../components/layout/Header'
 import { getChapterBySlug, moduleLessonKeys } from '../data/basics/index'
 import { useBasicsStore } from '../stores/useBasicsStore'
 import type { Module } from '../types/basics'
+import { useT } from '../i18n-ui'
 
 // A module is a progress-test checkpoint (vs. a content module) when all of its
 // lessons are progress tests.  These are always open, mirroring isLessonUnlocked.
@@ -11,6 +12,7 @@ const isTestModule = (m: Module) =>
   m.lessons.length > 0 && m.lessons.every((l) => l.type === 'progress-test')
 
 export default function ChapterPage() {
+  const t = useT()
   const { chapterSlug } = useParams<{ chapterSlug: string }>()
   const chapter = chapterSlug ? getChapterBySlug(chapterSlug) : undefined
 
@@ -29,7 +31,7 @@ export default function ChapterPage() {
           className="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to chapters
+          {t('chapter.backToChapters')}
         </Link>
 
         <div className="flex items-start gap-3 mb-2">
@@ -47,14 +49,14 @@ export default function ChapterPage() {
         <p className="text-slate-600 dark:text-slate-300 mt-4 mb-8">{chapter.description}</p>
 
         <h2 className="text-lg font-bold text-slate-800 dark:text-white mb-3">
-          Modules
+          {t('chapter.modules')}
         </h2>
 
         {moduleCount === 0 ? (
           <div className="rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-600 p-8 text-center">
             <BookOpen className="w-8 h-8 mx-auto text-slate-400 mb-2" />
             <p className="text-slate-500 dark:text-slate-400">
-              This chapter is coming soon.
+              {t('chapter.comingSoon')}
             </p>
           </div>
         ) : (
@@ -106,10 +108,10 @@ export default function ChapterPage() {
                   </div>
                   <span className="text-xs text-slate-400 dark:text-slate-500 flex items-center">
                     {!ready
-                      ? 'Coming soon'
+                      ? t('comingSoon')
                       : !unlocked
-                        ? 'Locked'
-                        : `${completedCount}/${lessonCount} lessons`}
+                        ? t('locked')
+                        : t('chapter.lessonsCount', { completed: completedCount, total: lessonCount })}
                     {linkTarget && <ChevronRight className="inline w-4 h-4 ml-1" />}
                   </span>
                 </div>

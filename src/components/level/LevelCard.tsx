@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Lock, Check, BookOpen } from 'lucide-react'
 import type { Level } from '../../types'
+import { useT } from '../../i18n-ui'
 
 interface LevelCardProps {
   level: Level
@@ -9,6 +10,7 @@ interface LevelCardProps {
 }
 
 export default function LevelCard({ level, isUnlocked, isCompleted }: LevelCardProps) {
+  const t = useT()
   const baseClasses =
     'relative rounded-xl p-4 border-2 transition-all duration-200 text-left'
 
@@ -16,7 +18,7 @@ export default function LevelCard({ level, isUnlocked, isCompleted }: LevelCardP
     return (
       <div className={`${baseClasses} border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 opacity-60 cursor-not-allowed`}>
         <div className="flex items-center justify-between mb-1">
-          <span className="text-xs font-semibold text-slate-400 uppercase">Level {level.id}</span>
+          <span className="text-xs font-semibold text-slate-400 uppercase">{t('level.id', { id: level.id })}</span>
           <Lock className="w-3.5 h-3.5 text-slate-400" />
         </div>
         <h3 className="font-semibold text-slate-400 dark:text-slate-500 text-sm">{level.title}</h3>
@@ -41,7 +43,7 @@ export default function LevelCard({ level, isUnlocked, isCompleted }: LevelCardP
         <div className="flex items-center gap-1">
           {level.levelMode === 'theory' && (
             <span className="text-xs bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded font-medium flex items-center gap-0.5">
-              <BookOpen className="w-3 h-3" /> Theory
+              <BookOpen className="w-3 h-3" /> {t('theory')}
             </span>
           )}
           {isCompleted && (
