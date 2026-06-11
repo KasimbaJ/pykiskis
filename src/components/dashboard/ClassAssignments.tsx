@@ -4,6 +4,7 @@ import { Plus, Trash2, Loader2, CalendarClock, ClipboardList } from 'lucide-reac
 import type { StudentProgress } from '../../types'
 import { useAssignmentsStore } from '../../stores/useAssignmentsStore'
 import { progressTestsByChapter } from '../../data/basics/index'
+import { useT } from '../../i18n-ui'
 
 interface Props {
   classId: string
@@ -23,6 +24,7 @@ function scoreClass(score: number): string {
 }
 
 export default function ClassAssignments({ classId, students }: Props) {
+  const t = useT()
   const { getToken } = useAuth()
   const all = useAssignmentsStore((s) => s.assignments)
   const create = useAssignmentsStore((s) => s.create)
@@ -65,11 +67,11 @@ export default function ClassAssignments({ classId, students }: Props) {
       {/* Create an assignment */}
       <div className="bg-white rounded-xl border border-slate-200 p-4">
         <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
-          <Plus className="w-4 h-4 text-blue-600" /> Assign a test
+          <Plus className="w-4 h-4 text-blue-600" /> {t('assignments.assignTest')}
         </h3>
         <div className="flex flex-wrap items-end gap-3">
           <label className="text-xs text-slate-500">
-            Test
+            {t('assignments.testLabel')}
             <select
               value={testKey}
               onChange={(e) => setTestKey(e.target.value)}
@@ -81,7 +83,7 @@ export default function ClassAssignments({ classId, students }: Props) {
             </select>
           </label>
           <label className="text-xs text-slate-500">
-            Due date (optional)
+            {t('assignments.dueDate')}
             <input
               type="date"
               value={dueDate}
@@ -95,7 +97,7 @@ export default function ClassAssignments({ classId, students }: Props) {
             className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
           >
             {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-            Assign
+            {t('assign')}
           </button>
         </div>
       </div>
@@ -104,7 +106,7 @@ export default function ClassAssignments({ classId, students }: Props) {
       {assignments.length === 0 ? (
         <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
           <ClipboardList className="w-10 h-10 mx-auto text-slate-300 mb-2" />
-          <p className="text-slate-400 text-sm">No assignments for this class yet.</p>
+          <p className="text-slate-400 text-sm">{t('assignments.noAssignments')}</p>
         </div>
       ) : (
         <ul className="space-y-3">
@@ -125,13 +127,15 @@ export default function ClassAssignments({ classId, students }: Props) {
                     <p className="font-medium text-slate-800">{a.title}</p>
                     <p className={`text-xs mt-0.5 flex items-center gap-1 ${overdue ? 'text-rose-600 font-medium' : 'text-slate-500'}`}>
                       <CalendarClock className="w-3.5 h-3.5" />
-                      {a.dueDate ? `Due ${a.dueDate}${overdue ? ' · overdue' : ''}` : 'No due date'}
+                      {a.dueDate
+                        ? (overdue ? t('assignments.dueOverdue', { date: a.dueDate }) : t('assignments.due', { date: a.dueDate }))
+                        : t('assignments.noDueDate')}
                     </p>
                   </div>
                   <button
                     onClick={() => del(a.id)}
                     className="text-slate-300 hover:text-rose-500"
-                    title="Remove assignment"
+                    title={t('assignments.remove')}
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -139,11 +143,11 @@ export default function ClassAssignments({ classId, students }: Props) {
 
                 <div className="mt-3 flex items-center gap-4 text-sm">
                   <span className="text-slate-600">
-                    <strong className="text-slate-800">{done}</strong>/{total} completed
+                    {t('assignments.completed', { done, total })}
                   </span>
                   {avg != null && (
                     <span className="text-slate-600">
-                      avg <strong className={scoreClass(avg)}>{avg.toFixed(1)}/10</strong>
+                      <strong className={scoreClass(avg)}>{t('assignments.avg', { avg: avg.toFixed(1) })}</strong>
                     </span>
                   )}
                   {/* progress bar */}
@@ -157,7 +161,7 @@ export default function ClassAssignments({ classId, students }: Props) {
 
                 {notDone.length > 0 && (
                   <p className="mt-2 text-xs text-slate-400">
-                    Not done: {notDone.map((s) => s.studentName).join(', ')}
+                    {t('assignments.notDone', { names: notDone.map((s) => s.studentName).join(', ') })}
                   </p>
                 )}
               </li>

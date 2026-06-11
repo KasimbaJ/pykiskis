@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Code2, Play, BookOpen, Sparkles, Rocket, Trophy } from 'lucide-react'
+import { useT } from '../../i18n-ui'
 
 interface Props {
   /** "signin" or "signup" — toggles the small copy difference above the form. */
@@ -18,6 +19,7 @@ interface Props {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function AuthLayout({ mode, children }: Props) {
+  const t = useT()
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Decorative background blobs */}
@@ -38,9 +40,9 @@ export default function AuthLayout({ mode, children }: Props) {
             href={mode === 'signin' ? '/sign-up' : '/sign-in'}
             className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors"
           >
-            {mode === 'signin' ? 'Need an account? ' : 'Already have an account? '}
+            {mode === 'signin' ? t('auth.needAccount') + ' ' : t('auth.haveAccount') + ' '}
             <span className="text-blue-600 underline-offset-2 hover:underline">
-              {mode === 'signin' ? 'Sign up' : 'Sign in'}
+              {mode === 'signin' ? t('auth.signUp') : t('auth.signIn')}
             </span>
           </a>
         </header>
@@ -51,41 +53,23 @@ export default function AuthLayout({ mode, children }: Props) {
           <section className="order-2 lg:order-1 flex flex-col justify-center max-w-xl">
             <div className="inline-flex self-start items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-800 mb-5">
               <Sparkles className="w-3.5 h-3.5" />
-              Learn Python in your browser
+              {t('auth.badge')}
             </div>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.1]">
-              From <span className="text-blue-600">Hello, World</span>
+              {t('auth.h1a')}
               <br />
-              to your first <span className="text-indigo-600">project.</span>
+              {t('auth.h1b')}
             </h1>
             <p className="mt-5 text-lg text-slate-600 leading-relaxed">
-              A friendly, browser-based Python course. Read short lessons, run
-              real code instantly, build small projects, and track your streak —
-              no setup required.
+              {t('auth.desc')}
             </p>
 
             {/* Feature pills */}
             <ul className="mt-7 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Feature
-                icon={<BookOpen className="w-4 h-4" />}
-                title="100+ guided levels"
-                description="Bite-sized lessons that build on each other."
-              />
-              <Feature
-                icon={<Play className="w-4 h-4" />}
-                title="Real Python, in the browser"
-                description="Powered by Pyodide — no install."
-              />
-              <Feature
-                icon={<Trophy className="w-4 h-4" />}
-                title="Progress tests & streaks"
-                description="Track grades and stay consistent."
-              />
-              <Feature
-                icon={<Rocket className="w-4 h-4" />}
-                title="Build mini projects"
-                description="Apply what you learn straight away."
-              />
+              <Feature icon={<BookOpen className="w-4 h-4" />} title={t('auth.feat1Title')} description={t('auth.feat1Desc')} />
+              <Feature icon={<Play className="w-4 h-4" />}     title={t('auth.feat2Title')} description={t('auth.feat2Desc')} />
+              <Feature icon={<Trophy className="w-4 h-4" />}   title={t('auth.feat3Title')} description={t('auth.feat3Desc')} />
+              <Feature icon={<Rocket className="w-4 h-4" />}   title={t('auth.feat4Title')} description={t('auth.feat4Desc')} />
             </ul>
 
             {/* Terminal preview */}
@@ -99,12 +83,10 @@ export default function AuthLayout({ mode, children }: Props) {
           <section className="order-1 lg:order-2 flex flex-col justify-center items-center">
             <div className="w-full max-w-md">
               <h2 className="text-2xl font-bold text-slate-900 mb-1">
-                {mode === 'signin' ? 'Welcome back' : 'Create your account'}
+                {mode === 'signin' ? t('auth.welcomeBack') : t('auth.createAccount')}
               </h2>
               <p className="text-sm text-slate-500 mb-5">
-                {mode === 'signin'
-                  ? 'Sign in to pick up where you left off.'
-                  : 'Free forever. No credit card needed.'}
+                {mode === 'signin' ? t('auth.signInDesc') : t('auth.signUpDesc')}
               </p>
               <div className="rounded-2xl bg-white/80 backdrop-blur-sm shadow-xl ring-1 ring-slate-200 p-1">
                 {children}

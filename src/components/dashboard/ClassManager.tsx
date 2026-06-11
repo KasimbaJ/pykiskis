@@ -3,6 +3,7 @@ import { useAuth } from '@clerk/clerk-react'
 import { Plus, X, Loader2, Users } from 'lucide-react'
 import type { StudentProgress } from '../../types'
 import { useClassesStore } from '../../stores/useClassesStore'
+import { useT } from '../../i18n-ui'
 
 interface Props {
   students: StudentProgress[]
@@ -15,6 +16,7 @@ interface Props {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function ClassManager({ students, onClose }: Props) {
+  const t = useT()
   const { getToken } = useAuth()
   const classes = useClassesStore((s) => s.classes)
   const createClass = useClassesStore((s) => s.create)
@@ -61,7 +63,7 @@ export default function ClassManager({ students, onClose }: Props) {
       >
         <div className="flex items-center justify-between px-5 py-3 border-b border-slate-200">
           <h3 className="font-bold text-slate-800 flex items-center gap-2">
-            <Users className="w-4 h-4 text-blue-600" /> Manage Classes
+            <Users className="w-4 h-4 text-blue-600" /> {t('classManager.title')}
           </h3>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
             <X className="w-5 h-5" />
@@ -76,7 +78,7 @@ export default function ClassManager({ students, onClose }: Props) {
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && create()}
-              placeholder="New class name (e.g. 8A Python)"
+              placeholder={t('classManager.placeholder')}
               className="flex-1 rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
@@ -85,13 +87,13 @@ export default function ClassManager({ students, onClose }: Props) {
               className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
             >
               {creating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-              Create
+              {t('create')}
             </button>
           </div>
 
           {classes.length === 0 ? (
             <p className="text-sm text-slate-400 text-center py-6">
-              No classes yet. Create one above, then assign students.
+              {t('classManager.noClasses')}
             </p>
           ) : (
             <>

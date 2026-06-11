@@ -1,12 +1,14 @@
 import { Lightbulb, ChevronRight } from 'lucide-react'
 import { useEditorStore } from '../../stores/useEditorStore'
 import type { Level } from '../../types'
+import { useT } from '../../i18n-ui'
 
 interface Props {
   level: Level
 }
 
 export default function HintPanel({ level }: Props) {
+  const t = useT()
   const { showHints, toggleHints, currentHintIndex, showNextHint } = useEditorStore()
 
   if (!showHints) {
@@ -16,7 +18,7 @@ export default function HintPanel({ level }: Props) {
         className="flex items-center gap-2 text-sm text-amber-600 hover:text-amber-700 dark:text-amber-500 dark:hover:text-amber-400 transition-colors"
       >
         <Lightbulb className="w-4 h-4" />
-        Need a hint?
+        {t('level.needHint')}
       </button>
     )
   }
@@ -26,13 +28,13 @@ export default function HintPanel({ level }: Props) {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Lightbulb className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-          <span className="text-sm font-semibold text-amber-800 dark:text-amber-300">Hints</span>
+          <span className="text-sm font-semibold text-amber-800 dark:text-amber-300">{t('level.hints')}</span>
         </div>
         <button
           onClick={toggleHints}
           className="text-xs text-amber-600 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-200"
         >
-          Hide
+          {t('hide')}
         </button>
       </div>
       <div className="space-y-2">
@@ -48,7 +50,7 @@ export default function HintPanel({ level }: Props) {
           onClick={showNextHint}
           className="mt-3 text-xs text-amber-600 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-200 font-medium"
         >
-          Show next hint ({currentHintIndex + 1}/3)
+          {t('level.showNextHint', { current: currentHintIndex + 1 })}
         </button>
       )}
     </div>

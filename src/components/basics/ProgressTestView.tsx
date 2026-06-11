@@ -12,6 +12,7 @@ import type {
   FillInBlankQuestion,
 } from '../../types/basics'
 import { renderInline } from './inline'
+import { useT } from '../../i18n-ui'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ProgressTestView — multi-question checkpoint scored out of 10.
@@ -74,6 +75,7 @@ function selectQuestions(lesson: ProgressTestLesson): ProgressTestQuestion[] {
 }
 
 export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props) {
+  const t = useT()
   // A fresh random draw from the bank(s) — re-rolled on Retake.
   const [questions, setQuestions] = useState<ProgressTestQuestion[]>(
     () => selectQuestions(lesson),
@@ -129,17 +131,17 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
             <Trophy className="w-5 h-5 text-indigo-600" />
-            <h3 className="font-semibold text-indigo-900 dark:text-indigo-200">Progress Test</h3>
+            <h3 className="font-semibold text-indigo-900 dark:text-indigo-200">{t('progressTest')}</h3>
           </div>
           {bestScore != null && (
             <span className="text-xs font-medium text-indigo-700 dark:text-indigo-300">
-              Best: <strong>{bestScore}/10</strong>
+              <strong>{t('test.best', { score: bestScore! })}</strong>
             </span>
           )}
         </div>
         <p className="text-sm text-indigo-900 dark:text-indigo-200">{renderInline(lesson.intro)}</p>
         <p className="text-xs mt-2 text-indigo-700 dark:text-indigo-300">
-          {total} questions · graded out of 10 · suggested passing score {lesson.passingScore}/10 · unlimited retakes
+          {t('test.metaLine', { total, passing: lesson.passingScore })}
         </p>
       </div>
 
@@ -187,8 +189,7 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
         {!submitted ? (
           <>
             <span className="text-sm text-slate-500 dark:text-slate-400">
-              {Object.values(answers).filter((v) => v != null && String(v).trim() !== '').length}
-              /{total} answered
+              {t('test.answered', { n: Object.values(answers).filter((v) => v != null && String(v).trim() !== '').length, total })}
             </span>
             <button
               onClick={submit}
@@ -196,20 +197,17 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-              Submit Test
+              {t('test.submitTest')}
             </button>
           </>
         ) : (
           <>
             <div>
               <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">
-                {correct} / {total} correct · Score:{' '}
-                <span className="text-indigo-600">{score10} / 10</span>
+                {t('test.results', { correct, total, score10 })}
               </p>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                {score10 >= lesson.passingScore
-                  ? "Nice work — that's a pass!"
-                  : 'Retake the test to improve your grade.'}
+                {score10 >= lesson.passingScore ? t('test.pass') : t('test.retry')}
               </p>
             </div>
             <button
@@ -217,7 +215,7 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-50 dark:hover:bg-slate-800"
             >
               <RotateCcw className="w-4 h-4" />
-              Retake
+              {t('test.retake')}
             </button>
           </>
         )}
@@ -295,6 +293,7 @@ function PredictOutputInput({
   disabled: boolean
   onChange: (v: Answer) => void
 }) {
+  const t = useT()
   return (
     <div className="space-y-2">
       <div className="rounded-lg overflow-hidden border border-slate-700">
@@ -313,14 +312,14 @@ function PredictOutputInput({
       </div>
       <label className="block">
         <span className="text-xs text-slate-500 dark:text-slate-400 mb-1 block">
-          Predict the output:
+          {t('test.predictOutput')}
         </span>
         <textarea
           rows={2}
           value={answer ?? ''}
           disabled={disabled}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="Type the exact output here…"
+          placeholder={t('test.typeOutput')}
           className="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm font-mono text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-90 disabled:cursor-not-allowed"
         />
       </label>
@@ -336,6 +335,7 @@ function FillInBlankInput({
   disabled: boolean
   onChange: (v: Answer) => void
 }) {
+  const t = useT()
   return (
     <div>
       <input
@@ -343,11 +343,11 @@ function FillInBlankInput({
         value={answer ?? ''}
         disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Your answer…"
+        placeholder={t('test.yourAnswer')}
         className="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm font-mono text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-90 disabled:cursor-not-allowed"
       />
       {q.hint && (
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Hint: {q.hint}</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t('test.hint', { hint: q.hint })}</p>
       )}
     </div>
   )
@@ -356,13 +356,14 @@ function FillInBlankInput({
 // ── Result badges + explanations ─────────────────────────────────────────────
 
 function ResultBadge({ correct }: { correct: boolean }) {
+  const t = useT()
   return correct ? (
     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300">
-      <Check className="w-3 h-3" /> Correct
+      <Check className="w-3 h-3" /> {t('test.correct')}
     </span>
   ) : (
     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-300">
-      <X className="w-3 h-3" /> Wrong
+      <X className="w-3 h-3" /> {t('test.wrong')}
     </span>
   )
 }
@@ -373,6 +374,7 @@ function ExplanationBlock({
   question: ProgressTestQuestion
   answer: Answer | undefined
 }) {
+  const t = useT()
   const correct = isCorrect(question, answer)
   let correctText: string | null = null
   switch (question.qType) {
@@ -391,7 +393,7 @@ function ExplanationBlock({
     <div className="mt-3 text-xs text-slate-600 dark:text-slate-300 space-y-1 border-t border-slate-200 dark:border-slate-700 pt-2">
       {!correct && correctText != null && (
         <p>
-          <strong>Correct answer:</strong>{' '}
+          <strong>{t('correctAnswer')}</strong>{' '}
           {question.qType === 'predict-output' ? (
             <code className="font-mono">{correctText}</code>
           ) : (

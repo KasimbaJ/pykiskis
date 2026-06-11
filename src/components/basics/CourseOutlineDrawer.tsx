@@ -4,6 +4,7 @@ import { X, ChevronDown, CircleCheck, CircleDashed } from 'lucide-react'
 import type { Chapter, Module } from '../../types/basics'
 import { lessonKey, moduleLessonKeys } from '../../data/basics/index'
 import { useBasicsStore } from '../../stores/useBasicsStore'
+import { useT } from '../../i18n-ui'
 
 interface Props {
   chapter: Chapter
@@ -18,6 +19,7 @@ interface Props {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function CourseOutlineDrawer({ chapter, open, onClose }: Props) {
+  const t = useT()
   const { moduleSlug, lessonSlug } = useParams<{
     moduleSlug?: string
     lessonSlug?: string
@@ -48,7 +50,7 @@ export default function CourseOutlineDrawer({ chapter, open, onClose }: Props) {
     <div className="fixed inset-0 z-50 flex">
       {/* Backdrop */}
       <button
-        aria-label="Close outline"
+        aria-label={t('outline.closeAria')}
         onClick={onClose}
         className="flex-1 bg-slate-900/40"
       />
@@ -58,7 +60,7 @@ export default function CourseOutlineDrawer({ chapter, open, onClose }: Props) {
         <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
           <div>
             <h2 className="text-base font-bold text-slate-800 dark:text-white">
-              Course Outline
+              {t('outline.title')}
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
               Ch {chapter.id} · {chapter.title}
@@ -67,7 +69,7 @@ export default function CourseOutlineDrawer({ chapter, open, onClose }: Props) {
           <button
             onClick={onClose}
             className="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
-            aria-label="Close"
+            aria-label={t('close')}
           >
             <X className="w-5 h-5" />
           </button>
@@ -117,6 +119,7 @@ function ModuleSection({
   total: number
   defaultOpen: boolean
 }) {
+  const t = useT()
   const lessons = useBasicsStore((s) => s.lessons)
 
   return (
@@ -136,7 +139,7 @@ function ModuleSection({
 
         {mod.lessons.length === 0 ? (
           <p className="px-9 py-2 text-xs text-slate-400 dark:text-slate-500 italic">
-            Coming soon
+            {t('comingSoon')}
           </p>
         ) : (
           <ul className="ml-3 mt-1 mb-1 border-l border-slate-200 dark:border-slate-700 pl-2 space-y-0.5">

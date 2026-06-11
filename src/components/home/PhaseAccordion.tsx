@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp, Lock } from 'lucide-react'
 import type { PhaseInfo, Level } from '../../types'
 import LevelCard from '../level/LevelCard'
 import { useProgressStore } from '../../stores/useProgressStore'
+import { useT } from '../../i18n-ui'
 
 const phaseColors: Record<number, { bg: string; border: string; text: string; badge: string }> = {
   1: { bg: 'bg-green-50 dark:bg-slate-800',  border: 'border-green-300 dark:border-green-700',  text: 'text-green-800 dark:text-green-400',  badge: 'bg-green-600' },
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export default function PhaseAccordion({ phase, levels, isUnlocked, defaultOpen = false }: Props) {
+  const t = useT()
   const [isOpen, setIsOpen] = useState(defaultOpen)
   const { levels: progress, isLevelUnlocked } = useProgressStore()
   const colors = phaseColors[phase.id]
@@ -36,7 +38,7 @@ export default function PhaseAccordion({ phase, levels, isUnlocked, defaultOpen 
       >
         <div className="flex items-center gap-4">
           <span className={`text-sm font-bold text-white px-2.5 py-1 rounded-lg ${colors.badge}`}>
-            Phase {phase.id}
+            {t('phase.id', { id: phase.id })}
           </span>
           <div className="text-left">
             <h2 className={`font-bold text-lg ${colors.text}`}>{phase.title}</h2>
@@ -69,7 +71,7 @@ export default function PhaseAccordion({ phase, levels, isUnlocked, defaultOpen 
         <div className="p-4 bg-white dark:bg-slate-900">
           {!isUnlocked && (
             <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-4 mb-4 text-center text-sm text-slate-500 dark:text-slate-400">
-              Complete 80% of the previous phase to unlock this phase.
+              {t('phase.locked')}
             </div>
           )}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

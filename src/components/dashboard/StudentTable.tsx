@@ -2,6 +2,7 @@ import { Users, ChevronRight, Flame, Trophy, BookOpen } from 'lucide-react'
 import type { StudentProgress } from '../../types'
 import { levels } from '../../data/levels/index'
 import { countAllBasicsLessons } from '../../data/basics/index'
+import { useT } from '../../i18n-ui'
 
 interface Props {
   students: StudentProgress[];
@@ -9,15 +10,16 @@ interface Props {
 }
 
 export default function StudentTable({ students, onSelectStudent }: Props) {
+  const t = useT()
   if (students.length === 0) {
     return (
       <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
         <Users className="w-12 h-12 text-slate-300 mx-auto mb-3" />
         <h3 className="text-lg font-semibold text-slate-600 mb-1">
-          No Students Yet
+          {t('studentTable.noStudents')}
         </h3>
         <p className="text-slate-400 text-sm">
-          Student progress will appear here once they start learning.
+          {t('studentTable.noStudentsDesc')}
         </p>
       </div>
     )
@@ -31,25 +33,25 @@ export default function StudentTable({ students, onSelectStudent }: Props) {
         <thead>
           <tr className="bg-slate-50 border-b border-slate-200">
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Student
+              {t('studentTable.student')}
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Phase Levels
+              {t('studentTable.phaseLevels')}
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
               <span className="inline-flex items-center gap-1">
                 <BookOpen className="w-3.5 h-3.5" />
-                Basics
+                {t('studentTable.basics')}
               </span>
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Streak
+              {t('studentTable.streak')}
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Best
+              {t('studentTable.best')}
             </th>
             <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">
-              Last Active
+              {t('studentTable.lastActive')}
             </th>
             <th className="px-6 py-3" />
           </tr>
@@ -108,7 +110,7 @@ export default function StudentTable({ students, onSelectStudent }: Props) {
                     {avgTestScore != null && (
                       <span
                         className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700"
-                        title="Average progress-test score (out of 10)"
+                        title={t('studentTable.avgScore')}
                       >
                         {avgTestScore.toFixed(1)}/10
                       </span>

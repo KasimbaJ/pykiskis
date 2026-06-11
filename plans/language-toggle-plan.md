@@ -1,9 +1,12 @@
 # Language Toggle (i18n) — Implementation Plan
 
-> STATUS: **Phase 1 SHIPPED.** Decisions locked: EN + LT, default EN, UI +
-> content, routine drafts translations per module for approval, lightweight
-> custom approach (no new dep). Phase 1 (foundation + theory-content wiring +
-> header toggle) is built, browser-verified, and deployed.
+> STATUS: **Phase 1 SHIPPED. Phase 2 DONE (PR open, awaiting merge).**
+> Decisions locked: EN + LT, default EN, UI + content, routine drafts
+> translations per module for approval, lightweight custom approach (no new dep).
+> Phase 1 (foundation + theory-content wiring + header toggle) is built,
+> browser-verified, and deployed.
+> Phase 2 (UI chrome): `i18n-ui.ts` created with `useT()` hook + full ~130-key
+> EN/LT dictionary; all ~31 component and page files updated.
 >
 > REMAINING:
 > - **Complete the wiring** (widen + resolve the non-theory surfaces): lesson/
