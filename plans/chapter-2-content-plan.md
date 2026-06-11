@@ -1,6 +1,6 @@
 # Chapter 2 — Decision Making & Loops — Content Authoring Plan
 
-> STATUS: **Pending — in progress (one item per run).**
+> STATUS: **In progress — python-booleans done (1/12).**
 > For the daily routine: draft ONE checklist item per run into a draft PR for the
 > teacher to review. Mirrors Chapter 1 in structure, depth, and conventions.
 
@@ -137,7 +137,7 @@ completion lesson pointing to the Final Test.
    authored, lint/build result, and "⚠ run `npx tsx qa-verify.ts` before merge".
 
 ## Checklist (one item per run, in order)
-- [ ] python-booleans
+- [x] python-booleans
 - [ ] if-else-statement
 - [ ] progress-test-1 (bank)
 - [ ] logical-operators
