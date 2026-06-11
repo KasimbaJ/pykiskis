@@ -482,6 +482,238 @@ export const test2Bank: ProgressTestQuestion[] = [
   },
 ]
 
+// ── Test 3 bank: For Loop + Break and Continue ───────────────────────────────
+
+export const test3Bank: ProgressTestQuestion[] = [
+  {
+    id: 'q1',
+    qType: 'mcq',
+    prompt: 'What sequence of numbers does `range(5)` produce?',
+    options: [
+      { id: 'a', text: '`1, 2, 3, 4, 5`' },
+      { id: 'b', text: '`0, 1, 2, 3, 4`' },
+      { id: 'c', text: '`0, 1, 2, 3, 4, 5`' },
+      { id: 'd', text: '`1, 2, 3, 4`' },
+    ],
+    correctOptionId: 'b',
+    explanation: '`range(5)` starts at 0 and stops before 5, giving `0, 1, 2, 3, 4`.',
+  },
+  {
+    id: 'q2',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(3):\n    print(i)',
+    expectedOutput: '0\n1\n2',
+  },
+  {
+    id: 'q3',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(2, 5):\n    print(i)',
+    expectedOutput: '2\n3\n4',
+  },
+  {
+    id: 'q4',
+    qType: 'mcq',
+    prompt: 'How many times does the body of `for i in range(1, 6):` run?',
+    options: [
+      { id: 'a', text: '6 times' },
+      { id: 'b', text: '4 times' },
+      { id: 'c', text: '5 times' },
+      { id: 'd', text: '1 time' },
+    ],
+    correctOptionId: 'c',
+    explanation: '`range(1, 6)` produces `1, 2, 3, 4, 5` — five values — so the body runs 5 times.',
+  },
+  {
+    id: 'q5',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(0, 10, 2):\n    print(i)',
+    expectedOutput: '0\n2\n4\n6\n8',
+  },
+  {
+    id: 'q6',
+    qType: 'fill-in-blank',
+    prompt: 'The first value produced by `range(n)` is always ___.',
+    acceptedAnswers: ['0', 'zero', 'Zero'],
+    hint: 'A single digit.',
+    explanation: 'Unless you give a start value, `range()` begins counting at `0`.',
+  },
+  {
+    id: 'q7',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for c in "ab":\n    print(c)',
+    expectedOutput: 'a\nb',
+  },
+  {
+    id: 'q8',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'total = 0\nfor i in range(1, 4):\n    total = total + i\nprint(total)',
+    expectedOutput: '6',
+  },
+  {
+    id: 'q9',
+    qType: 'mcq',
+    prompt: 'Which loop is the best choice for "repeat exactly 5 times"?',
+    options: [
+      { id: 'a', text: 'A `for` loop with `range(5)`' },
+      { id: 'b', text: 'A `while True` loop' },
+      { id: 'c', text: 'An `if` statement' },
+      { id: 'd', text: 'You cannot repeat a fixed number of times.' },
+    ],
+    correctOptionId: 'a',
+    explanation: 'When the number of repetitions is known, a `for` loop with `range()` is the cleanest, safest choice.',
+  },
+  {
+    id: 'q10',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(1, 6):\n    if i == 3:\n        break\n    print(i)',
+    expectedOutput: '1\n2',
+  },
+  {
+    id: 'q11',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(1, 5):\n    if i == 2:\n        continue\n    print(i)',
+    expectedOutput: '1\n3\n4',
+  },
+  {
+    id: 'q12',
+    qType: 'mcq',
+    prompt: 'What does the `break` keyword do inside a loop?',
+    options: [
+      { id: 'a', text: 'Skips the current iteration and continues.' },
+      { id: 'b', text: 'Exits the loop immediately.' },
+      { id: 'c', text: 'Restarts the loop from the beginning.' },
+      { id: 'd', text: 'Pauses the loop for a second.' },
+    ],
+    correctOptionId: 'b',
+    explanation: '`break` ends the loop at once — the remaining iterations are skipped entirely.',
+  },
+  {
+    id: 'q13',
+    qType: 'mcq',
+    prompt: 'What does the `continue` keyword do inside a loop?',
+    options: [
+      { id: 'a', text: 'Exits the loop completely.' },
+      { id: 'b', text: 'Skips the rest of the current iteration and moves to the next.' },
+      { id: 'c', text: 'Repeats the current iteration.' },
+      { id: 'd', text: 'Stops the whole program.' },
+    ],
+    correctOptionId: 'b',
+    explanation: '`continue` skips only the current iteration; the loop keeps going with the next value.',
+  },
+  {
+    id: 'q14',
+    qType: 'fill-in-blank',
+    prompt: 'The keyword that exits a loop early, ending it completely, is ___.',
+    acceptedAnswers: ['break', 'Break'],
+    hint: 'Five letters.',
+    explanation: '`break` stops the loop immediately.',
+  },
+  {
+    id: 'q15',
+    qType: 'fill-in-blank',
+    prompt: 'The keyword that skips to the next iteration of a loop is ___.',
+    acceptedAnswers: ['continue', 'Continue'],
+    hint: 'Eight letters.',
+    explanation: '`continue` jumps straight to the next iteration without finishing the current one.',
+  },
+  {
+    id: 'q16',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(3, 0, -1):\n    print(i)',
+    expectedOutput: '3\n2\n1',
+  },
+  {
+    id: 'q17',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(1, 10, 3):\n    print(i)',
+    expectedOutput: '1\n4\n7',
+  },
+  {
+    id: 'q18',
+    qType: 'mcq',
+    prompt: 'How many times does `for letter in "hello":` run its body?',
+    options: [
+      { id: 'a', text: '4 times' },
+      { id: 'b', text: '5 times' },
+      { id: 'c', text: '6 times' },
+      { id: 'd', text: '1 time' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'The string `"hello"` has 5 characters, so the loop runs once per character — 5 times.',
+  },
+  {
+    id: 'q19',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(1, 4):\n    print(i * i)',
+    expectedOutput: '1\n4\n9',
+  },
+  {
+    id: 'q20',
+    qType: 'mcq',
+    prompt: 'What is the last number produced by `range(2, 8)`?',
+    options: [
+      { id: 'a', text: '`8`' },
+      { id: 'b', text: '`7`' },
+      { id: 'c', text: '`6`' },
+      { id: 'd', text: '`2`' },
+    ],
+    correctOptionId: 'b',
+    explanation: '`range(2, 8)` stops **before** 8, so the values are `2, 3, 4, 5, 6, 7` — the last is `7`.',
+  },
+  {
+    id: 'q21',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'n = 0\nwhile True:\n    n = n + 1\n    if n == 3:\n        break\nprint(n)',
+    expectedOutput: '3',
+  },
+  {
+    id: 'q22',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(1, 6):\n    if i % 2 == 0:\n        continue\n    print(i)',
+    expectedOutput: '1\n3\n5',
+  },
+  {
+    id: 'q23',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'total = 0\nfor i in range(1, 6):\n    total = total + i\nprint(total)',
+    expectedOutput: '15',
+  },
+  {
+    id: 'q24',
+    qType: 'mcq',
+    prompt: 'In `range(0, 10, 2)`, what does the third number `2` control?',
+    options: [
+      { id: 'a', text: 'Where the range starts.' },
+      { id: 'b', text: 'Where the range stops.' },
+      { id: 'c', text: 'The step — how much to jump each time.' },
+      { id: 'd', text: 'How many numbers to produce.' },
+    ],
+    correctOptionId: 'c',
+    explanation: 'The third argument is the **step**: `range(0, 10, 2)` jumps by 2 each time.',
+  },
+  {
+    id: 'q25',
+    qType: 'fill-in-blank',
+    prompt: 'In `range(start, stop, step)`, the third number is called the ___.',
+    acceptedAnswers: ['step', 'Step'],
+    hint: 'It is how far the loop jumps each time.',
+    explanation: 'The third argument to `range()` is the **step** — the amount added on each iteration.',
+  },
+]
+
 // ── Module checkpoint tests ──────────────────────────────────────────────────
 
 export const progressTest1Module: Module = {
@@ -518,6 +750,25 @@ export const progressTest2Module: Module = {
       passingScore: 7,
       presentCount: 10,
       questionBanks: [test2Bank],
+    },
+  ],
+}
+
+export const progressTest3Module: Module = {
+  slug: 'progress-test-3',
+  title: 'Progress Test 3',
+  summary: 'Checkpoint: For Loop + Break and Continue.',
+  lessons: [
+    {
+      slug: 'test',
+      title: 'Progress Test 3',
+      type: 'progress-test',
+      intro:
+        'Checkpoint covering the **For Loop** (with `range()`) and **Break and Continue**. ' +
+        'Retake as many times as you like to improve your score.',
+      passingScore: 7,
+      presentCount: 10,
+      questionBanks: [test3Bank],
     },
   ],
 }

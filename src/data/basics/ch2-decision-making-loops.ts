@@ -1,7 +1,7 @@
 import type { Chapter } from '../../types/basics'
 import { pythonBooleansModule } from './ch2/python-booleans'
 import { ifElseStatementModule } from './ch2/if-else-statement'
-import { progressTest1Module, progressTest2Module } from './ch2/progress-tests'
+import { progressTest1Module, progressTest2Module, progressTest3Module } from './ch2/progress-tests'
 import { logicalOperatorsModule } from './ch2/logical-operators'
 import { whileLoopModule } from './ch2/while-loop'
 import { forLoopModule } from './ch2/for-loop'
@@ -44,5 +44,6 @@ export const ch2: Chapter = {
     progressTest2Module,     // 6
     forLoopModule,           // 7
     breakAndContinueModule,  // 8
+    progressTest3Module,     // 9
   ],
 }
