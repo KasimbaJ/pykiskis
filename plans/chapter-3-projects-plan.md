@@ -1,8 +1,9 @@
 # Chapter 3 — Projects (FEATURED) — Authoring Plan
 
-> STATUS: **In progress.** Project 1 (Number Guessing Game) **done & merged**
-> (12 lessons, qa-verified) — serving as the reference format for teacher
-> sign-off before Projects 2–3 (Simple Calculator, Student Grade Calculator).
+> STATUS: **Done & deployed.** All 5 projects authored, qa-verified (real
+> Python), lint/build clean, and merged (PRs #26–#30): Number Guessing Game,
+> Simple Calculator, Student Grade Calculator, Rock-Paper-Scissors, Mad Libs.
+> Format approved by the teacher (Number Guessing Game as the reference).
 
 ## Goal
 
