@@ -2,6 +2,7 @@ import type { Chapter } from '../../types/basics'
 import { numberGuessingGameModule } from './ch3/number-guessing-game'
 import { simpleCalculatorModule } from './ch3/simple-calculator'
 import { studentGradeCalculatorModule } from './ch3/student-grade-calculator'
+import { rockPaperScissorsModule } from './ch3/rock-paper-scissors'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 3: Projects (FEATURED) — guided, build-it-step-by-step projects that
@@ -26,5 +27,6 @@ export const ch3: Chapter = {
     numberGuessingGameModule,  // 1
     simpleCalculatorModule,    // 2
     studentGradeCalculatorModule, // 3
+    rockPaperScissorsModule,   // 4
   ],
 }
