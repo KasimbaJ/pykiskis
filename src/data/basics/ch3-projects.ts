@@ -1,5 +1,6 @@
 import type { Chapter } from '../../types/basics'
 import { numberGuessingGameModule } from './ch3/number-guessing-game'
+import { simpleCalculatorModule } from './ch3/simple-calculator'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 3: Projects (FEATURED) — guided, build-it-step-by-step projects that
@@ -22,5 +23,6 @@ export const ch3: Chapter = {
   featured: true,
   modules: [
     numberGuessingGameModule,  // 1
+    simpleCalculatorModule,    // 2
   ],
 }
