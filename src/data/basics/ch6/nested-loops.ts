@@ -79,6 +79,31 @@ export const nestedLoopsModule: Module = {
       ],
     },
 
+    // ── 3b. Visualizing Nested Loops ──────────────────────────────────────────
+    {
+      slug: 'visualizing-nested-loops',
+      title: 'Visualizing Nested Loops',
+      type: 'theory',
+      blocks: [
+        {
+          kind: 'paragraph',
+          text: 'Stepping through is the best way to feel how nested loops work. Watch `i` (outer) hold steady while `j` (inner) runs through all its values, then `i` moves on and `j` starts over.',
+        },
+        {
+          kind: 'visualize',
+          caption: 'Press Visualize and watch i stay fixed while j cycles, then i advances.',
+          code:
+            'for i in range(1, 3):\n' +
+            '    for j in range(1, 3):\n' +
+            '        print(i, j)',
+        },
+        {
+          kind: 'paragraph',
+          text: 'Notice the order: `1 1`, `1 2`, then `i` becomes 2 and `j` restarts, giving `2 1`, `2 2`. The inner loop completes fully for every single value of the outer loop.',
+        },
+      ],
+    },
+
     // ── 4. Printing on One Line ───────────────────────────────────────────────
     {
       slug: 'printing-on-one-line',

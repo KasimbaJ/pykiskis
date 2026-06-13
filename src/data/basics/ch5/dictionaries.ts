@@ -107,7 +107,33 @@ export const dictionariesModule: Module = {
       ],
     },
 
-    // ── 5. Checking and Removing ──────────────────────────────────────────────
+    // ── 5. Visualizing a Dictionary ───────────────────────────────────────────
+    {
+      slug: 'visualizing-a-dictionary',
+      title: 'Visualizing a Dictionary',
+      type: 'theory',
+      blocks: [
+        {
+          kind: 'paragraph',
+          text: 'Step through this and watch the dictionary itself change: a new pair is added, then an existing value is updated in place.',
+        },
+        {
+          kind: 'visualize',
+          caption: 'Press Visualize and watch the ages dictionary grow, then change.',
+          code:
+            'ages = {"Ada": 36}\n' +
+            'ages["Bob"] = 25\n' +
+            'ages["Ada"] = 37\n' +
+            'print(ages["Ada"])',
+        },
+        {
+          kind: 'paragraph',
+          text: 'The dictionary starts with one pair, gains `"Bob": 25`, then `"Ada"` updates from 36 to 37 — all in the same dictionary object. Finally it prints `37`.',
+        },
+      ],
+    },
+
+    // ── 6. Checking and Removing ──────────────────────────────────────────────
     {
       slug: 'checking-and-removing',
       title: 'Checking and Removing',
