@@ -2,7 +2,9 @@ import type { Chapter } from '../../types/basics'
 import { usingModulesModule } from './ch6/using-modules'
 import { nestedLoopsModule } from './ch6/nested-loops'
 import { miscellaneousModule } from './ch6/miscellaneous'
-import { progressTest1Module } from './ch6/progress-tests'
+import { progressTest1Module, finalTestModule } from './ch6/progress-tests'
+import { mathQuizGameModule } from './ch6/math-quiz-game'
+import { recapModule } from './ch6/recap'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 6: Completing Basics — the final Basics chapter. Modules per PR:
@@ -25,5 +27,8 @@ export const ch6: Chapter = {
     nestedLoopsModule,    // 2
     miscellaneousModule,  // 3
     progressTest1Module,  // 4
+    mathQuizGameModule,   // 5 (capstone)
+    recapModule,          // 6
+    finalTestModule,      // 7
   ],
 }

@@ -1,7 +1,8 @@
 # Chapter 6 — Completing Basics — Authoring Plan
 
-> STATUS: **In progress.** Final Basics chapter. Build module-by-module
-> (qa-verified), mirroring the Ch1/2 lesson + test structure.
+> STATUS: **Done & deployed.** All 7 modules authored, qa-verified (real Python),
+> lint/build clean, merged (PRs #36, #37). Chapter 6 — and the whole Basics track
+> (Ch 1–6 + Projects) — is complete.
 
 ## Goal
 Fill `ch6-completing-basics.ts` (slug `completing-basics`, empty stub) in the
