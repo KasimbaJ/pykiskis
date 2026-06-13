@@ -238,7 +238,213 @@ export const test1Bank: ProgressTestQuestion[] = [
   },
 ]
 
-// ── Module checkpoint test ───────────────────────────────────────────────────
+// ── Test 2 bank: Strings + Dictionaries ──────────────────────────────────────
+
+export const test2Bank: ProgressTestQuestion[] = [
+  {
+    id: 'q1',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'word = "hello"\nprint(word[0])',
+    expectedOutput: 'h',
+  },
+  {
+    id: 'q2',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print("cat"[1])',
+    expectedOutput: 'a',
+  },
+  {
+    id: 'q3',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'word = "Python"\nprint(word[0:3])',
+    expectedOutput: 'Pyt',
+  },
+  {
+    id: 'q4',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(len("hello"))',
+    expectedOutput: '5',
+  },
+  {
+    id: 'q5',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print("abc".upper())',
+    expectedOutput: 'ABC',
+  },
+  {
+    id: 'q6',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print("ABC".lower())',
+    expectedOutput: 'abc',
+  },
+  {
+    id: 'q7',
+    qType: 'mcq',
+    prompt: 'How do you take a slice of a string from index 1 up to (not including) 4?',
+    options: [
+      { id: 'a', text: '`word[1, 4]`' },
+      { id: 'b', text: '`word[1:4]`' },
+      { id: 'c', text: '`word(1:4)`' },
+      { id: 'd', text: '`word.slice(1, 4)`' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'Slicing uses `[start:stop]`, including `start` and stopping before `stop`.',
+  },
+  {
+    id: 'q8',
+    qType: 'fill-in-blank',
+    prompt: 'The string method that breaks text into a list of words is `.___()`.',
+    acceptedAnswers: ['split', 'split()'],
+    hint: 'Five letters.',
+    explanation: '`.split()` with no argument splits on spaces, returning a list of words.',
+  },
+  {
+    id: 'q9',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print("a b c".split())',
+    expectedOutput: "['a', 'b', 'c']",
+  },
+  {
+    id: 'q10',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print("hello".replace("l", "L"))',
+    expectedOutput: 'heLLo',
+  },
+  {
+    id: 'q11',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'word = "Python"\nprint(word[-1])',
+    expectedOutput: 'n',
+  },
+  {
+    id: 'q12',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for c in "hi":\n    print(c)',
+    expectedOutput: 'h\ni',
+  },
+  {
+    id: 'q13',
+    qType: 'mcq',
+    prompt: 'Which brackets create a dictionary?',
+    options: [
+      { id: 'a', text: 'Square brackets `[ ]`' },
+      { id: 'b', text: 'Round brackets `( )`' },
+      { id: 'c', text: 'Curly braces `{ }`' },
+      { id: 'd', text: 'Angle brackets `< >`' },
+    ],
+    correctOptionId: 'c',
+    explanation: 'Dictionaries use curly braces with `key: value` pairs.',
+  },
+  {
+    id: 'q14',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'd = {"a": 1, "b": 2}\nprint(d["a"])',
+    expectedOutput: '1',
+  },
+  {
+    id: 'q15',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'd = {"x": 5}\nd["y"] = 9\nprint(d["y"])',
+    expectedOutput: '9',
+  },
+  {
+    id: 'q16',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'd = {"a": 1, "b": 2}\nprint(len(d))',
+    expectedOutput: '2',
+  },
+  {
+    id: 'q17',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'd = {"a": 1}\nprint("a" in d)',
+    expectedOutput: 'True',
+  },
+  {
+    id: 'q18',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'd = {"a": 1, "b": 2}\nprint("c" in d)',
+    expectedOutput: 'False',
+  },
+  {
+    id: 'q19',
+    qType: 'fill-in-blank',
+    prompt: 'In a dictionary, each entry pairs a key with a ___.',
+    acceptedAnswers: ['value', 'Value'],
+    hint: 'Key and ___.',
+    explanation: 'Each dictionary entry is a `key: value` pair.',
+  },
+  {
+    id: 'q20',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'd = {"a": 1}\nd["a"] = 10\nprint(d["a"])',
+    expectedOutput: '10',
+  },
+  {
+    id: 'q21',
+    qType: 'mcq',
+    prompt: 'What happens if you look up a key that is not in the dictionary?',
+    options: [
+      { id: 'a', text: 'It returns `0`.' },
+      { id: 'b', text: 'It returns `None`.' },
+      { id: 'c', text: 'It raises a `KeyError`.' },
+      { id: 'd', text: 'It adds the key automatically.' },
+    ],
+    correctOptionId: 'c',
+    explanation: 'Accessing a missing key raises a `KeyError`. Use `in` first to check.',
+  },
+  {
+    id: 'q22',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(len("  hi  ".strip()))',
+    expectedOutput: '2',
+  },
+  {
+    id: 'q23',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'word = "programming"\nprint(word[0:4])',
+    expectedOutput: 'prog',
+  },
+  {
+    id: 'q24',
+    qType: 'mcq',
+    prompt: 'When you loop `for k in my_dict:`, what does `k` become each time?',
+    options: [
+      { id: 'a', text: 'Each value in the dictionary.' },
+      { id: 'b', text: 'Each key in the dictionary.' },
+      { id: 'c', text: 'Each key/value pair as a tuple.' },
+      { id: 'd', text: 'The length of the dictionary.' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'Looping over a dictionary yields its keys. Use `.items()` to get key and value together.',
+  },
+  {
+    id: 'q25',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print("Hello World".split())',
+    expectedOutput: "['Hello', 'World']",
+  },
+]
+
+// ── Module checkpoint tests ──────────────────────────────────────────────────
 
 export const progressTest1Module: Module = {
   slug: 'progress-test-1',
@@ -255,6 +461,25 @@ export const progressTest1Module: Module = {
       passingScore: 7,
       presentCount: 10,
       questionBanks: [test1Bank],
+    },
+  ],
+}
+
+export const progressTest2Module: Module = {
+  slug: 'progress-test-2',
+  title: 'Progress Test 2',
+  summary: 'Checkpoint: Strings + Dictionaries.',
+  lessons: [
+    {
+      slug: 'test',
+      title: 'Progress Test 2',
+      type: 'progress-test',
+      intro:
+        'Checkpoint covering **Strings** and **Dictionaries**. Retake as many times as you ' +
+        'like to improve your score.',
+      passingScore: 7,
+      presentCount: 10,
+      questionBanks: [test2Bank],
     },
   ],
 }
