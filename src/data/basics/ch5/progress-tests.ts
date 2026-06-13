@@ -444,6 +444,213 @@ export const test2Bank: ProgressTestQuestion[] = [
   },
 ]
 
+// ── Test 3 bank: Sets + Conversion + range() ─────────────────────────────────
+
+export const test3Bank: ProgressTestQuestion[] = [
+  {
+    id: 'q1',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(len({1, 2, 2, 3}))',
+    expectedOutput: '3',
+  },
+  {
+    id: 'q2',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print("a" in {"a", "b"})',
+    expectedOutput: 'True',
+  },
+  {
+    id: 'q3',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 's = {1, 2, 3}\ns.add(4)\nprint(len(s))',
+    expectedOutput: '4',
+  },
+  {
+    id: 'q4',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(len(set([1, 1, 2, 2, 3])))',
+    expectedOutput: '3',
+  },
+  {
+    id: 'q5',
+    qType: 'mcq',
+    prompt: 'What is special about a set?',
+    options: [
+      { id: 'a', text: 'It keeps items in sorted order.' },
+      { id: 'b', text: 'It stores only unique items (no duplicates).' },
+      { id: 'c', text: 'It can be indexed like a list.' },
+      { id: 'd', text: 'It stores key/value pairs.' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'A set holds only unique items and is unordered.',
+  },
+  {
+    id: 'q6',
+    qType: 'fill-in-blank',
+    prompt: 'To remove duplicates from a list, convert it to a ___.',
+    acceptedAnswers: ['set', 'Set', 'set()'],
+    hint: 'Three letters; uses curly braces.',
+    explanation: 'Converting to a `set` drops duplicate values.',
+  },
+  {
+    id: 'q7',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print("-".join(["a", "b", "c"]))',
+    expectedOutput: 'a-b-c',
+  },
+  {
+    id: 'q8',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print("x y z".split())',
+    expectedOutput: "['x', 'y', 'z']",
+  },
+  {
+    id: 'q9',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(list(range(4)))',
+    expectedOutput: '[0, 1, 2, 3]',
+  },
+  {
+    id: 'q10',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(list(range(2, 6)))',
+    expectedOutput: '[2, 3, 4, 5]',
+  },
+  {
+    id: 'q11',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(list(range(0, 10, 2)))',
+    expectedOutput: '[0, 2, 4, 6, 8]',
+  },
+  {
+    id: 'q12',
+    qType: 'mcq',
+    prompt: 'Which numbers does `range(1, 5)` produce?',
+    options: [
+      { id: 'a', text: '`1, 2, 3, 4, 5`' },
+      { id: 'b', text: '`1, 2, 3, 4`' },
+      { id: 'c', text: '`0, 1, 2, 3, 4`' },
+      { id: 'd', text: '`1, 5`' },
+    ],
+    correctOptionId: 'b',
+    explanation: '`range(1, 5)` starts at 1 and stops before 5: `1, 2, 3, 4`.',
+  },
+  {
+    id: 'q13',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(list(range(3, 0, -1)))',
+    expectedOutput: '[3, 2, 1]',
+  },
+  {
+    id: 'q14',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(tuple([1, 2, 3]))',
+    expectedOutput: '(1, 2, 3)',
+  },
+  {
+    id: 'q15',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(list((4, 5, 6)))',
+    expectedOutput: '[4, 5, 6]',
+  },
+  {
+    id: 'q16',
+    qType: 'fill-in-blank',
+    prompt: 'The string method that breaks text into a list is `.___()`.',
+    acceptedAnswers: ['split', 'split()'],
+    hint: 'Five letters.',
+    explanation: '`.split()` turns a string into a list of pieces.',
+  },
+  {
+    id: 'q17',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(str(5) + "!")',
+    expectedOutput: '5!',
+  },
+  {
+    id: 'q18',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(int("7") + 3)',
+    expectedOutput: '10',
+  },
+  {
+    id: 'q19',
+    qType: 'mcq',
+    prompt: 'Which conversion removes duplicate values from a collection?',
+    options: [
+      { id: 'a', text: '`list()`' },
+      { id: 'b', text: '`tuple()`' },
+      { id: 'c', text: '`set()`' },
+      { id: 'd', text: '`str()`' },
+    ],
+    correctOptionId: 'c',
+    explanation: '`set()` keeps only unique items, so it removes duplicates.',
+  },
+  {
+    id: 'q20',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 's = {1, 2, 3}\nprint(2 in s)',
+    expectedOutput: 'True',
+  },
+  {
+    id: 'q21',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 's = {1, 2, 3}\nprint(5 in s)',
+    expectedOutput: 'False',
+  },
+  {
+    id: 'q22',
+    qType: 'mcq',
+    prompt: 'Which numbers does `range(0, 6, 2)` produce?',
+    options: [
+      { id: 'a', text: '`0, 2, 4, 6`' },
+      { id: 'b', text: '`0, 2, 4`' },
+      { id: 'c', text: '`2, 4, 6`' },
+      { id: 'd', text: '`0, 1, 2, 3, 4, 5`' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'Step 2 from 0, stopping before 6: `0, 2, 4`.',
+  },
+  {
+    id: 'q23',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'print(len(range(10)))',
+    expectedOutput: '10',
+  },
+  {
+    id: 'q24',
+    qType: 'fill-in-blank',
+    prompt: 'With one argument, `range(5)` starts counting at the number ___.',
+    acceptedAnswers: ['0', 'zero', 'Zero'],
+    hint: 'A single digit.',
+    explanation: 'With one argument, a range starts at 0.',
+  },
+  {
+    id: 'q25',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'a = {1, 2}\nb = {2, 3}\nprint(len(a | b))',
+    expectedOutput: '3',
+  },
+]
+
 // ── Module checkpoint tests ──────────────────────────────────────────────────
 
 export const progressTest1Module: Module = {
@@ -480,6 +687,47 @@ export const progressTest2Module: Module = {
       passingScore: 7,
       presentCount: 10,
       questionBanks: [test2Bank],
+    },
+  ],
+}
+
+export const progressTest3Module: Module = {
+  slug: 'progress-test-3',
+  title: 'Progress Test 3',
+  summary: 'Checkpoint: Sets + Conversion + range().',
+  lessons: [
+    {
+      slug: 'test',
+      title: 'Progress Test 3',
+      type: 'progress-test',
+      intro:
+        'Checkpoint covering **Sets**, **Conversion**, and the **range() function**. ' +
+        'Retake as many times as you like to improve your score.',
+      passingScore: 7,
+      presentCount: 10,
+      questionBanks: [test3Bank],
+    },
+  ],
+}
+
+// ── Chapter 5 Final Test ─────────────────────────────────────────────────────
+
+export const finalTestModule: Module = {
+  slug: 'final-test',
+  title: 'Final Test',
+  summary: 'Chapter 5 capstone — 15 questions across every data type.',
+  lessons: [
+    {
+      slug: 'test',
+      title: 'Chapter 5 Final Test',
+      type: 'progress-test',
+      intro:
+        'The Chapter 5 Final Test — 15 questions drawn from everything you learned: lists, ' +
+        'tuples, strings, dictionaries, sets, conversion, and range(). Graded out of 10. ' +
+        'Retake as many times as you like to improve your score.',
+      passingScore: 7,
+      presentCount: 15,
+      questionBanks: [test1Bank, test2Bank, test3Bank],
     },
   ],
 }
