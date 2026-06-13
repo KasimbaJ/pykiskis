@@ -1,7 +1,9 @@
 import type { Chapter } from '../../types/basics'
 import { listsModule } from './ch5/lists'
 import { tuplesModule } from './ch5/tuples'
-import { progressTest1Module } from './ch5/progress-tests'
+import { stringsModule } from './ch5/strings'
+import { dictionariesModule } from './ch5/dictionaries'
+import { progressTest1Module, progressTest2Module } from './ch5/progress-tests'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 5: Data Types — Python's built-in collections. Modules added per PR.
@@ -24,5 +26,8 @@ export const ch5: Chapter = {
     listsModule,          // 1
     tuplesModule,         // 2
     progressTest1Module,  // 3
+    stringsModule,        // 4
+    dictionariesModule,   // 5
+    progressTest2Module,  // 6
   ],
 }
