@@ -1,9 +1,9 @@
 # Chapter 7 — Projects (FEATURED) — Authoring Plan
 
-> STATUS: **Approved; building project 1.** `ch7-projects.ts` (slug `projects-2`,
-> `featured: true`) is an empty stub reading "Coming soon". This plan fills it.
-> Project lineup confirmed by the teacher: To-Do List Manager, Contact Book,
-> Hangman, Word Frequency Counter. (Tic-Tac-Toe considered and deferred.)
+> STATUS: **Done & deployed.** All four projects authored, qa-verified (real
+> Python), lint/build clean, merged (PRs #40, #41, + this). Chapter 7 complete:
+> To-Do List Manager, Contact Book, Hangman, Word Frequency Counter.
+> (Tic-Tac-Toe considered and deferred.)
 >
 > TEACHER DECISIONS (2026-06-19):
 > - **Cadence:** build **To-Do List Manager first**, open its PR, then **pause for
