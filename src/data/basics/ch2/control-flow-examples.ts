@@ -333,6 +333,33 @@ export const controlFlowExamplesModule: Module = {
         '`7 > 0` is `True`, so it is positive. `7 % 2` is `1` (not `0`), so it is odd. Both parts of `number > 0 and number % 2 != 0` are `True`, giving `Positive and odd`.',
     },
 
+    // ── 9b. Exercise: Multiples of 3 and 5 ───────────────────────────────────
+    {
+      slug: 'multiples-of-3-and-5-exercise',
+      title: 'Your Turn: Multiples of 3 and 5',
+      type: 'exercise',
+      problemDescription:
+        'Print numbers that are multiples of **both** 3 and 5.\n\n' +
+        '- Read a positive integer `n` with `int(input())`.\n' +
+        '- Loop from 1 to `n` inclusive and print each number that is a multiple ' +
+        'of **both** 3 and 5 — use `and` with two `%` checks.\n\n' +
+        'The test enters `50` — so the expected output is `15`, `30`, `45`.',
+      starterCode:
+        'n = int(input("Enter n: "))\n\n' +
+        '# Print numbers from 1 to n that are multiples of BOTH 3 and 5\n' +
+        'for i in range(1, n + 1):\n' +
+        '    if ___:\n' +
+        '        print(i)\n',
+      expectedOutput: '15\n30\n45',
+      validationMode: 'exact',
+      inputValues: ['50'],
+      solution:
+        'n = int(input("Enter n: "))\n' +
+        'for i in range(1, n + 1):\n' +
+        '    if i % 3 == 0 and i % 5 == 0:\n' +
+        '        print(i)',
+    },
+
     // ── 10. Recap — module completion ─────────────────────────────────────────
     {
       slug: 'recap',
