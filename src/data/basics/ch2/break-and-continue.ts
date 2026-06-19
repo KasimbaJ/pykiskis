@@ -274,6 +274,39 @@ export const breakAndContinueModule: Module = {
         '    print(i)',
     },
 
+    // ── Exercise: Print Till Five ─────────────────────────────────────────────
+    {
+      slug: 'print-till-five-exercise',
+      title: 'Print Till Five',
+      type: 'exercise',
+      problemDescription:
+        'Print numbers but stop the moment you reach 5.\n\n' +
+        '- An integer is read into `n`.\n' +
+        '- Loop from 1 to `n` (inclusive) and print each number.\n' +
+        '- As soon as the number is `5`, print it and then stop the loop with `break`.\n' +
+        '- For `n = 8` the output is `1`, `2`, `3`, `4`, `5`.',
+      remember: [
+        'Print the number *before* you check whether to break, so `5` is included.',
+        '`break` leaves the loop immediately.',
+      ],
+      starterCode:
+        'n = int(input("Enter a number: "))\n\n' +
+        '# Print 1..n, but stop right after printing 5\n' +
+        'for i in range(1, n + 1):\n' +
+        '    print(i)\n' +
+        '    if ___:\n' +
+        '        ___\n',
+      expectedOutput: '1\n2\n3\n4\n5',
+      validationMode: 'exact',
+      solution:
+        'n = int(input("Enter a number: "))\n' +
+        'for i in range(1, n + 1):\n' +
+        '    print(i)\n' +
+        '    if i == 5:\n' +
+        '        break',
+      inputValues: ['8'],
+    },
+
     // ── 12. Recap — module completion ─────────────────────────────────────────
     {
       slug: 'recap',

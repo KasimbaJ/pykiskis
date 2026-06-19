@@ -354,6 +354,82 @@ export const ifElseStatementModule: Module = {
         '    print("Zero")',
     },
 
+    // ── Exercise: Can Vote? ───────────────────────────────────────────────────
+    {
+      slug: 'can-vote-exercise',
+      title: 'Can Vote?',
+      type: 'exercise',
+      problemDescription:
+        'Decide whether a person is old enough to vote.\n\n' +
+        '- An age is already read into `age`.\n' +
+        '- If `age` is **18 or above**, print `The person can vote.`\n' +
+        '- Otherwise, print `The person cannot vote.`',
+      remember: [
+        'Use `>=` so that exactly 18 counts as old enough.',
+        'The `else` branch runs whenever the `if` condition is `False`.',
+      ],
+      starterCode:
+        'age = int(input("Enter your age: "))\n\n' +
+        '# Print whether the person can vote\n',
+      expectedOutput: 'The person cannot vote.',
+      validationMode: 'exact',
+      solution:
+        'age = int(input("Enter your age: "))\n' +
+        'if age >= 18:\n' +
+        '    print("The person can vote.")\n' +
+        'else:\n' +
+        '    print("The person cannot vote.")',
+      inputValues: ['17'],
+    },
+
+    // ── Exercise: Display a Warning ───────────────────────────────────────────
+    {
+      slug: 'traffic-light-warning-exercise',
+      title: 'Display a Warning',
+      type: 'exercise',
+      problemDescription:
+        'Show a warning when a traffic light is red.\n\n' +
+        '- The light colour is already read into `light`.\n' +
+        '- If `light` is `"red"`, print `The red light is on.` and `Stop the vehicle.` ' +
+        'on two separate lines.\n' +
+        '- **Always** print `Have a good day!` at the end, whatever the colour.',
+      remember: [
+        'An `if` block can contain more than one statement.',
+        'A statement after the `if` block (not indented) always runs.',
+      ],
+      starterCode:
+        'light = input("Traffic light colour: ")\n\n' +
+        '# Warn if the light is red, then always wish a good day\n',
+      expectedOutput: 'The red light is on.\nStop the vehicle.\nHave a good day!',
+      validationMode: 'exact',
+      solution:
+        'light = input("Traffic light colour: ")\n' +
+        'if light == "red":\n' +
+        '    print("The red light is on.")\n' +
+        '    print("Stop the vehicle.")\n' +
+        'print("Have a good day!")',
+      inputValues: ['red'],
+    },
+
+    // ── Quiz: Which elif Branch? ──────────────────────────────────────────────
+    {
+      slug: 'quiz-elif-howdy',
+      title: 'Which Branch Runs?',
+      type: 'quiz',
+      question:
+        'What is the output of the following code?\n\n' +
+        '`x = 10`\n`if x < 0:`\n`    print("Hello")`\n`elif x > 100:`\n`    print("Hi")`\n`else:`\n`    print("Howdy")`',
+      options: [
+        { id: 'a', text: '`Hello`' },
+        { id: 'b', text: '`Hi`' },
+        { id: 'c', text: '`Howdy`' },
+        { id: 'd', text: '`Hello` then `Hi`' },
+      ],
+      correctOptionId: 'c',
+      explanation:
+        '`x < 0` is `False` (10 is not negative) and `x > 100` is also `False`, so neither the `if` nor the `elif` runs. When no condition is `True`, the `else` block runs — printing `Howdy`. An `if`/`elif`/`else` always runs exactly one block.',
+    },
+
     // ── 13. Recap — module completion ─────────────────────────────────────────
     {
       slug: 'recap',

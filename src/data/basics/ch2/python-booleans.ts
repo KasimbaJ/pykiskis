@@ -314,6 +314,77 @@ export const pythonBooleansModule: Module = {
       solution: 'a = 15\nb = 9\nprint(a > b)',
     },
 
+    // ── Exercise: Is the Number Even? ─────────────────────────────────────────
+    {
+      slug: 'is-number-even-exercise',
+      title: 'Is the Number Even?',
+      type: 'exercise',
+      problemDescription:
+        'A whole number is **even** when dividing it by 2 leaves no remainder.\n\n' +
+        '- An integer is already read into `number`.\n' +
+        '- Print `True` if the number is even and `False` if it is odd.\n\n' +
+        'The remainder operator `%` gives the leftover after division, so ' +
+        '`number % 2 == 0` is `True` for even numbers.',
+      remember: [
+        '`%` is the remainder (modulo) operator.',
+        'A comparison like `number % 2 == 0` produces a boolean.',
+      ],
+      starterCode:
+        'number = int(input("Enter a number: "))\n\n' +
+        '# Print True if number is even, False if odd\n' +
+        'print(___)\n',
+      expectedOutput: 'True',
+      validationMode: 'exact',
+      solution:
+        'number = int(input("Enter a number: "))\nprint(number % 2 == 0)',
+      inputValues: ['16'],
+    },
+
+    // ── Exercise: Compare Two Strings ─────────────────────────────────────────
+    {
+      slug: 'compare-two-strings-exercise',
+      title: 'Compare Two Strings',
+      type: 'exercise',
+      problemDescription:
+        'Strings can be compared with `==`, and the comparison is **case-sensitive** — ' +
+        '`"Sun"` and `"sun"` are not equal.\n\n' +
+        '- Two strings are read into `var1` and `var2`.\n' +
+        '- Print whether they are equal (`True` or `False`).',
+      remember: [
+        'String comparison is case-sensitive.',
+        '`==` returns a boolean, not the string itself.',
+      ],
+      starterCode:
+        'var1 = input("First string: ")\n' +
+        'var2 = input("Second string: ")\n\n' +
+        '# Print whether the two strings are equal\n' +
+        'print(___)\n',
+      expectedOutput: 'False',
+      validationMode: 'exact',
+      solution:
+        'var1 = input("First string: ")\n' +
+        'var2 = input("Second string: ")\n' +
+        'print(var1 == var2)',
+      inputValues: ['Programiz', 'programiz'],
+    },
+
+    // ── Quiz: Even Check Output ───────────────────────────────────────────────
+    {
+      slug: 'quiz-even-remainder',
+      title: 'Even Check Output',
+      type: 'quiz',
+      question: 'What is the output of the following code?\n\n`print(8 % 2 == 0)`',
+      options: [
+        { id: 'a', text: '`True`' },
+        { id: 'b', text: '`False`' },
+        { id: 'c', text: '`0`' },
+        { id: 'd', text: '`2`' },
+      ],
+      correctOptionId: 'a',
+      explanation:
+        '`8 % 2` is `0` because 8 divides evenly by 2, and `0 == 0` is `True`. This `% 2 == 0` pattern is the standard way to test whether a number is even.',
+    },
+
     // ── 11. Recap — module completion ─────────────────────────────────────────
     {
       slug: 'recap',
