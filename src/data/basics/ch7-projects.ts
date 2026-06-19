@@ -1,5 +1,6 @@
 import type { Chapter } from '../../types/basics'
 import { todoListManagerModule } from './ch7/todo-list-manager'
+import { contactBookModule } from './ch7/contact-book'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Chapter 7: Projects (FEATURED) — capstone projects that bring together
@@ -26,5 +27,6 @@ export const ch7: Chapter = {
   featured: true,
   modules: [
     todoListManagerModule, // 1
+    contactBookModule,     // 2
   ],
 }
