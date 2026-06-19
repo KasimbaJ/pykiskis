@@ -384,6 +384,38 @@ export const logicalOperatorsModule: Module = {
         '`7 > 10` is `False`, so `and` gives `False` on the first line. On the second line `or` only needs one `True` (`6 > 2`), so it gives `True`. On the third line `6 > 2` is `True`, and `not True` is `False`.',
     },
 
+    // ── 12b. Exercise: Smallest of Three ─────────────────────────────────────
+    {
+      slug: 'smallest-of-three-exercise',
+      title: 'Your Turn: Smallest of Three',
+      type: 'exercise',
+      problemDescription:
+        'Find the smallest of three numbers.\n\n' +
+        '- Read three integers `n1`, `n2`, and `n3` with `int(input())`.\n' +
+        '- Print the smallest one.\n' +
+        '- Combine comparisons with `and`: a number is smallest when it is ' +
+        '`<=` **both** of the others.\n\n' +
+        'The test enters `10`, `-12`, `6` — so the expected output is `-12`.',
+      starterCode:
+        'n1 = int(input("First: "))\n' +
+        'n2 = int(input("Second: "))\n' +
+        'n3 = int(input("Third: "))\n\n' +
+        '# Print the smallest of n1, n2, n3 (use and)\n',
+      expectedOutput: '-12',
+      validationMode: 'exact',
+      inputValues: ['10', '-12', '6'],
+      solution:
+        'n1 = int(input("First: "))\n' +
+        'n2 = int(input("Second: "))\n' +
+        'n3 = int(input("Third: "))\n' +
+        'if n1 <= n2 and n1 <= n3:\n' +
+        '    print(n1)\n' +
+        'elif n2 <= n1 and n2 <= n3:\n' +
+        '    print(n2)\n' +
+        'else:\n' +
+        '    print(n3)',
+    },
+
     // ── 13. Recap — module completion ─────────────────────────────────────────
     {
       slug: 'recap',

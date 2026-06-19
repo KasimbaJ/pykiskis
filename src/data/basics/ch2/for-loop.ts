@@ -368,6 +368,32 @@ export const forLoopModule: Module = {
         '`range(1, 10)` produces 1 through 9. The `if number % 3 == 0` test is only `True` for the multiples of 3, so just `3`, `6`, and `9` are printed.',
     },
 
+    // ── 12b. Exercise: Print Odd Numbers ─────────────────────────────────────
+    {
+      slug: 'print-odd-numbers-exercise',
+      title: 'Your Turn: Print Odd Numbers',
+      type: 'exercise',
+      problemDescription:
+        'Print the odd numbers up to n.\n\n' +
+        '- Read a positive integer `n` with `int(input())`.\n' +
+        '- Loop from 1 to `n` **inclusive** and print each number that is odd ' +
+        '(`i % 2 == 1`), one per line.\n\n' +
+        'The test enters `8` — so the expected output is `1`, `3`, `5`, `7`.',
+      starterCode:
+        'n = int(input("Enter n: "))\n\n' +
+        '# Print each odd number from 1 to n (inclusive)\n' +
+        'for i in range(1, n + 1):\n' +
+        '    ___\n',
+      expectedOutput: '1\n3\n5\n7',
+      validationMode: 'exact',
+      inputValues: ['8'],
+      solution:
+        'n = int(input("Enter n: "))\n' +
+        'for i in range(1, n + 1):\n' +
+        '    if i % 2 == 1:\n' +
+        '        print(i)',
+    },
+
     // ── 13. Recap — module completion ─────────────────────────────────────────
     {
       slug: 'recap',

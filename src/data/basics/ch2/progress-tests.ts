@@ -243,6 +243,47 @@ export const test1Bank: ProgressTestQuestion[] = [
     code: 'print(3 <= 3)',
     expectedOutput: 'True',
   },
+  {
+    id: 'q26',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'n = 8\nif n % 2 == 0:\n    print("Even")\nelse:\n    print("Odd")',
+    expectedOutput: 'Even',
+  },
+  {
+    id: 'q27',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'age = 20\nif age >= 18:\n    print("Can vote")\nelse:\n    print("Too young")',
+    expectedOutput: 'Can vote',
+  },
+  {
+    id: 'q28',
+    qType: 'mcq',
+    prompt: 'Which condition checks whether a number `n` is even?',
+    options: [
+      { id: 'a', text: '`n / 2 == 0`' },
+      { id: 'b', text: '`n % 2 == 0`' },
+      { id: 'c', text: '`n % 2 == 1`' },
+      { id: 'd', text: '`n = 2`' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'A number is even when the remainder after dividing by 2 is 0, i.e. `n % 2 == 0`.',
+  },
+  {
+    id: 'q29',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'a = 5\nb = 3\nif a < b:\n    print(a)\nelse:\n    print(b)',
+    expectedOutput: '3',
+  },
+  {
+    id: 'q30',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'n = -4\nif n > 0:\n    print("Positive")\nelif n < 0:\n    print("Negative")\nelse:\n    print("Zero")',
+    expectedOutput: 'Negative',
+  },
 ]
 
 // ── Test 2 bank: Logical Operators + While Loop ──────────────────────────────
@@ -480,6 +521,47 @@ export const test2Bank: ProgressTestQuestion[] = [
     correctOptionId: 'b',
     explanation: 'Something in the body must move the loop toward its end so the condition eventually becomes `False`.',
   },
+  {
+    id: 'q26',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'age = 25\nmember = True\nprint(age > 18 and member)',
+    expectedOutput: 'True',
+  },
+  {
+    id: 'q27',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'total = 0\nn = 1\nwhile n <= 4:\n    total += n\n    n += 1\nprint(total)',
+    expectedOutput: '10',
+  },
+  {
+    id: 'q28',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'count = 0\nwhile True:\n    count += 1\n    if count == 3:\n        break\nprint(count)',
+    expectedOutput: '3',
+  },
+  {
+    id: 'q29',
+    qType: 'mcq',
+    prompt: 'To check that a number is between 1 and 10 (inclusive), which operator joins the two comparisons?',
+    options: [
+      { id: 'a', text: '`or`' },
+      { id: 'b', text: '`and`' },
+      { id: 'c', text: '`not`' },
+      { id: 'd', text: '`+`' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'Both comparisons must be true, so they are joined with `and`: `n >= 1 and n <= 10`.',
+  },
+  {
+    id: 'q30',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'x = 5\nprint(x < 0 or x > 3)',
+    expectedOutput: 'True',
+  },
 ]
 
 // ── Test 3 bank: For Loop + Break and Continue ───────────────────────────────
@@ -711,6 +793,47 @@ export const test3Bank: ProgressTestQuestion[] = [
     acceptedAnswers: ['step', 'Step'],
     hint: 'It is how far the loop jumps each time.',
     explanation: 'The third argument to `range()` is the **step** — the amount added on each iteration.',
+  },
+  {
+    id: 'q26',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(1, 6):\n    if i % 2 == 1:\n        print(i)',
+    expectedOutput: '1\n3\n5',
+  },
+  {
+    id: 'q27',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(1, 16):\n    if i % 3 == 0 and i % 5 == 0:\n        print(i)',
+    expectedOutput: '15',
+  },
+  {
+    id: 'q28',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'result = 1\nfor i in range(1, 5):\n    result *= i\nprint(result)',
+    expectedOutput: '24',
+  },
+  {
+    id: 'q29',
+    qType: 'predict-output',
+    prompt: 'What does this print?',
+    code: 'for i in range(1, 6):\n    if i == 3:\n        continue\n    print(i)',
+    expectedOutput: '1\n2\n4\n5',
+  },
+  {
+    id: 'q30',
+    qType: 'mcq',
+    prompt: 'The loop `for i in range(1, n + 1):` counts from 1 up to:',
+    options: [
+      { id: 'a', text: '`n - 1`' },
+      { id: 'b', text: '`n` (inclusive)' },
+      { id: 'c', text: '`n + 1`' },
+      { id: 'd', text: '`0`' },
+    ],
+    correctOptionId: 'b',
+    explanation: 'Because `range` stops before its end value, `range(1, n + 1)` includes `n` itself.',
   },
 ]
 

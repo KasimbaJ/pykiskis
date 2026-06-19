@@ -365,6 +365,36 @@ export const whileLoopModule: Module = {
       inputValues: ['3'],
     },
 
+    // ── 12b. Exercise: Sum Until Zero ────────────────────────────────────────
+    {
+      slug: 'sum-until-zero-exercise',
+      title: 'Your Turn: Sum Until Zero',
+      type: 'exercise',
+      problemDescription:
+        'Add up numbers until the user stops.\n\n' +
+        '- Keep reading numbers with `float(input())` and adding them to a `total`.\n' +
+        '- Stop the moment the user enters a number that is `<= 0` (do **not** add it).\n' +
+        '- Print the total. A `while True` loop with a `break` works well here.\n\n' +
+        'The test enters `5.5`, `3.2`, `5.3`, `-1000.5` — so the expected output is `14.0`.',
+      starterCode:
+        'total = 0\n\n' +
+        '# Keep adding numbers until one is <= 0, then print total\n' +
+        'while True:\n' +
+        '    n = float(input("Enter a number: "))\n' +
+        '    ___\n',
+      expectedOutput: '14.0',
+      validationMode: 'exact',
+      inputValues: ['5.5', '3.2', '5.3', '-1000.5'],
+      solution:
+        'total = 0\n' +
+        'while True:\n' +
+        '    n = float(input("Enter a number: "))\n' +
+        '    if n <= 0:\n' +
+        '        break\n' +
+        '    total = total + n\n' +
+        'print(total)',
+    },
+
     // ── 13. Recap — module completion ─────────────────────────────────────────
     {
       slug: 'recap',
