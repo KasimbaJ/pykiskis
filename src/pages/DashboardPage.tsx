@@ -18,8 +18,18 @@ export default function DashboardPage() {
   const { getToken } = useAuth()
   const isTeacher = user?.publicMetadata?.role === 'teacher'
 
-  const { students, selectedStudent, isLoading, error, loadStudents, setSelectedStudent } =
+  const { students, selectedStudent, isLoading, error, loadStudents, removeStudent, setSelectedStudent } =
     useDashboardStore()
+
+  const handleDeleteStudent = async (userId: string, name: string) => {
+    const ok = window.confirm(
+      `Remove ${name} from the dashboard and permanently delete their progress and test scores?\n\n` +
+        `This does NOT delete their login account, and cannot be undone from here.`,
+    )
+    if (!ok) return
+    const token = await getToken()
+    if (token) await removeStudent(token, userId)
+  }
 
   const classes = useClassesStore((s) => s.classes)
   const loadClasses = useClassesStore((s) => s.load)
@@ -192,7 +202,11 @@ export default function DashboardPage() {
             </div>
 
             {view === 'overview' && (
-              <StudentTable students={visibleStudents} onSelectStudent={setSelectedStudent} />
+              <StudentTable
+                students={visibleStudents}
+                onSelectStudent={setSelectedStudent}
+                onDeleteStudent={isTeacher ? handleDeleteStudent : undefined}
+              />
             )}
             {view === 'scores' && <ClassScoresTable students={visibleStudents} />}
             {view === 'assignments' &&

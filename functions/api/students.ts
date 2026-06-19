@@ -1,4 +1,4 @@
-import { verifyClerkToken } from '../_auth'
+import { verifyClerkToken, verifyTeacher } from '../_auth'
 
 interface Env {
   DB: D1Database
@@ -34,7 +34,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
 
   // Fetch students, phase levels, and basics lesson progress in three queries
   const [studentsResult, progressResult, lessonResult] = await Promise.all([
-    env.DB.prepare('SELECT * FROM students ORDER BY updated_at DESC').all(),
+    env.DB.prepare('SELECT * FROM students WHERE deleted_at IS NULL ORDER BY updated_at DESC').all(),
     env.DB.prepare('SELECT * FROM level_progress WHERE completed = 1').all(),
     env.DB.prepare(
       'SELECT user_id, lesson_id, completed, best_score FROM lesson_progress',
@@ -102,4 +102,30 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   })
 
   return json(students)
+}
+
+// DELETE /api/students?userId=...  —  teacher-only soft-delete.
+// Marks the student deleted (so they disappear from the dashboard) and purges
+// their learning data: lesson_progress (incl. test scores) + level_progress.
+// The student row (name) is retained for reversibility; their Clerk login
+// account is NOT touched.
+export const onRequestDelete: PagesFunction<Env> = async ({ request, env }) => {
+  const token = request.headers.get('Authorization')?.slice(7)
+  if (!token) return json({ error: 'Unauthorized' }, 401)
+
+  const payload = await verifyTeacher(token, env.CLERK_SECRET_KEY)
+  if (!payload) return json({ error: 'Forbidden' }, 403)
+
+  const userId = new URL(request.url).searchParams.get('userId')
+  if (!userId) return json({ error: 'Missing userId' }, 400)
+
+  await env.DB.batch([
+    env.DB
+      .prepare("UPDATE students SET deleted_at = datetime('now') WHERE user_id = ?")
+      .bind(userId),
+    env.DB.prepare('DELETE FROM lesson_progress WHERE user_id = ?').bind(userId),
+    env.DB.prepare('DELETE FROM level_progress WHERE user_id = ?').bind(userId),
+  ])
+
+  return json({ ok: true })
 }
