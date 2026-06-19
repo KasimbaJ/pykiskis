@@ -59,6 +59,19 @@ export async function fetchStudents(token: string): Promise<StudentProgress[]> {
   return res.json()
 }
 
+/**
+ * Teacher-only: soft-delete a student. Marks them deleted (so they leave the
+ * dashboard) and purges their progress / test scores from D1. Does NOT touch
+ * the student's Clerk login account.
+ */
+export async function deleteStudent(token: string, userId: string): Promise<void> {
+  const res = await fetch(`/api/students?userId=${encodeURIComponent(userId)}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (!res.ok) throw new Error(`Failed to delete student: ${res.status}`)
+}
+
 // ─── Classes (Teacher Dashboard) ─────────────────────────────────────────────
 
 export async function fetchClasses(token: string): Promise<Class[]> {

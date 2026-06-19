@@ -1,4 +1,4 @@
-import { Users, ChevronRight, Flame, Trophy, BookOpen } from 'lucide-react'
+import { Users, ChevronRight, Flame, Trophy, BookOpen, Trash2 } from 'lucide-react'
 import type { StudentProgress } from '../../types'
 import { levels } from '../../data/levels/index'
 import { countAllBasicsLessons } from '../../data/basics/index'
@@ -7,9 +7,11 @@ import { useT } from '../../i18n-ui'
 interface Props {
   students: StudentProgress[];
   onSelectStudent: (name: string) => void;
+  /** Teacher-only: soft-delete a student. Omit to hide the delete control. */
+  onDeleteStudent?: (userId: string, name: string) => void;
 }
 
-export default function StudentTable({ students, onSelectStudent }: Props) {
+export default function StudentTable({ students, onSelectStudent, onDeleteStudent }: Props) {
   const t = useT()
   if (students.length === 0) {
     return (
@@ -135,7 +137,23 @@ export default function StudentTable({ students, onSelectStudent }: Props) {
                     : '—'}
                 </td>
                 <td className="px-6 py-4">
-                  <ChevronRight className="w-4 h-4 text-slate-400" />
+                  <div className="flex items-center justify-end gap-1">
+                    {onDeleteStudent && (
+                      <button
+                        type="button"
+                        title="Remove student"
+                        aria-label={`Remove ${student.studentName}`}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onDeleteStudent(student.userId, student.studentName)
+                        }}
+                        className="p-1.5 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                    <ChevronRight className="w-4 h-4 text-slate-400" />
+                  </div>
                 </td>
               </tr>
             )
