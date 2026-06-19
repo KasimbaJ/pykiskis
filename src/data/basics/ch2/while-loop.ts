@@ -317,6 +317,54 @@ export const whileLoopModule: Module = {
         'print(total)',
     },
 
+    // ── Exercise: Countdown to Launch ─────────────────────────────────────────
+    {
+      slug: 'countdown-to-launch-exercise',
+      title: 'Countdown to Launch',
+      type: 'exercise',
+      problemDescription:
+        'Simulate a rocket-launch countdown that tracks two things at once.\n\n' +
+        '- A starting time in seconds is read into `countdown`.\n' +
+        '- While `countdown` is `0` or more, print three lines each step:\n' +
+        '  `Time left: {countdown} seconds`, then `Elapsed: {elapsed} seconds`, then `---`.\n' +
+        '- `elapsed` starts at `0` and goes **up** by 1 each step while `countdown` goes **down**.\n' +
+        '- When the countdown drops below `0`, stop and print `Liftoff!`.',
+      remember: [
+        'Update **both** `countdown` and `elapsed` inside the loop.',
+        'Use the condition `countdown >= 0` so that `0` is still shown.',
+      ],
+      starterCode:
+        'countdown = int(input("Seconds to launch: "))\n' +
+        'elapsed = 0\n\n' +
+        '# Count down to 0 while counting elapsed up, then print Liftoff!\n',
+      expectedOutput:
+        'Time left: 3 seconds\n' +
+        'Elapsed: 0 seconds\n' +
+        '---\n' +
+        'Time left: 2 seconds\n' +
+        'Elapsed: 1 seconds\n' +
+        '---\n' +
+        'Time left: 1 seconds\n' +
+        'Elapsed: 2 seconds\n' +
+        '---\n' +
+        'Time left: 0 seconds\n' +
+        'Elapsed: 3 seconds\n' +
+        '---\n' +
+        'Liftoff!',
+      validationMode: 'exact',
+      solution:
+        'countdown = int(input("Seconds to launch: "))\n' +
+        'elapsed = 0\n' +
+        'while countdown >= 0:\n' +
+        '    print(f"Time left: {countdown} seconds")\n' +
+        '    print(f"Elapsed: {elapsed} seconds")\n' +
+        '    print("---")\n' +
+        '    countdown = countdown - 1\n' +
+        '    elapsed = elapsed + 1\n' +
+        'print("Liftoff!")',
+      inputValues: ['3'],
+    },
+
     // ── 13. Recap — module completion ─────────────────────────────────────────
     {
       slug: 'recap',

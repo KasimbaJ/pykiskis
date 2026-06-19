@@ -298,6 +298,92 @@ export const logicalOperatorsModule: Module = {
         '    print("Out of range")',
     },
 
+    // ── Exercise: Largest of Three Numbers ────────────────────────────────────
+    {
+      slug: 'largest-of-three-exercise',
+      title: 'Largest of Three Numbers',
+      type: 'exercise',
+      problemDescription:
+        'Find the biggest of three numbers.\n\n' +
+        '- Three integers are already read into `n1`, `n2`, and `n3`.\n' +
+        '- Work out which is largest and print it like this: `The largest number is: 9`\n\n' +
+        '`n1` is the largest when it is `>=` both of the others. Use `and` to combine ' +
+        'the two checks, then `elif` for `n2`, and `else` for `n3`.',
+      remember: [
+        '`and` is `True` only when **both** sides are `True`.',
+        '`print("text:", value)` puts a space between the text and the value.',
+      ],
+      starterCode:
+        'n1 = int(input("First number: "))\n' +
+        'n2 = int(input("Second number: "))\n' +
+        'n3 = int(input("Third number: "))\n\n' +
+        '# Find the largest and print it\n',
+      expectedOutput: 'The largest number is: 9',
+      validationMode: 'exact',
+      solution:
+        'n1 = int(input("First number: "))\n' +
+        'n2 = int(input("Second number: "))\n' +
+        'n3 = int(input("Third number: "))\n' +
+        'if n1 >= n2 and n1 >= n3:\n' +
+        '    largest = n1\n' +
+        'elif n2 >= n1 and n2 >= n3:\n' +
+        '    largest = n2\n' +
+        'else:\n' +
+        '    largest = n3\n' +
+        'print("The largest number is:", largest)',
+      inputValues: ['3', '9', '5'],
+    },
+
+    // ── Exercise: Scholarship Check (or) ──────────────────────────────────────
+    {
+      slug: 'scholarship-or-exercise',
+      title: 'Scholarship Check',
+      type: 'exercise',
+      problemDescription:
+        'A student qualifies for a scholarship if **either** measure is high enough.\n\n' +
+        '- A GPA is read into `gpa` and a test score into `sat_score`.\n' +
+        '- The student qualifies if `gpa` is **3.5 or higher**, *or* `sat_score` is ' +
+        '**1200 or higher**.\n' +
+        '- Print `eligible` if they qualify, otherwise print `not eligible`.',
+      remember: [
+        '`or` is `True` when **at least one** side is `True`.',
+        'Only one of the two conditions has to pass.',
+      ],
+      starterCode:
+        'gpa = float(input("GPA: "))\n' +
+        'sat_score = int(input("SAT score: "))\n\n' +
+        '# Print "eligible" or "not eligible"\n',
+      expectedOutput: 'eligible',
+      validationMode: 'exact',
+      solution:
+        'gpa = float(input("GPA: "))\n' +
+        'sat_score = int(input("SAT score: "))\n' +
+        'if gpa >= 3.5 or sat_score >= 1200:\n' +
+        '    print("eligible")\n' +
+        'else:\n' +
+        '    print("not eligible")',
+      inputValues: ['3.4', '1250'],
+    },
+
+    // ── Quiz: and / or / not Together ─────────────────────────────────────────
+    {
+      slug: 'quiz-and-or-not',
+      title: 'Combining Operators',
+      type: 'quiz',
+      question:
+        'What is the output of the following code?\n\n' +
+        '`print((6 > 2) and (7 > 10))`\n`print((6 > 2) or (7 > 10))`\n`print(not (6 > 2))`',
+      options: [
+        { id: 'a', text: '`True` / `True` / `False`' },
+        { id: 'b', text: '`False` / `True` / `False`' },
+        { id: 'c', text: '`True` / `False` / `False`' },
+        { id: 'd', text: '`False` / `True` / `True`' },
+      ],
+      correctOptionId: 'b',
+      explanation:
+        '`7 > 10` is `False`, so `and` gives `False` on the first line. On the second line `or` only needs one `True` (`6 > 2`), so it gives `True`. On the third line `6 > 2` is `True`, and `not True` is `False`.',
+    },
+
     // ── 13. Recap — module completion ─────────────────────────────────────────
     {
       slug: 'recap',

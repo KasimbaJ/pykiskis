@@ -285,6 +285,89 @@ export const forLoopModule: Module = {
         'print(total)',
     },
 
+    // ── Exercise: Sum of Natural Numbers ──────────────────────────────────────
+    {
+      slug: 'sum-natural-numbers-exercise',
+      title: 'Sum of Natural Numbers',
+      type: 'exercise',
+      problemDescription:
+        'Add up every whole number from 1 up to `n`.\n\n' +
+        '- An integer is read into `n`.\n' +
+        '- Use `range(1, n + 1)` so the loop includes `n` itself.\n' +
+        '- Add each number to `total`, then print it as `Total = 15` (for `n = 5`).',
+      remember: [
+        '`range(1, n + 1)` counts 1, 2, … up to and including `n`.',
+        'Print the total **after** the loop, not inside it.',
+      ],
+      starterCode:
+        'n = int(input("Enter an integer: "))\n' +
+        'total = 0\n\n' +
+        '# Add 1 + 2 + ... + n into total, then print "Total = ..."\n' +
+        'for i in range(1, n + 1):\n' +
+        '    ___\n\n' +
+        'print(f"Total = {total}")\n',
+      expectedOutput: 'Total = 15',
+      validationMode: 'exact',
+      solution:
+        'n = int(input("Enter an integer: "))\n' +
+        'total = 0\n' +
+        'for i in range(1, n + 1):\n' +
+        '    total = total + i\n' +
+        'print(f"Total = {total}")',
+      inputValues: ['5'],
+    },
+
+    // ── Exercise: Factorial ───────────────────────────────────────────────────
+    {
+      slug: 'factorial-exercise',
+      title: 'Factorial of a Number',
+      type: 'exercise',
+      problemDescription:
+        'The factorial of `n` is `1 * 2 * 3 * ... * n`.\n\n' +
+        '- An integer is read into `n`.\n' +
+        '- Multiply the numbers from 1 to `n` together into `factorial`.\n' +
+        '- Print the result. For `n = 4` the answer is `24` (1 × 2 × 3 × 4).',
+      remember: [
+        'Start `factorial` at `1`, not `0` — multiplying by 0 ruins the result.',
+        'This is just like the sum exercise, but with `*` instead of `+`.',
+      ],
+      starterCode:
+        'n = int(input("Enter an integer: "))\n' +
+        'factorial = 1\n\n' +
+        '# Multiply 1 * 2 * ... * n into factorial, then print it\n' +
+        'for i in range(1, n + 1):\n' +
+        '    ___\n\n' +
+        'print(factorial)\n',
+      expectedOutput: '24',
+      validationMode: 'exact',
+      solution:
+        'n = int(input("Enter an integer: "))\n' +
+        'factorial = 1\n' +
+        'for i in range(1, n + 1):\n' +
+        '    factorial = factorial * i\n' +
+        'print(factorial)',
+      inputValues: ['4'],
+    },
+
+    // ── Quiz: Divisible by 3 ──────────────────────────────────────────────────
+    {
+      slug: 'quiz-divisible-by-three',
+      title: 'Filtering in a Loop',
+      type: 'quiz',
+      question:
+        'What is the output of the following code?\n\n' +
+        '`for number in range(1, 10):`\n`    if number % 3 == 0:`\n`        print(number)`',
+      options: [
+        { id: 'a', text: '`1 2 3 4 5 6 7 8 9` (each on its own line)' },
+        { id: 'b', text: '`3 6 9` (each on its own line)' },
+        { id: 'c', text: '`1 3 5 7 9` (each on its own line)' },
+        { id: 'd', text: '`2 4 6 8` (each on its own line)' },
+      ],
+      correctOptionId: 'b',
+      explanation:
+        '`range(1, 10)` produces 1 through 9. The `if number % 3 == 0` test is only `True` for the multiples of 3, so just `3`, `6`, and `9` are printed.',
+    },
+
     // ── 13. Recap — module completion ─────────────────────────────────────────
     {
       slug: 'recap',

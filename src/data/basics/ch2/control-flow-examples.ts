@@ -243,6 +243,96 @@ export const controlFlowExamplesModule: Module = {
         'print(count)',
     },
 
+    // ── Exercise: Categorize a Number ─────────────────────────────────────────
+    {
+      slug: 'categorize-number-exercise',
+      title: 'Categorize a Number',
+      type: 'exercise',
+      problemDescription:
+        'Sort a number into one of five categories using `and`.\n\n' +
+        '- An integer is read into `number`.\n' +
+        '- Print `Positive and even`, `Positive and odd`, `Negative and even`, or ' +
+        '`Negative and odd` depending on its sign and whether it is even.\n' +
+        '- If the number is `0`, print `The number is zero`.\n\n' +
+        'For `number = -23` the answer is `Negative and odd`.',
+      remember: [
+        'Combine a sign check and an even/odd check with `and`.',
+        'Handle `0` last, in the `else` branch.',
+      ],
+      starterCode:
+        'number = int(input("Enter an integer: "))\n\n' +
+        '# Print the sign-and-parity category, or "The number is zero"\n',
+      expectedOutput: 'Negative and odd',
+      validationMode: 'exact',
+      solution:
+        'number = int(input("Enter an integer: "))\n' +
+        'if number > 0 and number % 2 == 0:\n' +
+        '    print("Positive and even")\n' +
+        'elif number > 0 and number % 2 != 0:\n' +
+        '    print("Positive and odd")\n' +
+        'elif number < 0 and number % 2 == 0:\n' +
+        '    print("Negative and even")\n' +
+        'elif number < 0 and number % 2 != 0:\n' +
+        '    print("Negative and odd")\n' +
+        'else:\n' +
+        '    print("The number is zero")',
+      inputValues: ['-23'],
+    },
+
+    // ── Exercise: Print Numbers Within a Range ────────────────────────────────
+    {
+      slug: 'numbers-within-range-exercise',
+      title: 'Print Numbers Within a Range',
+      type: 'exercise',
+      problemDescription:
+        'Keep reading numbers and printing them — until one falls outside a range.\n\n' +
+        '- Use a `while True` loop to read an integer each time.\n' +
+        '- If the number is between `1` and `100` (both inclusive), print it.\n' +
+        '- If the number is outside that range, stop the loop with `break`.\n\n' +
+        'For the inputs `3`, `88`, `12`, `-5` the output is `3`, `88`, `12` ' +
+        '(the `-5` ends the loop).',
+      remember: [
+        '`1 <= n <= 100` checks both ends of the range at once.',
+        '`while True` needs a `break` inside, or it never stops.',
+      ],
+      starterCode:
+        '# Read numbers; print those in 1..100, stop on the first one outside it\n' +
+        'while True:\n' +
+        '    n = int(input("Enter a number: "))\n' +
+        '    if ___:\n' +
+        '        print(n)\n' +
+        '    else:\n' +
+        '        break\n',
+      expectedOutput: '3\n88\n12',
+      validationMode: 'exact',
+      solution:
+        'while True:\n' +
+        '    n = int(input("Enter a number: "))\n' +
+        '    if 1 <= n <= 100:\n' +
+        '        print(n)\n' +
+        '    else:\n' +
+        '        break',
+      inputValues: ['3', '88', '12', '-5'],
+    },
+
+    // ── Quiz: Categorize Output ───────────────────────────────────────────────
+    {
+      slug: 'quiz-categorize-output',
+      title: 'Sign and Parity',
+      type: 'quiz',
+      question:
+        'Using the "Categorize a Number" logic (sign combined with even/odd), what is printed for `number = 7`?',
+      options: [
+        { id: 'a', text: '`Positive and even`' },
+        { id: 'b', text: '`Positive and odd`' },
+        { id: 'c', text: '`Negative and odd`' },
+        { id: 'd', text: '`The number is zero`' },
+      ],
+      correctOptionId: 'b',
+      explanation:
+        '`7 > 0` is `True`, so it is positive. `7 % 2` is `1` (not `0`), so it is odd. Both parts of `number > 0 and number % 2 != 0` are `True`, giving `Positive and odd`.',
+    },
+
     // ── 10. Recap — module completion ─────────────────────────────────────────
     {
       slug: 'recap',
