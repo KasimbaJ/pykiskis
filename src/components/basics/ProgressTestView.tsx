@@ -12,6 +12,7 @@ import type {
   FillInBlankQuestion,
 } from '../../types/basics'
 import { renderInline } from './inline'
+import { selectQuestions } from './selectQuestions'
 import { useT } from '../../i18n-ui'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -52,27 +53,6 @@ function isCorrect(q: ProgressTestQuestion, answer: Answer | undefined): boolean
 }
 
 // ── Question selection ───────────────────────────────────────────────────────
-
-/** Fisher–Yates shuffle — returns a new array, leaves the input untouched. */
-function shuffle<T>(items: readonly T[]): T[] {
-  const a = [...items]
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[a[i], a[j]] = [a[j], a[i]]
-  }
-  return a
-}
-
-/**
- * Draw the questions for one attempt: an even share from each bank — 10/1 for
- * a module test, 20/4 for the Final Test — then shuffle the combined set so
- * the banks are interleaved rather than grouped.
- */
-function selectQuestions(lesson: ProgressTestLesson): ProgressTestQuestion[] {
-  const banks = lesson.questionBanks
-  const perBank = Math.floor(lesson.presentCount / banks.length)
-  return shuffle(banks.flatMap((bank) => shuffle(bank).slice(0, perBank)))
-}
 
 export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props) {
   const t = useT()

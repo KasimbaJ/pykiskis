@@ -904,19 +904,19 @@ export const progressTest3Module: Module = {
 export const finalTestModule: Module = {
   slug: 'final-test',
   title: 'Final Test',
-  summary: 'Chapter 2 capstone — 15 questions across every topic.',
+  summary: 'Chapter 2 capstone — 20 questions across every topic.',
   lessons: [
     {
       slug: 'test',
       title: 'Chapter 2 Final Test',
       type: 'progress-test',
       intro:
-        'The Chapter 2 Final Test — 15 questions drawn from everything you ' +
+        'The Chapter 2 Final Test — 20 questions drawn from everything you ' +
         'have learned: booleans and comparisons, if/else, logical operators, ' +
         'and while/for loops with break and continue. Graded out of 10. Retake ' +
         'as many times as you like to improve your score.',
       passingScore: 7,
-      presentCount: 15,
+      presentCount: 20,
       questionBanks: [test1Bank, test2Bank, test3Bank],
     },
   ],
