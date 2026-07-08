@@ -79,7 +79,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     const summary = basicsByUser[s.user_id] ?? { completed: 0, testScores: {} }
     return {
       userId: s.user_id,
-      studentName: s.name || '(unnamed)',
+      studentName: s.name || 'Unnamed student',
       currentStreak: s.current_streak,
       bestStreak: s.best_streak,
       lastActiveAt: s.last_active_at ?? '',
