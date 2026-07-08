@@ -44,7 +44,7 @@ export const getStartedModule: Module = {
         {
           kind: 'paragraph',
           text: {
-            en: 'People use it to build websites, create apps, analyze data, automate tasks, and even work on AI.',
+            en: 'People use it to build websites, create apps, analyse data, automate tasks, and even work on AI.',
             lt: 'Žmonės ją naudoja kurdami svetaines, programas, analizuodami duomenis, automatizuodami užduotis ir netgi dirbdami su dirbtiniu intelektu.',
           },
         },
@@ -266,7 +266,7 @@ export const getStartedModule: Module = {
       remember: [
         'Use the `print()` function to display the text.',
         'Put the word `welcome` inside quotation marks `" "` — this tells Python it\'s text.',
-        'Be careful with capitalization — `welcome` is different from **Welcome**, **WELCOME**, or **WelCome**. You need to match `welcome` exactly.',
+        'Be careful with capitalisation — `welcome` is different from **Welcome**, **WELCOME**, or **WelCome**. You need to match `welcome` exactly.',
       ],
       starterCode: '# Display the word "welcome" on the screen\n',
       expectedOutput: 'welcome',

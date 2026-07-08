@@ -216,7 +216,7 @@ export const variablesModule: Module = {
         {
           kind: 'paragraph',
           text: {
-            en: "Let's analyze each `print()` separately.",
+            en: "Let's analyse each `print()` separately.",
             lt: 'Išanalizuokime kiekvieną `print()` atskirai.',
           },
         },
@@ -624,7 +624,7 @@ export const variablesModule: Module = {
       title: 'A Tricky Reassignment',
       type: 'quiz',
       question:
-        "What's the output of this code?\n\n`city1 = \"London\"`\n`dallas = \"city3\"`\n\n`city2 = city1`\n`print(city3)`\n\n**Note:** This is a tricky one! Analyze the code carefully.",
+        "What's the output of this code?\n\n`city1 = \"London\"`\n`dallas = \"city3\"`\n\n`city2 = city1`\n`print(city3)`\n\n**Note:** This is a tricky one! Analyse the code carefully.",
       options: [
         { id: 'a', text: 'Error because `city1` is not defined.' },
         { id: 'b', text: 'Error because `city2` is not defined.' },
