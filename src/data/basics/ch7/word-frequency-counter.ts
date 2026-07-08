@@ -78,7 +78,7 @@ export const wordFrequencyCounterModule: Module = {
           kind: 'figure',
           code:
             '1. Split the text into a list of words.\n' +
-            '2. Normalize them: lowercase + remove punctuation.\n' +
+            '2. Normalise them: lowercase + remove punctuation.\n' +
             '3. Count each word using a dictionary.\n' +
             '4. Report: total words, unique words, most common word.',
           output: '',
@@ -112,10 +112,10 @@ export const wordFrequencyCounterModule: Module = {
       ],
     },
 
-    // ── 5. Normalize the Text ─────────────────────────────────────────────────
+    // ── 5. Normalise the Text ─────────────────────────────────────────────────
     {
       slug: 'normalize-the-text',
-      title: 'Normalize the Text',
+      title: 'Normalise the Text',
       type: 'theory',
       blocks: [
         {
@@ -286,7 +286,7 @@ export const wordFrequencyCounterModule: Module = {
       blocks: [
         {
           kind: 'paragraph',
-          text: 'Now the full report: read some text, normalize it, count the words, and print the totals plus the most common word.',
+          text: 'Now the full report: read some text, normalise it, count the words, and print the totals plus the most common word.',
         },
         {
           kind: 'runnable',
@@ -346,7 +346,7 @@ export const wordFrequencyCounterModule: Module = {
       type: 'recap',
       congratsTitle: 'You built a Word Frequency Counter! 📊',
       summary:
-        'You split and normalized text, counted words with a dictionary and the `.get()` ' +
+        'You split and normalised text, counted words with a dictionary and the `.get()` ' +
         'pattern, found unique words with a set, and located the most common word with a loop — ' +
         'then wrapped it in a function. That is Chapter 5\'s data types working together on a ' +
         'real task, and it completes your Chapter 7 projects. Fantastic work!',

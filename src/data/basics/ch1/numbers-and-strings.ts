@@ -552,7 +552,7 @@ export const numbersAndStringsModule: Module = {
         'Put quotes around `Python` (it\'s a string).',
         'Don\'t use quotes for `75` (it\'s a number).',
         'Each `print()` will automatically go to a new line — no need to add anything extra.',
-        "If your answer isn't working, double-check and match the spelling and capitalization exactly.",
+        "If your answer isn't working, double-check and match the spelling and capitalisation exactly.",
       ],
       starterCode: '# Write your code below\n',
       expectedOutput: 'Python\n75',
