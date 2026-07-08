@@ -94,15 +94,15 @@ Monetisation is deliberately **Phase 5**: it depends on multi-tenancy, productio
 Each phase ends deployed + verified. Estimates assume the current cadence
 (direct authoring, PR-per-unit, CI green).
 
-### Phase 0 — Quick wins (1 session)
-- [ ] `index.html`: rewrite title/description/OG for the course; add `og:image` (simple branded card in `public/`).
-- [ ] Add `path: '*'` NotFound route (branded, links home).
-- [ ] Friendlier `(unnamed)` → e.g. "New student (no name yet)".
-- [ ] Spelling standardisation pass (British) across lesson prose; add a wordlist check to qa-verify.
-- [ ] `_auth.ts`: make `iss`/`alg` checks strict; cache JWKS (module-level + `cf` cache, ~1 h TTL).
-- [ ] Gate deploy on CI (single workflow: checks job → deploy job `needs: checks`).
-- [ ] Run qa-verify + trace-test in CI (setup-python; parametrize the `py` launcher via env).
-**Done when:** all merged, CI enforces content checks, link previews show current product.
+### Phase 0 — Quick wins — ✅ DONE (2026-07-08, PRs #51–#54)
+- [x] `index.html`: rewrote title/description/OG for the course (PR #52). *og:image still deferred — needs a designed PNG; SVG OG images render poorly.*
+- [x] `path: '*'` branded NotFound route (PR #52, eager import).
+- [x] `(unnamed)` → "Unnamed student"; also fixed the student-row React key (PR #52).
+- [x] British spelling pass on prose + `spell-guard.ts` / `npm run spell` (PR #53) — prose-only, strips inline code, curated list.
+- [x] `_auth.ts`: strict `alg`/`iss`; module-level JWKS cache (1 h TTL, stale-fallback, rotation refresh) (PR #51).
+- [x] Consolidated CI: `deploy` job `needs: checks`, master-only — a red check blocks deploy (PR #54).
+- [x] qa-verify + trace-test + spell run in CI via setup-python; `PYK_PYTHON` launcher env; `tsx` added as devDep (PR #54).
+**Done:** all merged; master pipeline verified `checks → deploy` both green; link previews show the current product. Residual: og:image PNG (fold into Phase 2 design work).
 
 ### Phase 1 — Production & assessment hardening (1–2 weeks)
 - [ ] **Clerk production instance**: create prod app, move keys to env (`CLERK_DOMAIN` secret/var, no hardcode), custom domain (e.g. pykiskis.lt) for app + Clerk.
