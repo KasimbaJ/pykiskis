@@ -39,6 +39,24 @@ export async function verifyTeacher(
   return user.public_metadata?.role === 'teacher' ? payload : null
 }
 
+// JWKS cache — Clerk's signing keys rotate rarely, so caching them at module
+// scope (persists across requests on a warm worker) removes a fetch from every
+// authenticated request and a hard dependency on Clerk being reachable per call.
+let jwksCache: { keys: JsonWebKey[]; fetchedAt: number } | null = null
+const JWKS_TTL_MS = 60 * 60 * 1000 // 1 hour
+
+async function getJwks(forceRefresh = false): Promise<JsonWebKey[] | null> {
+  const now = Date.now()
+  if (!forceRefresh && jwksCache && now - jwksCache.fetchedAt < JWKS_TTL_MS) {
+    return jwksCache.keys
+  }
+  const res = await fetch(JWKS_URL)
+  if (!res.ok) return jwksCache?.keys ?? null // keep stale keys if Clerk blips
+  const { keys } = (await res.json()) as { keys: JsonWebKey[] }
+  jwksCache = { keys, fetchedAt: now }
+  return keys
+}
+
 export async function verifyClerkToken(token: string): Promise<ClerkPayload | null> {
   try {
     const parts = token.split('.')
@@ -47,15 +65,21 @@ export async function verifyClerkToken(token: string): Promise<ClerkPayload | nu
 
     const header = JSON.parse(b64urlDecode(h)) as { kid?: string; alg?: string }
 
-    // Only accept RS256 tokens
-    if (header.alg && header.alg !== 'RS256') return null
+    // Require RS256 explicitly (reject "none"/HS256/absent alg).
+    if (header.alg !== 'RS256' || !header.kid) return null
 
-    const jwksRes = await fetch(JWKS_URL)
-    if (!jwksRes.ok) return null
-    const { keys } = (await jwksRes.json()) as { keys: JsonWebKey[] }
-
+    // Look up the signing key; if the kid isn't in the cache (key rotation),
+    // refresh the JWKS once and try again.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const jwk = keys.find((k) => (k as any).kid === header.kid)
+    const findKid = (keys: JsonWebKey[]) => keys.find((k) => (k as any).kid === header.kid)
+    let keys = await getJwks()
+    if (!keys) return null
+    let jwk = findKid(keys)
+    if (!jwk) {
+      keys = await getJwks(true)
+      if (!keys) return null
+      jwk = findKid(keys)
+    }
     if (!jwk) return null
 
     const publicKey = await crypto.subtle.importKey(
@@ -79,8 +103,8 @@ export async function verifyClerkToken(token: string): Promise<ClerkPayload | nu
     // Validate expiry
     if (payload.exp < Date.now() / 1000) return null
 
-    // Validate issuer — must originate from our Clerk instance
-    if (payload.iss && payload.iss !== CLERK_DOMAIN) return null
+    // Validate issuer — must be present AND originate from our Clerk instance
+    if (payload.iss !== CLERK_DOMAIN) return null
 
     return payload
   } catch {
