@@ -72,7 +72,7 @@ export default function StudentTable({ students, onSelectStudent, onDeleteStuden
 
             return (
               <tr
-                key={student.studentName}
+                key={student.userId}
                 className="border-b border-slate-100 hover:bg-slate-50 cursor-pointer transition-colors"
                 onClick={() => onSelectStudent(student.studentName)}
               >

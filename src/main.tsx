@@ -9,6 +9,7 @@ import './index.css'
 import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import RouteError from './components/RouteError'
+import NotFound from './pages/NotFound' // eager: a 404 must never itself hit a chunk error
 
 // A failed dynamic import is almost always a STALE CHUNK after a new deploy: the
 // browser holds an old index.html that references a hashed filename (e.g.
@@ -69,6 +70,7 @@ const router = createBrowserRouter([
       { path: 'basics/:chapterSlug/:moduleSlug/:lessonSlug',             element: <LessonPage /> },
     ],
   },
+  { path: '*', element: <NotFound /> },
 ])
 
 createRoot(document.getElementById('root')!).render(
