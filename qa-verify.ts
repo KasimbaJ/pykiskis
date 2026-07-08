@@ -13,11 +13,14 @@ import { join } from 'node:path'
 const dir = mkdtempSync(join(tmpdir(), 'pyqa-'))
 let n = 0
 
+// Python launcher: `py` locally (Windows), overridable to `python3` in CI.
+const PYTHON = process.env.PYK_PYTHON ?? 'py'
+
 function runPy(fullCode: string): { out: string; err: string } {
   const file = join(dir, `t${n++}.py`)
   writeFileSync(file, fullCode)
   try {
-    const out = execFileSync('py', [file], {
+    const out = execFileSync(PYTHON, [file], {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'pipe'],
       timeout: 15000,

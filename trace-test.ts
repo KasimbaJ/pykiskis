@@ -159,6 +159,8 @@ for (const ch of chapters) {
 
 let pass = 0
 const fails: string[] = []
+// Python launcher: `py` locally (Windows), overridable to `python3` in CI.
+const PYTHON = process.env.PYK_PYTHON ?? 'py'
 console.log(`\nTracing ${found.length} visualize blocks through real Python (sys.settrace)…\n`)
 
 for (const f of found) {
@@ -166,7 +168,7 @@ for (const f of found) {
   writeFileSync(file, buildTraceHarness(f.code, JSON.stringify(f.inputValues)))
   let out = ''
   try {
-    out = execFileSync('py', [file], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 20000 })
+    out = execFileSync(PYTHON, [file], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 20000 })
   } catch (e: unknown) {
     const err = e as { stdout?: string; stderr?: string }
     fails.push(`${f.where} — harness failed to run:\n    ${(err.stderr || String(e)).split('\n').filter(Boolean).slice(-1)[0]}`)

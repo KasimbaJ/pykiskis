@@ -1,18 +1,52 @@
 name: CI
 
-# Lint, type-check/build, and unit-test on every PR to master (and on master
-# itself). Keeps regressions out before the deploy workflow runs on master.
-# Note: the real-Python content gates (qa-verify.ts, trace-test.ts) need a local
-# Python `py` launcher and stay as local/human checks — they are not run here.
+# One workflow for both PRs and master. On every PR and push to master the
+# `checks` job runs lint + build + unit tests + the spelling guard + the real-
+# Python content gates (qa-verify, trace-test). On push to master, `deploy`
+# runs ONLY after `checks` passes — so a red check blocks the deploy.
 
 on:
   pull_request:
     branches: [master]
   push:
     branches: [master]
+  workflow_dispatch:
 
 jobs:
-  check:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Build (tsc + vite)
+        run: npm run build
+        env:
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+      - name: Unit tests
+        run: npm test
+      - name: Spelling guard
+        run: npm run spell
+      - name: Content gates (real Python)
+        env:
+          PYK_PYTHON: python3
+        run: |
+          npx tsx qa-verify.ts
+          npx tsx trace-test.ts
+
+  deploy:
+    name: Build & Deploy
+    needs: checks
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -22,9 +56,13 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Lint
-        run: npm run lint
-      - name: Build (tsc + vite)
+      - name: Build
         run: npm run build
-      - name: Unit tests
-        run: npm test
+        env:
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name pykiskis --branch master
