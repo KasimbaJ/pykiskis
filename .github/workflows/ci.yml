@@ -42,6 +42,11 @@ jobs:
         run: |
           npx tsx qa-verify.ts
           npx tsx trace-test.ts
+      - name: Progress-test answer key up to date
+        run: |
+          npm run gen:testkey
+          git diff --exit-code functions/lib/progressTestKey.generated.ts \
+            || (echo "::error::progressTestKey.generated.ts is stale — run 'npm run gen:testkey' and commit." && exit 1)
 
   deploy:
     name: Build & Deploy

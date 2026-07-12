@@ -12,8 +12,21 @@ import type {
   FillInBlankQuestion,
 } from '../../types/basics'
 import { renderInline } from './inline'
-import { selectQuestions } from './selectQuestions'
+import { selectQuestions, type DrawnQuestion } from './selectQuestions'
 import { useT } from '../../i18n-ui'
+
+/** One answer, sent to the server for authoritative grading. */
+export interface SubmittedAnswer {
+  bankIndex: number
+  questionId: string
+  answer: string
+}
+
+/** Payload handed to onSubmit: the locally-computed score plus raw answers. */
+export interface TestSubmission {
+  score: number
+  answers: SubmittedAnswer[]
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ProgressTestView — multi-question checkpoint scored out of 10.
@@ -28,8 +41,12 @@ import { useT } from '../../i18n-ui'
 interface Props {
   lesson: ProgressTestLesson
   bestScore?: number
-  /** Called when the learner submits (score is 0-totalQuestions). */
-  onSubmit?: (score: number) => void
+  /**
+   * Called when the learner submits.  Carries the locally-computed score (for
+   * instant UI) and the raw answers — the server re-grades the answers and is
+   * the authority for the stored score.
+   */
+  onSubmit?: (submission: TestSubmission) => void
 }
 
 type Answer = string  // option id for mcq, raw text for predict-output / fill-in-blank
@@ -56,8 +73,9 @@ function isCorrect(q: ProgressTestQuestion, answer: Answer | undefined): boolean
 
 export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props) {
   const t = useT()
-  // A fresh random draw from the bank(s) — re-rolled on Retake.
-  const [questions, setQuestions] = useState<ProgressTestQuestion[]>(
+  // A fresh random draw from the bank(s) — re-rolled on Retake.  Each drawn
+  // item carries its source bank index so the server can grade the submission.
+  const [questions, setQuestions] = useState<DrawnQuestion[]>(
     () => selectQuestions(lesson),
   )
   // Answers are keyed by draw position (0…N-1), not question id: the Final
@@ -74,13 +92,13 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
   const total = questions.length
 
   const correct = useMemo(
-    () => questions.filter((q, i) => isCorrect(q, answers[i])).length,
+    () => questions.filter((d, i) => isCorrect(d.question, answers[i])).length,
     [questions, answers],
   )
   // Every test is graded out of 10, however many questions are shown.
   const score10 = Math.round((correct / total) * 10)
 
-  const allAnswered = questions.every((_q, i) => {
+  const allAnswered = questions.every((_d, i) => {
     const v = answers[i]
     return v != null && String(v).trim() !== ''
   })
@@ -88,12 +106,22 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
   const submit = () => {
     if (!allAnswered || submitting) return
     setSubmitting(true)
+    // The raw answers the server re-grades — the client score is only for the
+    // instant results view; the stored score comes from the server.
+    const submission: TestSubmission = {
+      score: score10,
+      answers: questions.map((d, i) => ({
+        bankIndex: d.bankIndex,
+        questionId: d.question.id,
+        answer: answers[i],
+      })),
+    }
     // tiny delay so the button briefly shows the loading spinner — feels like grading
     setTimeout(() => {
       setSubmitted(true)
       setShowResults(true)
       setSubmitting(false)
-      onSubmit?.(score10)
+      onSubmit?.(submission)
     }, 250)
   }
 
@@ -127,7 +155,7 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
 
       {/* Questions */}
       <ol className="space-y-6">
-        {questions.map((q, i) => (
+        {questions.map((d, i) => (
           <li
             key={i}
             className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4"
@@ -138,16 +166,16 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
               </span>
               <div className="flex-1">
                 <p className="font-medium text-slate-800 dark:text-slate-100">
-                  {renderInline(q.prompt)}
+                  {renderInline(d.question.prompt)}
                 </p>
               </div>
               {showResults && (
-                <ResultBadge correct={isCorrect(q, answers[i])} />
+                <ResultBadge correct={isCorrect(d.question, answers[i])} />
               )}
             </div>
 
             <QuestionInput
-              question={q}
+              question={d.question}
               index={i}
               answer={answers[i]}
               disabled={submitted}
@@ -156,7 +184,7 @@ export default function ProgressTestView({ lesson, bestScore, onSubmit }: Props)
 
             {showResults && (
               <ExplanationBlock
-                question={q}
+                question={d.question}
                 answer={answers[i]}
               />
             )}

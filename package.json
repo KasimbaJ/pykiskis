@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "spell": "tsx spell-guard.ts",
+    "gen:testkey": "tsx gen-test-key.ts",
     "preview": "vite preview",
     "deploy": "npm run build && wrangler pages deploy --branch main"
   },

@@ -8,7 +8,7 @@ import TheoryView from '../components/basics/TheoryView'
 import QuizView from '../components/basics/QuizView'
 import ExerciseView from '../components/basics/ExerciseView'
 import RecapView from '../components/basics/RecapView'
-import ProgressTestView from '../components/basics/ProgressTestView'
+import ProgressTestView, { type TestSubmission, type SubmittedAnswer } from '../components/basics/ProgressTestView'
 import CourseOutlineDrawer from '../components/basics/CourseOutlineDrawer'
 import {
   adjacentLessons,
@@ -92,7 +92,7 @@ export default function LessonPage() {
 
   // ── Fire-and-forget D1 sync on any local mutation ───────────────────────────
   const syncToD1 = useCallback(
-    (extra?: { code?: string; option?: string; score?: number }) => {
+    (extra?: { code?: string; option?: string; answers?: SubmittedAnswer[] }) => {
       if (!key) return
       getToken()
         .then(async (token) => {
@@ -106,7 +106,8 @@ export default function LessonPage() {
             visitedAt:      lp.visitedAt ?? new Date().toISOString(),
             bestCode:       extra?.code   ?? lp.bestCode       ?? null,
             selectedOption: extra?.option ?? lp.selectedOption ?? null,
-            bestScore:      extra?.score  ?? lp.bestScore      ?? null,
+            // Progress-test answers are graded server-side; other lessons send none.
+            answers:        extra?.answers ?? null,
           })
         })
         .catch(console.error)
@@ -127,10 +128,12 @@ export default function LessonPage() {
   // Progress-test submissions: always mark complete (no skip) but can be
   // retaken to improve bestScore.
   const onTestSubmit = useCallback(
-    (score: number) => {
+    (submission: TestSubmission) => {
       if (!key) return
-      submitProgressTestScore(key, score)
-      syncToD1({ score })
+      // Optimistic local score for instant UI; the server re-grades the answers
+      // and is the authority for the score teachers see.
+      submitProgressTestScore(key, submission.score)
+      syncToD1({ answers: submission.answers })
     },
     [submitProgressTestScore, key, syncToD1],
   )
