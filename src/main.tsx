@@ -46,6 +46,8 @@ const SignUpPage       = lazyWithReload(() => import('./pages/SignUpPage'))
 const BasicsHomePage   = lazyWithReload(() => import('./pages/BasicsHomePage'))
 const ChapterPage      = lazyWithReload(() => import('./pages/ChapterPage'))
 const LessonPage       = lazyWithReload(() => import('./pages/LessonPage'))
+const Privacy          = lazyWithReload(() => import('./pages/Privacy'))
+const Terms            = lazyWithReload(() => import('./pages/Terms'))
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 if (!PUBLISHABLE_KEY) throw new Error('Missing VITE_CLERK_PUBLISHABLE_KEY')
@@ -53,6 +55,8 @@ if (!PUBLISHABLE_KEY) throw new Error('Missing VITE_CLERK_PUBLISHABLE_KEY')
 const router = createBrowserRouter([
   { path: '/sign-in/*', element: <SignInPage />, errorElement: <RouteError /> },
   { path: '/sign-up/*', element: <SignUpPage />, errorElement: <RouteError /> },
+  { path: '/privacy', element: <Privacy />, errorElement: <RouteError /> },
+  { path: '/terms', element: <Terms />, errorElement: <RouteError /> },
   {
     path: '/',
     element: <App />,
