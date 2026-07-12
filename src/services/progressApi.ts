@@ -173,7 +173,11 @@ export async function syncLessonProgress(
     visitedAt:      string | null
     bestCode:       string | null
     selectedOption: string | null
-    bestScore:      number | null
+    /**
+     * Raw progress-test answers, graded server-side into the stored score.
+     * Null for non-test lessons.  The client never sends a trusted score.
+     */
+    answers:        Array<{ bankIndex: number; questionId: string; answer: string }> | null
   },
 ): Promise<void> {
   await fetch('/api/basics-progress', {

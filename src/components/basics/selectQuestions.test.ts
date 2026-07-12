@@ -53,16 +53,24 @@ describe('selectQuestions', () => {
   it('balances the per-bank share (20/3 → each bank gives 6 or 7)', () => {
     const drawn = selectQuestions(lesson(20, [bank('A', 30), bank('B', 30), bank('C', 30)]))
     const counts: Record<string, number> = { A: 0, B: 0, C: 0 }
-    for (const q of drawn) counts[q.id[0]]++
+    for (const d of drawn) counts[d.question.id[0]]++
     for (const k of ['A', 'B', 'C']) {
       expect(counts[k]).toBeGreaterThanOrEqual(6)
       expect(counts[k]).toBeLessThanOrEqual(7)
     }
   })
 
+  it('tags each drawn question with the index of its source bank', () => {
+    const drawn = selectQuestions(lesson(20, [bank('A', 30), bank('B', 30), bank('C', 30)]))
+    const letterToIndex: Record<string, number> = { A: 0, B: 1, C: 2 }
+    for (const d of drawn) {
+      expect(d.bankIndex).toBe(letterToIndex[d.question.id[0]])
+    }
+  })
+
   it('never repeats a question within one draw', () => {
     const drawn = selectQuestions(lesson(20, [bank('A', 30), bank('B', 30), bank('C', 30)]))
-    expect(new Set(drawn.map((q) => q.id)).size).toBe(drawn.length)
+    expect(new Set(drawn.map((d) => d.question.id)).size).toBe(drawn.length)
   })
 
   it('a bank smaller than its share contributes only what it has', () => {
