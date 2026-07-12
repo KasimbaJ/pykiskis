@@ -1,0 +1,44 @@
+name: D1 backup
+
+# Nightly logical backup of the production D1 database (pykiskis-db).
+# Exports the full schema + data to a .sql file and keeps it as a build
+# artifact.  Runs on a schedule and can be triggered by hand.
+#
+# Requires the same repo secrets the deploy job uses:
+#   CLOUDFLARE_API_TOKEN  — the token MUST include D1 read/export permission
+#                           (Account → D1 → Edit, or a token scoped to D1)
+#   CLOUDFLARE_ACCOUNT_ID
+#
+# Restore (locally, into a fresh/again DB):
+#   wrangler d1 execute pykiskis-db --remote --file=backup.sql
+
+on:
+  schedule:
+    - cron: '17 2 * * *' # 02:17 UTC nightly (off the top of the hour)
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Export D1 → SQL
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          STAMP="$(date -u +%Y-%m-%d)"
+          npx wrangler d1 export pykiskis-db --remote --output "pykiskis-db-${STAMP}.sql"
+          ls -lh "pykiskis-db-${STAMP}.sql"
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: d1-backup-${{ github.run_id }}
+          path: pykiskis-db-*.sql
+          retention-days: 30

@@ -17,12 +17,28 @@ export interface ClerkPayload {
   iat: number
   iss?: string
   azp?: string
+  /**
+   * Role claim, present when the Clerk session token is customised to include
+   *   { "role": "{{user.public_metadata.role}}" }
+   * (Clerk Dashboard → Sessions → Customize session token).  When present it
+   * lets verifyTeacher skip a REST round-trip.  Absent tokens fall back to REST.
+   */
+  role?: string
 }
 
 /**
- * Verify a token AND confirm the user has the `teacher` role in Clerk public
- * metadata.  Returns the payload for a teacher, else null.  Mirrors the inline
- * check in students.ts so teacher-only endpoints can share one helper.
+ * Verify a token AND confirm the user has the `teacher` role.
+ *
+ * Fast path: if the session token carries a `role` claim (see ClerkPayload.role)
+ * we trust it — the JWT is already signature-verified, so the claim is as
+ * trustworthy as `sub`, and we avoid a Clerk API call on every teacher request.
+ *
+ * Fallback: tokens minted before the claim was configured have no `role`, so we
+ * look the user up via the Clerk REST API (the original behaviour).  This makes
+ * the change safe to deploy BEFORE the dashboard claim is added — nothing breaks
+ * in the interim; it just keeps paying the REST cost until the claim is live.
+ *
+ * Returns the payload for a teacher, else null.
  */
 export async function verifyTeacher(
   token: string | undefined,
@@ -31,6 +47,13 @@ export async function verifyTeacher(
   if (!token) return null
   const payload = await verifyClerkToken(token)
   if (!payload) return null
+
+  // Fast path — trust the signed role claim when it's present.
+  if (typeof payload.role === 'string') {
+    return payload.role === 'teacher' ? payload : null
+  }
+
+  // Fallback — no claim on this token; ask Clerk.
   const res = await fetch(`https://api.clerk.com/v1/users/${payload.sub}`, {
     headers: { Authorization: `Bearer ${clerkSecretKey}` },
   })
