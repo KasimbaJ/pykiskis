@@ -104,15 +104,15 @@ Each phase ends deployed + verified. Estimates assume the current cadence
 - [x] qa-verify + trace-test + spell run in CI via setup-python; `PYK_PYTHON` launcher env; `tsx` added as devDep (PR #54).
 **Done:** all merged; master pipeline verified `checks → deploy` both green; link previews show the current product. Residual: og:image PNG (fold into Phase 2 design work).
 
-### Phase 1 — Production & assessment hardening (1–2 weeks)
-- [ ] **Clerk production instance**: create prod app, move keys to env (`CLERK_DOMAIN` secret/var, no hardcode), custom domain (e.g. pykiskis.lt) for app + Clerk.
-- [ ] **Server-authoritative test grading (fix A1)**: new `POST /api/test-attempt` — server draws N questions (seeded), client submits answers, server grades against the banks (imported from `src/data/basics`), writes `test_attempts` table (user, lesson, score, per-question results, timestamp) and derives `best_score`. Client `bestScore` writes for progress-test lessons rejected. Keep old path for non-test lessons.
-- [ ] Role claim in Clerk session token → `verifyTeacher` reads the JWT claim (no REST call); keep REST as fallback.
-- [ ] Basic rate limiting: per-IP counter (KV or Durable-Object-free sliding window via cache) on `client-error` + write endpoints.
-- [ ] Security headers: add `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`; CSP in report-only, then enforce.
-- [ ] D1: scheduled export (wrangler cron or documented manual) + one restore drill; verify Time Travel.
-- [ ] Privacy policy + Terms pages (`/privacy`, `/terms`), footer links, brief cookie note (Clerk).
-**Done when:** real students authenticate against a production Clerk on a custom domain; test scores cannot be forged; a restore has been rehearsed.
+### Phase 1 — Production & assessment hardening (1–2 weeks) — IN PROGRESS (2026-07-13)
+- [ ] **Clerk production instance** (A2): create prod app, move keys to env (`CLERK_DOMAIN` secret/var, no hardcode), custom domain (e.g. pykiskis.lt) for app + Clerk. **← USER TASK (dashboard + DNS); then update `CLERK_DOMAIN` in `_auth.ts`.**
+- [x] **Server-authoritative test grading (fix A1)** — PR #57. Simpler than the original sketch: no new table. Client submits raw answers (bank index + question id + response); the Pages Function re-grades them against a compiled answer key (`gen-test-key.ts` → `functions/lib/progressTestKey.generated.ts`, CI drift-guarded) and writes `best_score`. Client `bestScore` is never read; non-test / answerless posts store NULL. Server draw + per-attempt log deferred (would be the Option-B upgrade if higher-stakes anti-cheat is needed).
+- [x] Role claim in Clerk session token → `verifyTeacher` reads the JWT claim, REST fallback — PR #58 (code shipped; **activate the claim in Clerk dashboard to take effect**).
+- [x] Basic rate limiting: per-IP KV fixed-window on `/api/*` via `functions/_middleware.ts` — PR #58 (dormant until a `RATE_LIMIT` KV namespace is bound).
+- [x] Security headers: COOP/COEP, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` in `public/_headers` — PR #56. (CSP deliberately deferred — Pyodide/CodeMirror/Clerk need care.)
+- [x] D1 backups: nightly `wrangler d1 export` workflow + runbook (`plans/d1-backup-runbook.md`) — PR #58. **← restore drill still to be rehearsed by user.**
+- [x] Privacy policy + Terms pages (`/privacy`, `/terms`), footer links — PR #56.
+**Done when:** real students authenticate against a production Clerk on a custom domain; test scores cannot be forged ✅; a restore has been rehearsed. **Remaining: Clerk production instance + custom domain (user), activate role claim + KV binding (user), rehearse a restore.**
 
 ### Phase 2 — UX & accessibility (2–3 weeks, parallelisable with 1)
 - [ ] WCAG 2.1 AA pass: keyboard operability of quiz/test/exercise flows, visible focus states, aria on interactive components, contrast check of the palette, `prefers-reduced-motion`, skip-to-content.
