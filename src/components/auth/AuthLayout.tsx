@@ -94,6 +94,17 @@ export default function AuthLayout({ mode, children }: Props) {
             </div>
           </section>
         </main>
+
+        {/* Legal footer — visible at the sign-in / sign-up consent point. */}
+        <footer className="px-6 sm:px-10 py-6 text-center text-xs text-slate-400">
+          <a href="/privacy" className="hover:text-slate-600 underline-offset-2 hover:underline">
+            Privacy Policy
+          </a>
+          <span className="mx-2">·</span>
+          <a href="/terms" className="hover:text-slate-600 underline-offset-2 hover:underline">
+            Terms of Use
+          </a>
+        </footer>
       </div>
     </div>
   )
